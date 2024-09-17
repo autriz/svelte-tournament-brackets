@@ -35,6 +35,19 @@
             </div>
         </div>
     </BracketViewer> -->
+    <SVGViewer
+        height={"800px"}
+        width={"800px"}
+        class="m-4"
+        defaultLockToBoundaries={true}
+        maxScale={100.0}
+    >
+        <foreignObject width="1200" height="1000" xmlns="http://www.w3.org/2000/svg">
+            <div class="w-full h-full bg-gradient-to-tr from-gray-800 to-gray-300">
+
+            </div>
+        </foreignObject>
+    </SVGViewer>
     <div class="w-full h-full p-4">
         <h1>Single Elimination Bracket in SVGViewer</h1>
         <button on:click={() => { toggled = !toggled }}>Toggle</button>

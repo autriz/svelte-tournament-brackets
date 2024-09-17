@@ -42,13 +42,11 @@
 <script lang="ts">
 	import { clsx } from "clsx";
 	import type { SingleEliminationProps } from "../../internal/types.js";
-	import { onDestroy, onMount } from "svelte";
+	import { onMount } from "svelte";
 	import type { BracketConfig, MatchPositionData } from "./types.js";
 	import Connector from "./Connector.svelte";
-	import { browser } from "$app/environment";
 	import { setCtx } from "$lib/internal/ctx.js";
 	import { MatchWrapper, Match } from "../components/index.js";
-	import { overridable } from "$lib/internal/helpers/index.js";
 	import { writable, type Writable } from "svelte/store";
 
 	export let data: SingleEliminationProps;

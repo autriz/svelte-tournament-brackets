@@ -21,21 +21,17 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-    class={
-        clsx(`w-full h-full bg-gray-900 grid grid-flow-row grid-rows-2 rounded-sm`)
-    }
-    
+    class="w-full h-full bg-gray-900 grid grid-flow-row grid-rows-2 rounded-sm"
     on:click={() => onMatchClick(match)}
 >
     <div 
         class={
             clsx(
-                "grow box-border rounded-t-sm flex items-center border border-slate-700 transition-colors",
-                match.opponent1 && `id-${match.opponent1.opponentId}`,
-                isTopHovered && "border-slate-300",
-                "hover:border-slate-300"
+                "grow box-border rounded-t-sm flex items-center border border-slate-700 transition-colors hover:border-slate-300",
+                match.opponent1 && `id-${match.opponent1.opponentId}`
             )
         }
+        class:border-slate-300={isTopHovered}
 
         on:pointerenter={() => onEnter(Number(match.opponent1?.opponentId))}
         on:pointerleave={() => onLeave()}
@@ -59,12 +55,11 @@
     <div 
         class={
             clsx(
-                "grow box-border rounded-b-sm flex items-center border border-slate-700 transition-colors",
-                match.opponent2 && `id-${match.opponent2.opponentId}`,
-                isBottomHovered && "border-slate-300",
-                "hover:border-slate-300"
+                "grow box-border rounded-b-sm flex items-center border border-slate-700 transition-colors hover:border-slate-300",
+                match.opponent2 && `id-${match.opponent2.opponentId}`
             )
         }
+        class:border-slate-300={isBottomHovered}
 
         on:pointerenter={() => onEnter(Number(match.opponent2?.opponentId))}
         on:pointerleave={() => onLeave()}
