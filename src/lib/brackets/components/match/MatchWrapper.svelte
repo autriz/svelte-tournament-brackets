@@ -6,10 +6,6 @@
         hoveredMatchId,
         hoveredRoundId,
         hoveredEntrantId,
-
-        setHoveredEntrant,
-        setHoveredMatch,
-        setHoveredRound,
     } = getCtx();
 
     export let match: Match;
@@ -22,16 +18,16 @@
     $: isTopHovered = ($hoveredEntrantId === Number(match.opponent1?.opponentId));
     $: isBottomHovered = ($hoveredEntrantId === Number(match.opponent2?.opponentId));
 
-    function onEnter(entrantID: number) {
-        setHoveredMatch(Number(match.matchId));
-        setHoveredRound(Number(match.roundId));
-        setHoveredEntrant(entrantID);
+    function onEnter(entrantId: number) {
+        $hoveredMatchId = Number(match.matchId);
+        $hoveredRoundId = Number(match.roundId);
+        $hoveredEntrantId = Number(entrantId);
     }
 
     function onLeave() {
-        setHoveredMatch(Number(null));
-        setHoveredRound(Number(null));
-        setHoveredEntrant(null);
+        $hoveredMatchId = null;
+        $hoveredRoundId = null;
+        $hoveredEntrantId = null;
     }
 </script>
 

@@ -9,10 +9,6 @@
         hoveredMatchId,
         hoveredRoundId,
         hoveredEntrantId,
-
-        setHoveredEntrant,
-        setHoveredMatch,
-        setHoveredRound,
     } = getCtx();
 
     type Indices = { round: number; match: number; };

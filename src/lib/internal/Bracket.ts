@@ -15,28 +15,10 @@ export function createBracket(props: CreateBracketProps) {
 
     let tournamentData = null;
 
-
-
-    function setHoveredMatch(id: number | null) {
-        hoveredMatchId.set(id);
-    }
-
-    function setHoveredRound(id: number | null) {
-        hoveredRoundId.set(id);
-    }
-
-    function setHoveredEntrant(id: number | null) {
-        hoveredEntrantId.set(id);
-    }
-
     return {
         hoveredMatchId,
         hoveredRoundId,
         hoveredEntrantId,
-
-        setHoveredMatch,
-        setHoveredRound,
-        setHoveredEntrant,
 
         onMatchClick: props.onMatchClick,
     }
