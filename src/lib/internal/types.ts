@@ -1,48 +1,97 @@
-export interface Round {
+export interface BaseRound {
 	roundId: number;
 	roundName: string;
 }
 
-export interface Match {
+export interface BaseMatch<T extends BaseMatchEntrant = BaseMatchEntrant> {
 	matchId: number;
 	roundId: number;
-	opponent1?: MatchOpponent;
-	opponent2?: MatchOpponent;
+	nextMatchId?: number;
+	nextLoserMatchId?: number;
+	entrant1?: T;
+	entrant2?: T;
 	status: string; // DONE, IN_GAME, PREP or some shit
-	
 }
 
-export interface MatchOpponent {
-	opponentId: number;
-	opponentScore?: number;
-	opponentStatus?: "WON" | "LOST" | "DQ";
+export interface BaseMatchEntrant {
+	entrantId: number;
+	entrantScore?: number;
+	entrantStatus?: "WON" | "LOST" | "DQ";
 }
 
-export interface Entrant {
+export interface BaseEntrant {
 	entrantId: number;
 	entrantName: string;
 	entrantAvatar?: {
-		value: string,
-		type: "url" | "base64",
-	}
+		value: string;
+		type: "url" | "base64";
+	};
 }
 
-export type BaseProps = {
+export type BaseProps<
+	Round extends BaseRound = BaseRound,
+	Entrant extends BaseEntrant = BaseEntrant,
+> = {
 	rounds: Round[];
 	entrants: Entrant[];
-}
+};
 
-export type SingleEliminationProps = BaseProps & {
+export type MatchData<Match extends BaseMatch = BaseMatch> = {
+	data: Match;
+	position: { x: number; y: number };
+	index: { round: number; match: number };
+};
+
+export type SingleEliminationProps<
+	Match extends BaseMatch = BaseMatch,
+	Round extends BaseRound = BaseRound,
+	Entrant extends BaseEntrant = BaseEntrant,
+> = BaseProps<Round, Entrant> & {
 	matches: Match[];
-}
+};
 
-export type RoundRobinProps = BaseProps & {
-	matches: Match[];
-}
+export type RoundRobinProps<T extends BaseMatchEntrant = BaseMatchEntrant> =
+	BaseProps & {
+		matches: BaseMatch<T>[];
+	};
 
-export type DoubleEliminationProps = BaseProps & {
+export type DoubleEliminationProps<
+	Match extends BaseMatch = BaseMatch,
+	Round extends BaseRound = BaseRound,
+	Entrant extends BaseEntrant = BaseEntrant,
+> = BaseProps<Round, Entrant> & {
 	matches: {
 		upper: Match[];
 		lower: Match[];
 	};
-}
+	finalRounds: Round[];
+	finalMatches: Match[];
+};
+
+export type BracketConfig = {
+	matchStyle: {
+		height: number;
+		width: number;
+		gap: number;
+	};
+	showRoundHeaders: boolean;
+	roundHeaderStyle: {
+		height: number;
+		width: number;
+		bottomMargin: number;
+	};
+	roundStyle: {
+		gap: number;
+	};
+};
+
+export type MatchPositionData = {
+	index: {
+		round: number;
+		match: number;
+	};
+	position: {
+		x: number;
+		y: number;
+	};
+};

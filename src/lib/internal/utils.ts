@@ -1,0 +1,274 @@
+import type {
+	BaseMatch,
+	BaseRound,
+	MatchData,
+	MatchPositionData,
+	BracketConfig,
+	BaseProps,
+} from "./types.js";
+
+export const generateBracketData = <
+	Props extends BaseProps = BaseProps,
+	Match extends BaseMatch = BaseMatch,
+>(
+	data: Props,
+	config: BracketConfig,
+	filter: (data: Props, round: Props["rounds"][number]) => Match[],
+	options: {
+		additionalX?: number;
+		additionalY?: number;
+	} = {
+		additionalX: 0,
+		additionalY: 0,
+	},
+) => {
+	const rounds = data.rounds.map((round) => {
+		const roundMatches = filter(data, round);
+
+		return {
+			...round,
+			matches: roundMatches,
+		};
+	});
+
+	return rounds.map((round, roundIdx) => {
+		const extendedMatches = round.matches.map((match, matchIdx) => {
+			return {
+				data: match,
+				...getMatchPositionDataInner(
+					rounds,
+					roundIdx,
+					matchIdx,
+					config,
+					options,
+				),
+			};
+		});
+
+		return {
+			...round,
+			matches: extendedMatches,
+		};
+	});
+};
+
+export const getPreviousMatches = <
+	Round extends BaseRound = BaseRound,
+	Match extends BaseMatch = BaseMatch,
+>(
+	bracketData: (Round & {
+		matches: MatchData<Match>[];
+	})[],
+	roundIdx: number,
+	matchIdx: number,
+) => {
+	if (roundIdx === 0)
+		return {
+			previousTopMatch: undefined,
+			previousBottomMatch: undefined,
+		};
+
+	let prevRoundIdx = roundIdx - 1;
+	while (
+		prevRoundIdx >= 0 &&
+		bracketData[prevRoundIdx].matches.length === 0
+	) {
+		prevRoundIdx--;
+	}
+
+	const previousTopMatch = bracketData[prevRoundIdx].matches[matchIdx * 2];
+	const previousBottomMatch =
+		bracketData[prevRoundIdx].matches[matchIdx * 2 + 1];
+
+	return {
+		previousTopMatch,
+		previousBottomMatch,
+	};
+};
+
+export const getPreviousMatchesIndices = <
+	Round extends BaseRound = BaseRound,
+	Match extends BaseMatch = BaseMatch,
+>(
+	bracketData: (Round & {
+		matches: Match[];
+	})[],
+	roundIdx: number,
+	matchIdx: number,
+) => {
+	if (roundIdx === 0)
+		return {
+			previousTopMatch: undefined,
+			previousBottomMatch: undefined,
+		};
+
+	let prevRoundIdx = roundIdx - 1;
+	while (
+		prevRoundIdx >= 0 &&
+		bracketData[prevRoundIdx].matches.length === 0
+	) {
+		prevRoundIdx--;
+	}
+
+	const previousTopMatch = bracketData[prevRoundIdx].matches[matchIdx * 2];
+	const previousBottomMatch =
+		bracketData[prevRoundIdx].matches[matchIdx * 2 + 1];
+
+	return {
+		previousTopMatch: previousTopMatch
+			? { round: roundIdx - 1, match: matchIdx * 2 }
+			: undefined,
+		previousBottomMatch: previousBottomMatch
+			? { round: roundIdx - 1, match: matchIdx * 2 + 1 }
+			: undefined,
+	};
+};
+
+export const calcVerticalStartingPoint = (
+	roundIdx: number,
+	height: number,
+	matchGap: number,
+) => 2 ** roundIdx * ((height + matchGap) / 2) - (height + matchGap) / 2;
+
+export const columnIncrement = (
+	roundIdx: number,
+	height: number,
+	matchGap: number,
+) => 2 ** roundIdx * (height + matchGap);
+
+export const calcHeightIncrease = (
+	roundIdx: number,
+	matchIdx: number,
+	height: number,
+	matchGap: number,
+) => columnIncrement(roundIdx, height, matchGap) * matchIdx;
+
+export const calcVerticalPos = (
+	roundIdx: number,
+	matchIdx: number,
+	options: {
+		matchHeight: number;
+		matchGap: number;
+		roundGap: number;
+		hasPreviousTopMatch: boolean;
+		hasPreviousBottomMatch: boolean;
+	},
+): number => {
+	const hasPrevTop = options.hasPreviousTopMatch;
+	const hasPrevBottom = options.hasPreviousBottomMatch;
+
+	if (roundIdx === 0 || (hasPrevTop && hasPrevBottom)) {
+		return (
+			calcHeightIncrease(
+				roundIdx,
+				matchIdx,
+				options.matchHeight,
+				options.matchGap,
+			) +
+			calcVerticalStartingPoint(
+				roundIdx,
+				options.matchHeight,
+				options.matchGap,
+			)
+		);
+	}
+
+	if (hasPrevTop || hasPrevBottom) {
+		return calcVerticalPos(
+			roundIdx - 1,
+			matchIdx * 2 + (hasPrevTop ? 0 : 1),
+			{
+				matchHeight: options.matchHeight,
+				matchGap: options.matchGap,
+				roundGap: options.roundGap,
+				hasPreviousTopMatch: hasPrevTop || true,
+				hasPreviousBottomMatch: hasPrevBottom || true,
+			},
+		);
+	} else {
+		return calcVerticalPos(roundIdx, matchIdx, {
+			matchHeight: options.matchHeight,
+			matchGap: options.matchGap,
+			roundGap: options.roundGap,
+			hasPreviousTopMatch: true,
+			hasPreviousBottomMatch: true,
+		});
+	}
+};
+
+export const calcXPos = (
+	roundIdx: number,
+	matchWidth: number,
+	roundGap: number,
+) => roundIdx * (matchWidth + roundGap);
+
+export const calcYPos = (
+	matchIdx: number,
+	matchHeight: number,
+	matchGap: number,
+) => matchIdx * (matchHeight + matchGap);
+
+export const calcMatchPos = (
+	roundIdx: number,
+	matchIdx: number,
+	options: {
+		matchHeight: number;
+		matchWidth: number;
+		roundGap: number;
+		matchGap: number;
+		hasPreviousTopMatch: boolean;
+		hasPreviousBottomMatch: boolean;
+		additionalX?: number;
+		additionalY?: number;
+	},
+) => {
+	const { matchWidth, ...restOptions } = options;
+
+	const x =
+		calcXPos(roundIdx, matchWidth, options.roundGap) +
+		(options.additionalX || 0);
+	const y =
+		calcVerticalPos(roundIdx, matchIdx, restOptions) +
+		(options.additionalY || 0);
+
+	return { x, y };
+};
+
+export const getMatchPositionDataInner = <
+	Round extends BaseRound = BaseRound,
+	Match extends BaseMatch = BaseMatch,
+>(
+	bracketData: (Round & {
+		matches: Match[];
+	})[],
+	roundIdx: number,
+	matchIdx: number,
+	config: BracketConfig,
+	options: {
+		additionalX?: number;
+		additionalY?: number;
+	},
+): MatchPositionData => {
+	const { previousBottomMatch, previousTopMatch } = getPreviousMatchesIndices(
+		bracketData,
+		roundIdx,
+		matchIdx,
+	);
+
+	return {
+		index: {
+			round: roundIdx,
+			match: matchIdx,
+		},
+		position: calcMatchPos(roundIdx, matchIdx, {
+			matchHeight: config.matchStyle.height,
+			matchWidth: config.matchStyle.width,
+			matchGap: config.matchStyle.gap,
+			roundGap: config.roundStyle.gap,
+			hasPreviousTopMatch: !!previousTopMatch,
+			hasPreviousBottomMatch: !!previousBottomMatch,
+			additionalX: options.additionalX,
+			additionalY: options.additionalY,
+		}),
+	};
+};

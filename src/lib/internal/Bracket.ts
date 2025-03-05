@@ -1,25 +1,52 @@
-import { createEventDispatcher } from "svelte"
-import { overridable } from "./helpers/index.js"
-import { writable } from "svelte/store";
-import type { DoubleEliminationProps, Match, RoundRobinProps, SingleEliminationProps } from "./types.js";
+import {
+	isWritable,
+	overridable,
+	type MaybeWritable,
+} from "./helpers/store.js";
+import { get, writable, type Writable } from "svelte/store";
+import type { BaseMatch, BracketConfig } from "./types.js";
 
-export type CreateBracketProps = {
-    tournamentData: SingleEliminationProps | DoubleEliminationProps | RoundRobinProps;
-    onMatchClick: (match: Match) => void;
-}
+export const defaultConfig = {
+	matchStyle: {
+		height: 52,
+		width: 150,
+		gap: 60,
+	},
+	showRoundHeaders: true,
+	roundHeaderStyle: {
+		height: 48,
+		width: 150,
+		bottomMargin: 50,
+	},
+	roundStyle: {
+		gap: 70,
+	},
+	bracketGap: 60,
+} as const;
 
-export function createBracket(props: CreateBracketProps) {
-    let hoveredMatchId = overridable<number | null>(writable(null));
-    let hoveredRoundId = overridable<number | null>(writable(null));
-    let hoveredEntrantId = overridable<number | null>(writable(null));
+export type CreateBracketProps<Match extends BaseMatch = BaseMatch> = {
+	config?: BracketConfig;
+	onMatchClick?: (match: Match) => void;
+};
 
-    let tournamentData = null;
+export function createBracket<Match extends BaseMatch = BaseMatch>(
+	props: CreateBracketProps<Match>,
+) {
+	const config = props.config
+		? { ...defaultConfig, ...props.config }
+		: defaultConfig;
 
-    return {
-        hoveredMatchId,
-        hoveredRoundId,
-        hoveredEntrantId,
+	const hoveredMatchId = overridable<number | null>(writable(null));
+	const hoveredRoundId = overridable<number | null>(writable(null));
+	const hoveredEntrantId = overridable<number | null>(writable(null));
 
-        onMatchClick: props.onMatchClick,
-    }
+	return {
+		hoveredMatchId,
+		hoveredRoundId,
+		hoveredEntrantId,
+
+		config,
+
+		onMatchClick: props.onMatchClick,
+	};
 }

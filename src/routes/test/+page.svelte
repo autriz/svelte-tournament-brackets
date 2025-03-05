@@ -4,8 +4,8 @@
 
     let gapHeight = 100;
     let gapWidth = 100;
-    $: width = 300;
-    $: height = 200;
+    $: width = 0;
+    $: height = 0;
 
     let arrs = [[1,2], [1,2,3], [1,2,3]];
     

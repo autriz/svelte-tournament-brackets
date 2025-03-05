@@ -1,17 +1,18 @@
-// import { Viewer, Viewer_old } from "$lib/internal/index.js";
 import { getContext, setContext } from "svelte";
 import { createBracket, type CreateBracketProps } from "./Bracket.js";
+import type { BaseMatch } from "./types.js";
 
 const BRACKET_ROOT = Symbol("BRACKET_ROOT");
 
-export function setCtx(props: CreateBracketProps) {
+export function setCtx<Match extends BaseMatch = BaseMatch>(
+	props: CreateBracketProps<Match>,
+) {
 	const bracket = createBracket(props);
-	// const viewer = Viewer_old.createViewer(props || {});
 
 	setContext(BRACKET_ROOT, { ...bracket });
 
 	return {
-		...bracket
+		...bracket,
 	};
 }
 
