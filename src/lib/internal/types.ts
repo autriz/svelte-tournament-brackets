@@ -69,6 +69,12 @@ export type DoubleEliminationProps<
 };
 
 export type BracketConfig = {
+	padding: {
+		top: number;
+		bottom: number;
+		left: number;
+		right: number;
+	};
 	matchStyle: {
 		height: number;
 		width: number;

@@ -21,9 +21,6 @@
 	export let config: BracketConfig;
 
 	const widthMargin = 8; // turn into a configurable value
-	const headerHeight = config.showRoundHeaders ?
-		config.roundHeaderStyle.height +
-		config.roundHeaderStyle.bottomMargin : 0;
 	const matchHalfHeight = config.matchStyle.height / 2;
 
 	const calcPath = (data: MatchPositionData) => {
@@ -51,9 +48,15 @@
 		fill="transparent"
 		class={clsx(
 			isTopHighlighted ? "stroke-white" : "stroke-gray-600",
-			"transition-colors",
+			"transition-colors -z-10",
 		)}
 	/>
+	{#if isTopHighlighted}
+		<use
+			class="z-10"
+			href={`#conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-t`}
+		/>
+	{/if}
 {/if}
 {#if bottomMatchPosition}
 	<path
@@ -62,18 +65,14 @@
 		fill="transparent"
 		class={clsx(
 			isBottomHighlighted ? "stroke-white" : "stroke-gray-600",
-			"transition-colors",
+			"transition-colors -z-10",
 		)}
 	/>
+	{#if isBottomHighlighted}
+		<use
+			class="z-10"
+			href={`#conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-b`}
+		/>
+	{/if}
 {/if}
 
-<!-- {#if isTopHighlighted}
-	<use
-		href={`#conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-t`}
-	/>
-{/if}
-{#if isBottomHighlighted}
-	<use
-		href={`#conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-b`}
-	/>
-{/if} -->

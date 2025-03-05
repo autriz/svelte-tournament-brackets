@@ -50,7 +50,10 @@
 		(data, round) => data.matches.filter(
 			(match) => match.roundId === round.roundId,
 		),
-		{ additionalY: headerHeight }
+		{ 
+			additionalY: headerHeight + config.padding.top,
+			additionalX: config.padding.left
+		}
 	);
 
 	const calculateBracketDimensions = () => {
@@ -70,7 +73,10 @@
 			return [height, width];
 		}, [0, 0]);
 
-		return { width, height };
+		return { 
+			width: width + config.padding.left + config.padding.right, 
+			height: height + config.padding.top + config.padding.bottom 
+		};
 	};
 
 	const { width, height } = calculateBracketDimensions();
@@ -87,8 +93,8 @@
 				{#if config.showRoundHeaders}
 					<g>
 						<foreignObject
-							{x}
-							y={0}
+							x={x}
+							y={config.padding.top}
 							width={config.roundHeaderStyle.width}
 							height={config.roundHeaderStyle.height}
 						>

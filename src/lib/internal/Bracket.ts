@@ -7,8 +7,14 @@ import { get, writable, type Writable } from "svelte/store";
 import type { BaseMatch, BracketConfig } from "./types.js";
 
 export const defaultConfig = {
+	padding: {
+		top: 10,
+		bottom: 10,
+		left: 10,
+		right: 10,
+	},
 	matchStyle: {
-		height: 52,
+		height: 54,
 		width: 150,
 		gap: 60,
 	},

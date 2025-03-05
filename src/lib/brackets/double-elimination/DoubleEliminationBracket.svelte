@@ -47,6 +47,10 @@
 		bracketData: (Round & {
 			matches: MatchData<Match>[];
 		})[],
+		options?: {
+			additionalX?: number;
+			additionalY?: number;
+		}
 	) => {
 		const [height, width] = bracketData.reduce(
 			([height, width], round) => {
@@ -67,7 +71,10 @@
 			[0, 0],
 		);
 
-		return { width, height };
+		return { 
+			width: width + (options?.additionalX || 0), 
+			height: height + (options?.additionalY || 0) 
+		};
 	};
 
 	const headerHeight = config.showRoundHeaders
@@ -80,9 +87,18 @@
 		(data, round) => data.matches.upper.filter(
 			(match) => match.roundId === round.roundId,
 		),
-		{ additionalY: headerHeight }
+		{ 
+			additionalY: headerHeight + config.padding.top, 
+			additionalX: config.padding.left
+		}
 	) as (Round & { matches: MatchData<Match>[]; })[];
-	const winnerDimensions = calculateBracketDimensions(winnerBracketData);
+	const winnerDimensions = calculateBracketDimensions(
+		winnerBracketData, 
+		{
+			additionalX: config.padding.left,
+			additionalY: config.padding.top
+		}
+	);
 
 	const loserBracketData = generateBracketData(
 		data, 
@@ -90,9 +106,18 @@
 		(data, round) => data.matches.lower.filter(
 			(match) => match.roundId === round.roundId,
 		),
-		{ additionalY: winnerDimensions.height + config.bracketGap }
+		{ 
+			additionalY: winnerDimensions.height + config.bracketGap,
+			additionalX: config.padding.left
+		}
 	) as (Round & { matches: MatchData<Match>[]; })[];
-	const loserDimensions = calculateBracketDimensions(loserBracketData);
+	const loserDimensions = calculateBracketDimensions(
+		loserBracketData,
+		{
+			additionalX: config.padding.left,
+			additionalY: config.padding.bottom
+		}
+	);
 	const widthWithoutFinals = Math.max(winnerDimensions.width, loserDimensions.width);
 
 	const finalsBracketData = data.finalRounds ?
@@ -115,7 +140,7 @@
 						matchIdx,
 						config,
 						{
-							additionalX: widthWithoutFinals + config.roundStyle.gap 
+							additionalX: widthWithoutFinals + config.roundStyle.gap - config.padding.left
 						}
 					),
 				};
@@ -128,7 +153,7 @@
 		}) : [];
 	const finalsDimensions =
 		finalsBracketData.length > 0
-			? calculateBracketDimensions(finalsBracketData)
+			? calculateBracketDimensions(finalsBracketData, { additionalX: config.padding.right })
 			: { width: 0, height: 0 };
 
 	const width = finalsDimensions.width;

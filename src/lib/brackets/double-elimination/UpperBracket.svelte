@@ -20,7 +20,7 @@
 			<g>
 				<foreignObject
 					{x}
-					y={0}
+					y={config.padding.top}
 					width={config.roundHeaderStyle.width}
 					height={config.roundHeaderStyle.height}
 				>
