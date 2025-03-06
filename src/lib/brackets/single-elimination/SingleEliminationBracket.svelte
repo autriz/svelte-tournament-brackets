@@ -74,7 +74,7 @@
 		}, [0, 0]);
 
 		return { 
-			width: width + config.padding.left + config.padding.right, 
+			width: width + config.padding.right, 
 			height: height + config.padding.top + config.padding.bottom 
 		};
 	};
