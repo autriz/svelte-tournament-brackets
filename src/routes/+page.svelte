@@ -17,7 +17,7 @@
 	let width: number;
 </script>
 
-<div class="flex h-fit w-screen flex-col bg-black text-white">
+<div class="flex h-full w-full flex-col">
 	<!-- <BracketViewer bind:data={data}>
         <div slot="round" let:round>{round.roundName}</div>
         <div 

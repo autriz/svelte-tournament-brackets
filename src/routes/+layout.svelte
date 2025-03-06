@@ -2,4 +2,6 @@
     import "./styles.css";
 </script>
 
-<slot />
+<main class="w-screen min-h-screen overflow-hidden h-fit dark:bg-black bg-white dark:text-white text-black">
+    <slot />
+</main>
