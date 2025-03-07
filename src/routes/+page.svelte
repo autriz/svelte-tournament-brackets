@@ -1,23 +1,41 @@
 <script lang="ts">
-	import { SVGViewer } from "svelte-svg-viewer";
 	import {
 		DoubleEliminationBracket,
 		SingleEliminationBracket,
 	} from "$lib/index.js";
-	import type { PageData } from "./$types.js";
-
-	export let data: PageData;
+	import { singleElimOne, singleElimThree, singleElimTwo, doubleElimOne } from "../mock-data/index.js";
 
 	let toggled: boolean = true;
 
-	let singleElimData = data.singleElimination;
-	let doubleElimData = data.doubleElimination;
+	const singleElimMockData = [singleElimOne, singleElimTwo, singleElimThree];
+	const doubleElimMockData = [doubleElimOne];
 
 	let height: number;
 	let width: number;
+
+	let headerAlign = "center";
+	let matchAlign = "center";
 </script>
 
 <div class="flex h-full w-full flex-col">
+	<div class="flex flex-col">
+		<div class="flex flex-row gap-3">
+			<label for="header-align">Round header alignment</label>
+			<select id="header-align" class="dark:bg-black dark:text-white bg-white text-black" bind:value={headerAlign}>
+				<option value="start">Start</option>
+				<option value="center">Center</option>
+				<option value="end">End</option>
+			</select>
+		</div>
+		<div class="flex flex-row gap-3">
+			<label for="match-align">Match alignment</label>
+			<select id="match-align" class="dark:bg-black dark:text-white bg-white text-black" bind:value={matchAlign}>
+				<option value="start">Start</option>
+				<option value="center">Center</option>
+				<option value="end">End</option>
+			</select>
+		</div>
+	</div>
 	<!-- <BracketViewer bind:data={data}>
         <div slot="round" let:round>{round.roundName}</div>
         <div 
@@ -67,18 +85,29 @@
 			</div>
 		{/if}
 	</div> -->
-	<div class="p-4">
-		<SingleEliminationBracket
-			onMatchClick={console.log}
-			class="fill-[#0b0d13]"
-			data={singleElimData}
-		/>
-	</div>
-	<div class="p-4">
-		<DoubleEliminationBracket
-			onMatchClick={console.log}
-			class="fill-[#0b0d13]"
-			data={doubleElimData}
-		/>
-	</div>
+
+	<h1 class="text-4xl">Single Elimination Brackets</h1>
+	{#each singleElimMockData as data, dataIdx}
+		<div class="mb-4">
+			<h2 class="text-3xl">{dataIdx + 1}</h2>
+			<SingleEliminationBracket
+				onMatchClick={console.log}
+				class="fill-[#0b0d13]"
+				{data}
+				bracketConfig={{ matchStyle: { width: 200, height: 64 }, roundHeaderStyle: { height: 48, width: 200 } }}
+			/>
+		</div>
+	{/each}
+	<h1 class="text-4xl">Double Elimination Brackets</h1>
+	{#each doubleElimMockData as data, dataIdx}
+		<div class="mb-4">
+			<h2 class="text-3xl">{dataIdx + 1}</h2>
+			<DoubleEliminationBracket
+				onMatchClick={console.log}
+				class="fill-[#0b0d13]"
+				{data}
+				bracketConfig={{ matchStyle: { width: 200, height: 64 }, roundHeaderStyle: { height: 48, width: 200 }, bracketGap: 100 }}
+			/>
+		</div>
+	{/each}
 </div>

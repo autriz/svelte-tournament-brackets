@@ -1,11 +1,18 @@
-<script lang="ts">
+<script 
+	lang="ts"
+	generics="
+		Entrant extends BaseEntrant = BaseEntrant,
+		MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+		Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
+	"
+>
 	import clsx from "clsx";
-	import type { BaseMatch, BaseEntrant } from "$lib/internal/types.js";
+	import type { BaseMatch, BaseEntrant, BaseMatchEntrant } from "$lib/internal/types.js";
 	import { getCtx } from "$lib/internal/ctx.js";
 
-	export let match: BaseMatch;
-	export let entrant1: BaseEntrant | null = null;
-	export let entrant2: BaseEntrant | null = null;
+	export let match: Match;
+	export let entrant1: Entrant | null = null;
+	export let entrant2: Entrant | null = null;
 
 	export let entrant1Placeholder: string = "";
 	export let entrant2Placeholder: string = "";
@@ -13,7 +20,7 @@
 	export let isTopHovered: boolean;
 	export let isBottomHovered: boolean;
 
-	export let onEnter: (entrantID: number) => void;
+	export let onEnter: (entrantId: MatchEntrant["entrantId"]) => void;
 	export let onLeave: () => void;
 
 	$: hasEnded = match.entrant1?.entrantStatus && match.entrant1?.entrantStatus;
@@ -37,7 +44,7 @@
 		data-disabled={match.entrant1 ? undefined : true}
 		aria-disabled={match.entrant1 ? undefined : true}
 		data-hovered={isTopHovered ? true : undefined}
-		on:pointerenter={() => onEnter(Number(match.entrant1?.entrantId))}
+		on:pointerenter={() => match.entrant1 ? onEnter(match.entrant1.entrantId) : undefined}
 		on:pointerleave={() => onLeave()}
 	>
 		<span
@@ -56,12 +63,16 @@
 			{/if}
 		</span>
 		<span
-			class={clsx(["flex h-full w-[24px] items-center justify-center self-end bg-slate-800 text-center text-xs",
+			class={clsx(["flex h-full w-[32px] items-center justify-center self-end bg-slate-800 text-center text-xs",
 				hasEnded ? isTopWon ? `text-green-400` : `text-red-400` : undefined
 			])}
 		>
 			{#if match.entrant1 && entrant1}
-				{match.entrant1.entrantScore ?? 0}
+				{#if hasEnded}
+					{match.entrant1.entrantStatus}
+				{:else}
+					{match.entrant1.entrantScore ?? 0}
+				{/if}
 			{/if}
 		</span>
 	</div>
@@ -75,7 +86,7 @@
 		data-disabled={match.entrant2 ? undefined : true}
 		aria-disabled={match.entrant2 ? undefined : true}
 		data-hovered={isBottomHovered ? true : undefined}
-		on:pointerenter={() => onEnter(Number(match.entrant2?.entrantId))}
+		on:pointerenter={() => match.entrant2 ? onEnter(match.entrant2.entrantId) : undefined}
 		on:pointerleave={() => onLeave()}
 	>
 		<span
@@ -94,12 +105,16 @@
 			{/if}
 		</span>
 		<span
-			class={clsx(["flex h-full w-[24px] items-center justify-center self-end bg-slate-800 text-center text-xs",
+			class={clsx(["flex h-full w-[32px] items-center justify-center self-end bg-slate-800 text-center text-xs",
 				hasEnded ? isBottomWon ? `text-green-400` : `text-red-400` : undefined
 			])}
 		>
 			{#if match.entrant2 && entrant2}
-				{match.entrant2.entrantScore ?? 0}
+				{#if hasEnded}
+					{match.entrant2.entrantStatus}
+				{:else}
+					{match.entrant2.entrantScore ?? 0}
+				{/if}
 			{/if}
 		</span>
 	</div>

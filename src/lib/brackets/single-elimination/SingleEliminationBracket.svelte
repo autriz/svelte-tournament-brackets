@@ -1,8 +1,10 @@
 <script 
 	lang="ts" 
 	generics="
-		Match extends BaseMatch = BaseMatch, 
+		BracketConfig extends BaseBracketConfig = BaseBracketConfig,
 		Round extends BaseRound = BaseRound, 
+		MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+		Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>, 
 		Entrant extends BaseEntrant = BaseEntrant
 	"
 >
@@ -13,7 +15,8 @@
 		BaseRound, 
 		BaseMatch, 
 		SingleEliminationProps, 
-		BracketConfig 
+		BracketConfig as BaseBracketConfig, 
+		BaseMatchEntrant,
 	} from "$lib/internal/types.js";
 	import { 
 		ConnectorWrapper, 
@@ -25,9 +28,11 @@
 	import {
 		generateBracketData,
 		getPreviousMatches,
+		shiftHeaderXPos,
+		shiftMatchXPos,
 	} from "$lib/internal/utils.js";
 
-	export let data: SingleEliminationProps<Match, Round, Entrant>;
+	export let data: SingleEliminationProps<Round, MatchEntrant, Match, Entrant>;
 	export let bracketConfig: BracketConfig | undefined = undefined;
 	export let onMatchClick: ((match: Match) => void) | undefined = undefined;
 
@@ -60,6 +65,9 @@
 		const [height, width] = bracketData.reduce(([height, width], round) => {
 			const lowestMatchInRound = round.matches[round.matches.length - 1];
 
+			if (!lowestMatchInRound)
+				throw new Error(`[Malformed data] Missing matches in round with ID: ${round.roundId}`);
+
 			height = Math.max(
 				height, 
 				lowestMatchInRound.position.y + config.matchStyle.height
@@ -67,7 +75,7 @@
 
 			width = Math.max(
 				width,
-				lowestMatchInRound.position.x + config.matchStyle.width
+				lowestMatchInRound.position.x + Math.max(config.matchStyle.width, config.roundHeaderStyle.width)
 			);
 
 			return [height, width];
@@ -86,117 +94,113 @@
 
 <svg x="0" y="0" {width} {height} class={clsx(className)}>
 	<rect x="0" y="0" {width} {height} />
-	<g>
-		{#each bracketData as round, roundIdx}
-			{@const x = round.matches[0].position.x}
-			<g>
-				{#if config.showRoundHeaders}
-					<g>
-						<foreignObject
-							x={x}
-							y={config.padding.top}
-							width={config.roundHeaderStyle.width}
-							height={config.roundHeaderStyle.height}
-						>
-							<slot name="header" {round}>
-								<RoundHeader {round} />
-							</slot>
-						</foreignObject>
-					</g>
-				{/if}
+	{#each bracketData as round, roundIdx}
+		{@const x = round.matches[0].position.x}
+		<g>
+			{#if config.showRoundHeaders}
 				<g>
-					{#each round.matches as match, matchIdx}
-						{@const y = match.position.y}
-						{#if roundIdx !== 0}
-							<ConnectorWrapper
-								snippet={{
-									currentMatch: match,
-									...getPreviousMatches(
-										bracketData, 
-										roundIdx, 
-										matchIdx
-									)
-								}}
+					<foreignObject
+						x={shiftHeaderXPos(x, config)}
+						y={config.padding.top}
+						width={config.roundHeaderStyle.width}
+						height={config.roundHeaderStyle.height}
+					>
+						<slot name="header" {round}>
+							<RoundHeader {round} />
+						</slot>
+					</foreignObject>
+				</g>
+			{/if}
+			<g>
+				{#each round.matches as match, matchIdx}
+					{@const y = match.position.y}
+					{#if roundIdx !== 0}
+						<ConnectorWrapper
+							snippet={{
+								currentMatch: match,
+								...getPreviousMatches(
+									bracketData, 
+									roundIdx, 
+									matchIdx
+								)
+							}}
+							let:topMatchPosition
+							let:bottomMatchPosition
+							let:currentMatchPosition
+							let:isTopHighlighted
+							let:isBottomHighlighted
+						>
+							<slot
+								name="connector"
+								{topMatchPosition}
+								{bottomMatchPosition}
+								{currentMatchPosition}
+								{isTopHighlighted}
+								{isBottomHighlighted}
 								{config}
-								let:topMatchPosition
-								let:bottomMatchPosition
-								let:currentMatchPosition
-								let:isTopHighlighted
-								let:isBottomHighlighted
-								let:config
 							>
-								<slot
-									name="connector"
+								<Connector
 									{topMatchPosition}
 									{bottomMatchPosition}
 									{currentMatchPosition}
 									{isTopHighlighted}
 									{isBottomHighlighted}
 									{config}
-								>
-									<Connector
-										{topMatchPosition}
-										{bottomMatchPosition}
-										{currentMatchPosition}
-										{isTopHighlighted}
-										{isBottomHighlighted}
-										{config}
-									/>
-								</slot>
-							</ConnectorWrapper>
-						{/if}
-						<foreignObject
-							{x}
-							{y}
-							width={config.matchStyle.width}
-							height={config.matchStyle.height}
+								/>
+							</slot>
+						</ConnectorWrapper>
+					{/if}
+					<foreignObject
+						x={shiftMatchXPos(x, config)}
+						{y}
+						width={config.matchStyle.width}
+						height={config.matchStyle.height}
+					>
+						<MatchWrapper
+							match={match.data}
+							entrant1={data.entrants.find(
+								(entrant) =>
+									entrant.entrantId ===
+									match.data.entrant1?.entrantId,
+							)}
+							entrant2={data.entrants.find(
+								(entrant) =>
+									entrant.entrantId ===
+									match.data.entrant2?.entrantId,
+							)}
+							let:entrant1
+							let:entrant2
+							let:isMatchHovered
+							let:isTopHovered
+							let:isBottomHovered
+							let:onEnter
+							let:onLeave
 						>
-							<MatchWrapper
-								match={match.data}
-								entrant1={data.entrants.find(
-									(entrant) =>
-										entrant.entrantId ===
-										match.data.entrant1?.entrantId,
-								)}
-								entrant2={data.entrants.find(
-									(entrant) =>
-										entrant.entrantId ===
-										match.data.entrant2?.entrantId,
-								)}
-								let:entrant1
-								let:entrant2
-								let:isMatchHovered
-								let:isTopHovered
-								let:isBottomHovered
-								let:onEnter
-								let:onLeave
+							<slot
+								name="match"
+								{match}
+								{entrant1}
+								{entrant2}
+								{isTopHovered}
+								{isBottomHovered}
+								{isMatchHovered}
+								{onEnter}
+								{onLeave}
 							>
-								<slot
-									name="match"
-									{match}
+								<Match
+									match={match.data}
 									{entrant1}
 									{entrant2}
 									{isTopHovered}
 									{isBottomHovered}
-									{isMatchHovered}
 									{onEnter}
 									{onLeave}
-								>
-									<Match
-										match={match.data}
-										{entrant1}
-										{entrant2}
-										{isTopHovered}
-										{isBottomHovered}
-										{onEnter}
-										{onLeave}
-									/>
-								</slot>
-							</MatchWrapper>
-						</foreignObject>
-					{/each}
-				</g>
+								/>
+							</slot>
+						</MatchWrapper>
+					</foreignObject>
+				{/each}
 			</g>
-		{/each}
-	</g>
+		</g>
+	{/each}
 </svg>

@@ -41,13 +41,10 @@
 		"svelte-svg-viewer": "0.1.1",
 		"tailwindcss": "^3.4.11",
 		"tslib": "^2.7.0",
-		"typescript": "^5.6.2",
+		"typescript": "^5.8.2",
 		"vite": "^5.4.5"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"type": "module",
-	"dependencies": {
-		"svelte-tournament-brackets": "file:"
-	}
+	"type": "module"
 }

@@ -1,3 +1,7 @@
+export type DeepRequired<T> = T extends object
+	? { [P in keyof T]-?: DeepRequired<T[P]> }
+	: T;
+
 export interface BaseRound {
 	roundId: number;
 	roundName: string;
@@ -10,7 +14,7 @@ export interface BaseMatch<T extends BaseMatchEntrant = BaseMatchEntrant> {
 	nextLoserMatchId?: number;
 	entrant1?: T;
 	entrant2?: T;
-	status: string; // DONE, IN_GAME, PREP or some shit
+	status: string; // DONE, IN_GAME, PREP, etc.
 }
 
 export interface BaseMatchEntrant {
@@ -28,68 +32,112 @@ export interface BaseEntrant {
 	};
 }
 
-export type BaseProps<
+export interface BaseProps<
 	Round extends BaseRound = BaseRound,
 	Entrant extends BaseEntrant = BaseEntrant,
-> = {
+> {
 	rounds: Round[];
 	entrants: Entrant[];
-};
+}
 
-export type MatchData<Match extends BaseMatch = BaseMatch> = {
+export interface MatchData<
+	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
+> {
 	data: Match;
 	position: { x: number; y: number };
 	index: { round: number; match: number };
-};
+}
 
-export type SingleEliminationProps<
-	Match extends BaseMatch = BaseMatch,
+export interface SingleEliminationProps<
 	Round extends BaseRound = BaseRound,
+	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
 	Entrant extends BaseEntrant = BaseEntrant,
-> = BaseProps<Round, Entrant> & {
+> extends BaseProps<Round, Entrant> {
 	matches: Match[];
-};
+}
 
-export type RoundRobinProps<T extends BaseMatchEntrant = BaseMatchEntrant> =
-	BaseProps & {
-		matches: BaseMatch<T>[];
-	};
-
-export type DoubleEliminationProps<
-	Match extends BaseMatch = BaseMatch,
+export interface RoundRobinProps<
 	Round extends BaseRound = BaseRound,
+	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
 	Entrant extends BaseEntrant = BaseEntrant,
-> = BaseProps<Round, Entrant> & {
+> extends BaseProps<Round, Entrant> {
+	matches: Match[];
+}
+
+export interface DoubleEliminationProps<
+	Round extends BaseRound = BaseRound,
+	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
+	Entrant extends BaseEntrant = BaseEntrant,
+> extends BaseProps<Round, Entrant> {
 	matches: {
 		upper: Match[];
 		lower: Match[];
 	};
 	finalRounds: Round[];
 	finalMatches: Match[];
-};
+}
 
-export type BracketConfig = {
-	padding: {
-		top: number;
-		bottom: number;
-		left: number;
-		right: number;
+export interface BracketConfig {
+	/** Padding around bracket */
+	padding?: {
+		/** @default 10 */
+		top?: number;
+		/** @default 10 */
+		bottom?: number;
+		/** @default 10 */
+		left?: number;
+		/** @default 10 */
+		right?: number;
 	};
-	matchStyle: {
-		height: number;
-		width: number;
-		gap: number;
+	/** Certain match styles */
+	matchStyle?: {
+		/** @default 54 */
+		height?: number;
+		/** @default 150 */
+		width?: number;
+		/**
+		 * Gap between matches (vertical)
+		 * @default 60
+		 */
+		gap?: number;
+		/**
+		 * Match alignment if width is less than header's
+		 */
+		align?: "start" | "center" | "end";
 	};
-	showRoundHeaders: boolean;
-	roundHeaderStyle: {
-		height: number;
-		width: number;
-		bottomMargin: number;
+	/** @default true */
+	showRoundHeaders?: boolean;
+	/** Certain round header styles */
+	roundHeaderStyle?: {
+		/** @default 48 */
+		height?: number;
+		/** @default 150 */
+		width?: number;
+		/** @default 50 */
+		bottomMargin?: number;
+		/**
+		 * Round header alignment if width is less than matches'
+		 */
+		align?: "start" | "center" | "end";
 	};
-	roundStyle: {
-		gap: number;
-	};
-};
+	/**
+	 * Gap between rounds (horizontal)
+	 * @default 70
+	 */
+	roundGap?: number;
+}
+
+export interface DoubleElimBracketConfig extends BracketConfig {
+	/**
+	 * Gap between winner and loser brackets
+	 * @default 60
+	 */
+	bracketGap?: number;
+}
 
 export type MatchPositionData = {
 	index: {

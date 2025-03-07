@@ -1,22 +1,24 @@
 <script
 	lang="ts"
 	generics="
-		Match extends BaseMatch = BaseMatch, 
+		BracketConfig extends DoubleElimBracketConfig = DoubleElimBracketConfig,
 		Round extends BaseRound = BaseRound, 
+		MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+		Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>, 
 		Entrant extends BaseEntrant = BaseEntrant
 	"
 >
-	import { clsx } from "clsx";
-	import { setCtx } from "$lib/internal/ctx";
 	import type {
 		BaseEntrant, 
 		BaseRound, 
 		BaseMatch, 
 		DoubleEliminationProps, 
-		BracketConfig, 
-		MatchData
-
+		DoubleElimBracketConfig, 
+		MatchData,
+		BaseMatchEntrant
 	} from "$lib/internal/types";
+		import { clsx } from "clsx";
+		import { setCtx } from "$lib/internal/ctx";
 	import { 
 		Connector, 
 		MatchWrapper, 
@@ -31,8 +33,8 @@
 	import LowerBracket from "./LowerBracket.svelte";
 	import FinalBracket from "./FinalBracket.svelte";
 
-	export let data: DoubleEliminationProps<Match, Round, Entrant>;
-	export let bracketConfig: BracketConfig & { bracketGap: number; } | undefined = undefined;
+	export let data: DoubleEliminationProps<Round, MatchEntrant, Match, Entrant>;
+	export let bracketConfig: BracketConfig | undefined = undefined;
 	export let onMatchClick: ((match: Match) => void) | undefined = undefined;
 
 	const { config } = setCtx({
@@ -45,7 +47,7 @@
 
 	const calculateBracketDimensions = (
 		bracketData: (Round & {
-			matches: MatchData<Match>[];
+			matches: MatchData<MatchEntrant, Match>[];
 		})[],
 		options?: {
 			additionalX?: number;
@@ -56,6 +58,9 @@
 			([height, width], round) => {
 				const lowestMatchInRound = round.matches[round.matches.length - 1];
 
+				if (!lowestMatchInRound)
+					throw new Error(`[Malformed data] Missing matches in round with ID: ${round.roundId}`);
+
 				height = Math.max(
 					height,
 					lowestMatchInRound.position.y + config.matchStyle.height,
@@ -63,7 +68,7 @@
 
 				width = Math.max(
 					width,
-					lowestMatchInRound.position.x + config.matchStyle.width,
+					lowestMatchInRound.position.x + Math.max(config.matchStyle.width, config.roundHeaderStyle.width),
 				);
 
 				return [height, width];
@@ -91,7 +96,7 @@
 			additionalY: headerHeight + config.padding.top, 
 			additionalX: config.padding.left
 		}
-	) as (Round & { matches: MatchData<Match>[]; })[];
+	) as (Round & { matches: MatchData<MatchEntrant, Match>[]; })[];
 	const winnerDimensions = calculateBracketDimensions(
 		winnerBracketData, 
 		{
@@ -110,7 +115,7 @@
 			additionalY: winnerDimensions.height + config.bracketGap,
 			additionalX: config.padding.left
 		}
-	) as (Round & { matches: MatchData<Match>[]; })[];
+	) as (Round & { matches: MatchData<MatchEntrant, Match>[]; })[];
 	const loserDimensions = calculateBracketDimensions(
 		loserBracketData,
 		{
@@ -140,7 +145,7 @@
 						matchIdx,
 						config,
 						{
-							additionalX: widthWithoutFinals + config.roundStyle.gap - config.padding.left
+							additionalX: widthWithoutFinals + config.roundGap - config.padding.left
 						}
 					),
 				};
@@ -164,12 +169,177 @@
 
 <svg x="0" y="0" width={width} {height} class={clsx(className)}>
 	<rect x="0" y="0" width={width} {height} />
-	<g>
-		<UpperBracket bracketData={winnerBracketData} {config}>
-			<!-- 
-				we cannot use <slot name="winner-header" slot="header" /> 
-			 	there, so wrapping tag around slot is the only solution
-			-->
+	<UpperBracket bracketData={winnerBracketData} {config}>
+		<!-- 
+			we cannot use <slot name="winner-header" slot="header" /> 
+			there, so wrapping tag around slot is the only solution
+		-->
+		<div slot="header" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:round>
+			<slot name="winner-header" round={round}>
+				<RoundHeader {round} />
+			</slot>
+		</div>
+		<g 
+			slot="connector" 
+			style="width: 100%; height: 100%;" 
+			let:topMatchPosition
+			let:bottomMatchPosition
+			let:currentMatchPosition
+			let:isTopHighlighted
+			let:isBottomHighlighted
+		>
+			<slot 
+				name="winner-connector" 
+				{topMatchPosition}
+				{bottomMatchPosition}
+				{currentMatchPosition}
+				{isTopHighlighted}
+				{isBottomHighlighted}
+				{config}
+			>
+				<Connector
+					{topMatchPosition}
+					{bottomMatchPosition}
+					{currentMatchPosition}
+					{isTopHighlighted}
+					{isBottomHighlighted}
+					{config}
+				/>
+			</slot>
+		</g>
+		<div slot="match" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:match>
+			<MatchWrapper
+				match={match.data}
+				entrant1={data.entrants.find(
+					(entrant) =>
+						entrant.entrantId ===
+						match.data.entrant1?.entrantId,
+				)}
+				entrant2={data.entrants.find(
+					(entrant) =>
+						entrant.entrantId ===
+						match.data.entrant2?.entrantId,
+				)}
+				let:entrant1
+				let:entrant2
+				let:isMatchHovered
+				let:isTopHovered
+				let:isBottomHovered
+				let:onEnter
+				let:onLeave
+			>
+				<slot 
+					name="winner-match"
+					{match}
+					{entrant1}
+					{entrant2}
+					{isTopHovered}
+					{isBottomHovered}
+					{isMatchHovered}
+					{onEnter}
+					{onLeave}
+				>
+					<Match
+						match={match.data}
+						{entrant1}
+						{entrant2}
+						{isTopHovered}
+						{isBottomHovered}
+						{onEnter}
+						{onLeave}
+					/>
+				</slot>
+			</MatchWrapper>
+		</div>
+	</UpperBracket>
+	<LowerBracket bracketData={loserBracketData} {config}>
+		<g 
+			slot="connector" 
+			style="width: 100%; height: 100%;" 
+			let:topMatchPosition
+			let:bottomMatchPosition
+			let:currentMatchPosition
+			let:isTopHighlighted
+			let:isBottomHighlighted
+		>
+			<slot 
+				name="loser-connector" 
+				{topMatchPosition}
+				{bottomMatchPosition}
+				{currentMatchPosition}
+				{isTopHighlighted}
+				{isBottomHighlighted}
+				{config}
+			>
+				<Connector
+					{topMatchPosition}
+					{bottomMatchPosition}
+					{currentMatchPosition}
+					{isTopHighlighted}
+					{isBottomHighlighted}
+					{config}
+				/>
+			</slot>
+		</g>
+		<div slot="match" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:match>
+			<MatchWrapper 
+				match={match.data}
+				entrant1={data.entrants.find(
+					(entrant) =>
+						entrant.entrantId ===
+						match.data.entrant1?.entrantId,
+				)}
+				entrant2={data.entrants.find(
+					(entrant) =>
+						entrant.entrantId ===
+						match.data.entrant2?.entrantId,
+				)}
+				let:entrant1
+				let:entrant2
+				let:isMatchHovered
+				let:isTopHovered
+				let:isBottomHovered
+				let:onEnter
+				let:onLeave
+			>
+				<slot 
+					name="loser-match"
+					{match}
+					{entrant1}
+					{entrant2}
+					{isTopHovered}
+					{isBottomHovered}
+					{isMatchHovered}
+					{onEnter}
+					{onLeave}
+				>
+					<Match
+						match={match.data}
+						{entrant1}
+						{entrant2}
+						{isTopHovered}
+						{isBottomHovered}
+						{onEnter}
+						{onLeave}
+					/>
+				</slot>
+			</MatchWrapper>
+		</div>
+	</LowerBracket>
+	{#if finalsBracketData.length > 0}
+		<FinalBracket 
+			bracketData={finalsBracketData} 
+			bracketHeight={loserDimensions.height}
+			lastWinnerMatch={
+				winnerBracketData[winnerBracketData.length - 1]
+					.matches[0]
+			}
+			lastLoserMatch={
+				loserBracketData[loserBracketData.length - 1]
+					.matches[0]
+			}
+			{config} 
+		>
 			<div slot="header" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:round>
 				<slot name="winner-header" round={round}>
 					<RoundHeader {round} />
@@ -183,10 +353,9 @@
 				let:currentMatchPosition
 				let:isTopHighlighted
 				let:isBottomHighlighted
-				let:config
 			>
 				<slot 
-					name="winner-connector" 
+					name="finals-connector" 
 					{topMatchPosition}
 					{bottomMatchPosition}
 					{currentMatchPosition}
@@ -226,7 +395,7 @@
 					let:onLeave
 				>
 					<slot 
-						name="winner-match"
+						name="finals-match"
 						{match}
 						{entrant1}
 						{entrant2}
@@ -248,179 +417,6 @@
 					</slot>
 				</MatchWrapper>
 			</div>
-		</UpperBracket>
-	</g>
-	<g>
-		<LowerBracket bracketData={loserBracketData} config={{...config, showRoundHeaders: false}}>
-			<g 
-				slot="connector" 
-				style="width: 100%; height: 100%;" 
-				let:topMatchPosition
-				let:bottomMatchPosition
-				let:currentMatchPosition
-				let:isTopHighlighted
-				let:isBottomHighlighted
-				let:config
-			>
-				<slot 
-					name="loser-connector" 
-					{topMatchPosition}
-					{bottomMatchPosition}
-					{currentMatchPosition}
-					{isTopHighlighted}
-					{isBottomHighlighted}
-					{config}
-				>
-					<Connector
-						{topMatchPosition}
-						{bottomMatchPosition}
-						{currentMatchPosition}
-						{isTopHighlighted}
-						{isBottomHighlighted}
-						{config}
-					/>
-				</slot>
-			</g>
-			<div slot="match" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:match>
-				<MatchWrapper 
-					match={match.data}
-					entrant1={data.entrants.find(
-						(entrant) =>
-							entrant.entrantId ===
-							match.data.entrant1?.entrantId,
-					)}
-					entrant2={data.entrants.find(
-						(entrant) =>
-							entrant.entrantId ===
-							match.data.entrant2?.entrantId,
-					)}
-					let:entrant1
-					let:entrant2
-					let:isMatchHovered
-					let:isTopHovered
-					let:isBottomHovered
-					let:onEnter
-					let:onLeave
-				>
-					<slot 
-						name="loser-match"
-						{match}
-						{entrant1}
-						{entrant2}
-						{isTopHovered}
-						{isBottomHovered}
-						{isMatchHovered}
-						{onEnter}
-						{onLeave}
-					>
-						<Match
-							match={match.data}
-							{entrant1}
-							{entrant2}
-							{isTopHovered}
-							{isBottomHovered}
-							{onEnter}
-							{onLeave}
-						/>
-					</slot>
-				</MatchWrapper>
-			</div>
-		</LowerBracket>
-	</g>
-	{#if finalsBracketData.length > 0}
-		<g>
-			<FinalBracket 
-				bracketData={finalsBracketData} 
-				bracketHeight={loserDimensions.height}
-				lastWinnerMatch={
-					winnerBracketData[winnerBracketData.length - 1]
-						.matches[0]
-				}
-				lastLoserMatch={
-					loserBracketData[loserBracketData.length - 1]
-						.matches[0]
-				}
-				{config} 
-			>
-				<div slot="header" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:round>
-					<slot name="winner-header" round={round}>
-						<RoundHeader {round} />
-					</slot>
-				</div>
-				<g 
-					slot="connector" 
-					style="width: 100%; height: 100%;" 
-					let:topMatchPosition
-					let:bottomMatchPosition
-					let:currentMatchPosition
-					let:isTopHighlighted
-					let:isBottomHighlighted
-					let:config
-				>
-					<slot 
-						name="finals-connector" 
-						{topMatchPosition}
-						{bottomMatchPosition}
-						{currentMatchPosition}
-						{isTopHighlighted}
-						{isBottomHighlighted}
-						{config}
-					>
-						<Connector
-							{topMatchPosition}
-							{bottomMatchPosition}
-							{currentMatchPosition}
-							{isTopHighlighted}
-							{isBottomHighlighted}
-							{config}
-						/>
-					</slot>
-				</g>
-				<div slot="match" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:match>
-					<MatchWrapper 
-						match={match.data}
-						entrant1={data.entrants.find(
-							(entrant) =>
-								entrant.entrantId ===
-								match.data.entrant1?.entrantId,
-						)}
-						entrant2={data.entrants.find(
-							(entrant) =>
-								entrant.entrantId ===
-								match.data.entrant2?.entrantId,
-						)}
-						let:entrant1
-						let:entrant2
-						let:isMatchHovered
-						let:isTopHovered
-						let:isBottomHovered
-						let:onEnter
-						let:onLeave
-					>
-						<slot 
-							name="finals-match"
-							{match}
-							{entrant1}
-							{entrant2}
-							{isTopHovered}
-							{isBottomHovered}
-							{isMatchHovered}
-							{onEnter}
-							{onLeave}
-						>
-							<Match
-								match={match.data}
-								{entrant1}
-								{entrant2}
-								{isTopHovered}
-								{isBottomHovered}
-								{onEnter}
-								{onLeave}
-							/>
-						</slot>
-					</MatchWrapper>
-				</div>
-			</FinalBracket>
-		</g>
+		</FinalBracket>
 	{/if}
 </svg>
