@@ -1,15 +1,24 @@
 <script 
 	lang="ts"
 	generics="
-		Match extends BaseMatch = BaseMatch, 
-		Round extends BaseRound = BaseRound
+		Round extends BaseRound = BaseRound,
+		MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+		Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>, 
 	"
 >
 	import { ConnectorWrapper } from "$lib/brackets/components";
-	import type { BaseMatch, BaseRound, MatchData, BracketConfig } from "$lib/internal";
+	import type { 
+		BaseMatch, 
+		BaseRound, 
+		MatchData, 
+		BracketConfig, 
+		DeepRequired, 
+		BaseMatchEntrant
+	} from "$lib/internal";
+	import { shiftHeaderXPos, shiftMatchXPos } from "$lib/internal/utils";
 
-	export let bracketData: (Round & { matches: MatchData<Match>[]; })[];
-	export let config: BracketConfig;
+	export let bracketData: (Round & { matches: MatchData<MatchEntrant, Match>[]; })[];
+	export let config: DeepRequired<BracketConfig>;
 	export let bracketHeight: number;
 	export let lastWinnerMatch: MatchData;
 	export let lastLoserMatch: MatchData;
@@ -21,7 +30,7 @@
 		{#if config.showRoundHeaders}
 			<g>
 				<foreignObject
-					{x}
+					x={shiftHeaderXPos(x, config)}
 					y={config.padding.top}
 					width={config.roundHeaderStyle.width}
 					height={config.roundHeaderStyle.height}
@@ -47,13 +56,11 @@
 						previousTopMatch: lastWinnerMatch,
 						previousBottomMatch: lastLoserMatch,
 					}}
-					{config}
 					let:topMatchPosition
 					let:bottomMatchPosition
 					let:currentMatchPosition
 					let:isTopHighlighted
 					let:isBottomHighlighted
-					let:config
 				>
 					<slot
 						name="connector"
@@ -62,11 +69,10 @@
 						{currentMatchPosition}
 						{isTopHighlighted}
 						{isBottomHighlighted}
-						{config}
 					/>
 				</ConnectorWrapper>
 				<foreignObject
-					{x}
+					x={shiftMatchXPos(x, config)}
 					{y}
 					width={config.matchStyle.width}
 					height={config.matchStyle.height}

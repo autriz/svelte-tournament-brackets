@@ -1,10 +1,12 @@
-import {
-	isWritable,
-	overridable,
-	type MaybeWritable,
-} from "./helpers/store.js";
-import { get, writable, type Writable } from "svelte/store";
-import type { BaseMatch, BracketConfig } from "./types.js";
+import { writable } from "svelte/store";
+import type {
+	BaseMatch,
+	BracketConfig as BaseBracketConfig,
+	DeepRequired,
+	BaseEntrant,
+	BaseRound,
+	BaseMatchEntrant,
+} from "./types.js";
 
 export const defaultConfig = {
 	padding: {
@@ -17,34 +19,57 @@ export const defaultConfig = {
 		height: 54,
 		width: 150,
 		gap: 60,
+		align: "center",
 	},
 	showRoundHeaders: true,
 	roundHeaderStyle: {
 		height: 48,
 		width: 150,
 		bottomMargin: 50,
+		align: "center",
 	},
-	roundStyle: {
-		gap: 70,
-	},
+	roundGap: 70,
 	bracketGap: 60,
-} as const;
+};
 
-export type CreateBracketProps<Match extends BaseMatch = BaseMatch> = {
+export type CreateBracketProps<
+	BracketConfig extends BaseBracketConfig = BaseBracketConfig,
+	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
+> = {
 	config?: BracketConfig;
 	onMatchClick?: (match: Match) => void;
 };
 
-export function createBracket<Match extends BaseMatch = BaseMatch>(
-	props: CreateBracketProps<Match>,
-) {
-	const config = props.config
-		? { ...defaultConfig, ...props.config }
-		: defaultConfig;
+export function createBracket<
+	BracketConfig extends BaseBracketConfig = BaseBracketConfig,
+	Round extends BaseRound = BaseRound,
+	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
+	Entrant extends BaseEntrant = BaseEntrant,
+>(props: CreateBracketProps<BracketConfig, MatchEntrant, Match>) {
+	const config = (props.config
+		? {
+				...defaultConfig,
+				...props.config,
+				padding: {
+					...defaultConfig.padding,
+					...props.config.padding,
+				},
+				matchStyle: {
+					...defaultConfig.matchStyle,
+					...props.config.matchStyle,
+				},
+				roundHeaderStyle: {
+					...defaultConfig.roundHeaderStyle,
+					...props.config.roundHeaderStyle,
+				},
+			}
+		: defaultConfig) as unknown as DeepRequired<BracketConfig>;
 
-	const hoveredMatchId = overridable<number | null>(writable(null));
-	const hoveredRoundId = overridable<number | null>(writable(null));
-	const hoveredEntrantId = overridable<number | null>(writable(null));
+	const hoveredMatchId = writable<Match["matchId"] | null>(null);
+	const hoveredRoundId = writable<Round["roundId"] | null>(null);
+	const hoveredEntrantId = writable<Entrant["entrantId"] | null>(null);
 
 	return {
 		hoveredMatchId,

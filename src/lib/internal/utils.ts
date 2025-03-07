@@ -5,14 +5,57 @@ import type {
 	MatchPositionData,
 	BracketConfig,
 	BaseProps,
+	DeepRequired,
+	BaseMatchEntrant,
 } from "./types.js";
+
+export const shiftHeaderXPos = (
+	x: number,
+	config: DeepRequired<BracketConfig>,
+) => {
+	if (config.matchStyle.width > config.roundHeaderStyle.width) {
+		const diff = config.matchStyle.width - config.roundHeaderStyle.width;
+
+		switch (config.roundHeaderStyle.align) {
+			case "start":
+				return x;
+			case "center":
+				return x + diff / 2;
+			case "end":
+				return x + diff;
+		}
+	}
+
+	return x;
+};
+
+export const shiftMatchXPos = (
+	x: number,
+	config: DeepRequired<BracketConfig>,
+) => {
+	if (config.matchStyle.width < config.roundHeaderStyle.width) {
+		const diff = config.roundHeaderStyle.width - config.matchStyle.width;
+
+		switch (config.matchStyle.align) {
+			case "start":
+				return x;
+			case "center":
+				return x + diff / 2;
+			case "end":
+				return x + diff;
+		}
+	}
+
+	return x;
+};
 
 export const generateBracketData = <
 	Props extends BaseProps = BaseProps,
-	Match extends BaseMatch = BaseMatch,
+	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
 >(
 	data: Props,
-	config: BracketConfig,
+	config: DeepRequired<BracketConfig>,
 	filter: (data: Props, round: Props["rounds"][number]) => Match[],
 	options: {
 		additionalX?: number;
@@ -54,10 +97,11 @@ export const generateBracketData = <
 
 export const getPreviousMatches = <
 	Round extends BaseRound = BaseRound,
-	Match extends BaseMatch = BaseMatch,
+	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
 >(
 	bracketData: (Round & {
-		matches: MatchData<Match>[];
+		matches: MatchData<MatchEntrant, Match>[];
 	})[],
 	roundIdx: number,
 	matchIdx: number,
@@ -88,7 +132,8 @@ export const getPreviousMatches = <
 
 export const getPreviousMatchesIndices = <
 	Round extends BaseRound = BaseRound,
-	Match extends BaseMatch = BaseMatch,
+	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
 >(
 	bracketData: (Round & {
 		matches: Match[];
@@ -236,14 +281,15 @@ export const calcMatchPos = (
 
 export const getMatchPositionDataInner = <
 	Round extends BaseRound = BaseRound,
-	Match extends BaseMatch = BaseMatch,
+	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
 >(
 	bracketData: (Round & {
 		matches: Match[];
 	})[],
 	roundIdx: number,
 	matchIdx: number,
-	config: BracketConfig,
+	config: DeepRequired<BracketConfig>,
 	options: {
 		additionalX?: number;
 		additionalY?: number;
@@ -262,9 +308,12 @@ export const getMatchPositionDataInner = <
 		},
 		position: calcMatchPos(roundIdx, matchIdx, {
 			matchHeight: config.matchStyle.height,
-			matchWidth: config.matchStyle.width,
+			matchWidth: Math.max(
+				config.matchStyle.width,
+				config.roundHeaderStyle.width,
+			),
 			matchGap: config.matchStyle.gap,
-			roundGap: config.roundStyle.gap,
+			roundGap: config.roundGap,
 			hasPreviousTopMatch: !!previousTopMatch,
 			hasPreviousBottomMatch: !!previousBottomMatch,
 			additionalX: options.additionalX,

@@ -1,15 +1,13 @@
 <script 
 	lang="ts"
 	generics="
-		Match extends BaseMatch = BaseMatch, 
-		Round extends BaseRound = BaseRound
+		BracketConfig extends BaseBracketConfig = BaseBracketConfig
 	"
 >
 	import clsx from "clsx";
-	import type { 
-		BaseMatch, 
-		BaseRound, 
-		BracketConfig, 
+	import type {
+		BracketConfig as BaseBracketConfig, 
+		DeepRequired, 
 		MatchPositionData 
 	} from "$lib/internal/types.js";
 
@@ -18,7 +16,7 @@
 	export let topMatchPosition: MatchPositionData | undefined;
 	export let bottomMatchPosition: MatchPositionData | undefined;
 	export let currentMatchPosition: MatchPositionData;
-	export let config: BracketConfig;
+	export let config: DeepRequired<BracketConfig>;
 
 	const widthMargin = 8; // turn into a configurable value
 	const matchHalfHeight = config.matchStyle.height / 2;
@@ -27,20 +25,28 @@
 		const startPos = `${
 			data.position.x + config.matchStyle.width + widthMargin
 		} ${data.position.y + matchHalfHeight}`;
-
+		const roundGap = currentMatchPosition.position.x - data.position.x - config.matchStyle.width;
+		const halfWidth = roundGap / 2 - widthMargin;
 		const verticalSize = currentMatchPosition.position.y + matchHalfHeight;
+
+		// config.roundGap / 2 - widthMargin
 
 		let path = [
 			`M${startPos}`,
-			`h${config.roundStyle.gap / 2 - widthMargin}`,
+			`h${halfWidth}`,
 			`V${verticalSize}`,
-			`h${config.roundStyle.gap / 2 - widthMargin}`,
+			`h${halfWidth}`,
 		];
 
 		return path.join(" ");
 	};
 </script>
 
+{#if isTopHighlighted}
+	<use
+		href={`#conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-t`}
+	/>
+{/if}
 {#if topMatchPosition}
 	<path
 		d={calcPath(topMatchPosition)}
@@ -51,12 +57,11 @@
 			"transition-colors -z-10",
 		)}
 	/>
-	{#if isTopHighlighted}
-		<use
-			class="z-10"
-			href={`#conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-t`}
-		/>
-	{/if}
+{/if}
+{#if isBottomHighlighted}
+	<use
+		href={`#conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-b`}
+	/>
 {/if}
 {#if bottomMatchPosition}
 	<path
@@ -65,14 +70,8 @@
 		fill="transparent"
 		class={clsx(
 			isBottomHighlighted ? "stroke-white" : "stroke-gray-600",
-			"transition-colors -z-10",
+			"transition-colors",
 		)}
 	/>
-	{#if isBottomHighlighted}
-		<use
-			class="z-10"
-			href={`#conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-b`}
-		/>
-	{/if}
 {/if}
 

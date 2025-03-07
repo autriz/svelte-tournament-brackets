@@ -1,24 +1,28 @@
 <script 
 	lang="ts"
 	generics="
-		Match extends BaseMatch = BaseMatch, 
-		Round extends BaseRound = BaseRound
+		Round extends BaseRound = BaseRound,
+		MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+		Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>, 
 	"
 >
 	import { ConnectorWrapper } from "$lib/brackets/components";
-	import { getPreviousMatches } from "$lib/internal/utils";
-	import type { BaseMatch, BaseRound, MatchData, BracketConfig } from "$lib/internal";
+	import { getPreviousMatches, shiftMatchXPos } from "$lib/internal/utils";
+	import type { 
+		BaseMatch, 
+		BaseRound, 
+		MatchData, 
+		BracketConfig, 
+		DeepRequired, 
+		BaseMatchEntrant
+	} from "$lib/internal";
 
-	export let bracketData: (Round & { matches: MatchData<Match>[]; })[];
-	export let config: BracketConfig;
-
-	const headerHeight = config.showRoundHeaders
-		? config.roundHeaderStyle.height + config.roundHeaderStyle.bottomMargin
-		: 0;
+	export let bracketData: (Round & { matches: MatchData<MatchEntrant, Match>[]; })[];
+	export let config: DeepRequired<BracketConfig>;
 </script>
 
 {#each bracketData as round, roundIdx}
-	{@const x = round.matches[0].position.x}
+	{@const x = shiftMatchXPos(round.matches[0].position.x, config)}
 	<g>
 		<g>
 			{#each round.matches as match, matchIdx}
@@ -33,13 +37,11 @@
 								matchIdx
 							),
 						}}
-						{config}
 						let:topMatchPosition
 						let:bottomMatchPosition
 						let:currentMatchPosition
 						let:isTopHighlighted
 						let:isBottomHighlighted
-						let:config
 					>
 						<slot
 							name="connector"
@@ -48,7 +50,6 @@
 							{currentMatchPosition}
 							{isTopHighlighted}
 							{isBottomHighlighted}
-							{config}
 						/>
 					</ConnectorWrapper>
 				{/if}

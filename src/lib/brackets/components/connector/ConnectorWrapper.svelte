@@ -1,33 +1,37 @@
 <script 
 	lang="ts"
 	generics="
-		Match extends BaseMatch = BaseMatch
+		MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+		Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>
 	"
 >
 	import { getCtx } from "$lib/internal/ctx.js";
 	import type { 
 		BaseMatch, 
-		MatchData, 
-		BracketConfig, 
-		MatchPositionData 
+		MatchData,
+		MatchPositionData,
+		BaseMatchEntrant
 	} from "$lib/internal/types.js";
+	import { shiftMatchXPos } from "$lib/internal/utils";
 
-	let { hoveredEntrantId } = getCtx();
+	let { hoveredEntrantId, config } = getCtx();
 
 	export let snippet: {
-		currentMatch: MatchData<Match>;
-		previousTopMatch?: MatchData<Match>;
-		previousBottomMatch?: MatchData<Match>;
+		currentMatch: MatchData<MatchEntrant,Match>;
+		previousTopMatch?: MatchData<MatchEntrant,Match>;
+		previousBottomMatch?: MatchData<MatchEntrant,Match>;
 	};
-	export let config: BracketConfig;
 
 	let { currentMatch, previousTopMatch, previousBottomMatch } = snippet;
 
 	const extractPosition = (
-		match: MatchData<Match>
+		match: MatchData<MatchEntrant,Match>
 	): MatchPositionData => ({ 
 		index: match.index, 
-		position: match.position 
+		position: {
+			x: shiftMatchXPos(match.position.x, config),
+			y: match.position.y
+		} 
 	});
 	
 	let topMatchPosition =
@@ -55,5 +59,4 @@
 	{topMatchPosition}
 	{bottomMatchPosition}
 	{currentMatchPosition}
-	{config}
 />
