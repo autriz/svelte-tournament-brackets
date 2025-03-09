@@ -32,37 +32,28 @@ export const defaultConfig = {
 	bracketGap: 60,
 };
 
-export type CreateBracketProps<
-	BracketConfig extends BaseBracketConfig = BaseBracketConfig,
-	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
-> = {
-	config?: BracketConfig;
-	onMatchClick?: (match: Match) => void;
-};
-
 export function createBracket<
 	BracketConfig extends BaseBracketConfig = BaseBracketConfig,
 	Round extends BaseRound = BaseRound,
 	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
 	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
 	Entrant extends BaseEntrant = BaseEntrant,
->(props: CreateBracketProps<BracketConfig, MatchEntrant, Match>) {
-	const config = (props.config
+>(bracketConfig?: BracketConfig) {
+	const config = (bracketConfig
 		? {
 				...defaultConfig,
-				...props.config,
+				...bracketConfig,
 				padding: {
 					...defaultConfig.padding,
-					...props.config.padding,
+					...bracketConfig.padding,
 				},
 				matchStyle: {
 					...defaultConfig.matchStyle,
-					...props.config.matchStyle,
+					...bracketConfig.matchStyle,
 				},
 				roundHeaderStyle: {
 					...defaultConfig.roundHeaderStyle,
-					...props.config.roundHeaderStyle,
+					...bracketConfig.roundHeaderStyle,
 				},
 			}
 		: defaultConfig) as unknown as DeepRequired<BracketConfig>;
@@ -77,7 +68,5 @@ export function createBracket<
 		hoveredEntrantId,
 
 		config,
-
-		onMatchClick: props.onMatchClick,
 	};
 }

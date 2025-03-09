@@ -1,4 +1,4 @@
-<script 
+<script
 	lang="ts"
 	generics="
 		Entrant extends BaseEntrant = BaseEntrant,
@@ -7,8 +7,11 @@
 	"
 >
 	import clsx from "clsx";
-	import type { BaseMatch, BaseEntrant, BaseMatchEntrant } from "$lib/internal/types.js";
-	import { getCtx } from "$lib/internal/ctx.js";
+	import type {
+		BaseMatch,
+		BaseEntrant,
+		BaseMatchEntrant,
+	} from "$lib/internal/types";
 
 	export let match: Match;
 	export let entrant1: Entrant | null = null;
@@ -22,12 +25,11 @@
 
 	export let onEnter: (entrantId: MatchEntrant["entrantId"]) => void;
 	export let onLeave: () => void;
+	export let onMatchClick: ((match: Match) => void) | undefined;
 
 	$: hasEnded = match.entrant1?.entrantStatus && match.entrant1?.entrantStatus;
 	$: isTopWon = match.entrant1?.entrantStatus === "WON";
 	$: isBottomWon = match.entrant2?.entrantStatus === "WON";
-
-	let { onMatchClick } = getCtx();
 </script>
 
 <button

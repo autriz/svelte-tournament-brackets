@@ -1,4 +1,4 @@
-<script 
+<script
 	lang="ts"
 	generics="
 		BracketConfig extends BaseBracketConfig = BaseBracketConfig
@@ -6,9 +6,9 @@
 >
 	import clsx from "clsx";
 	import type {
-		BracketConfig as BaseBracketConfig, 
-		DeepRequired, 
-		MatchPositionData 
+		BracketConfig as BaseBracketConfig,
+		DeepRequired,
+		MatchPositionData,
 	} from "$lib/internal/types.js";
 
 	export let isTopHighlighted: boolean;
@@ -25,7 +25,10 @@
 		const startPos = `${
 			data.position.x + config.matchStyle.width + widthMargin
 		} ${data.position.y + matchHalfHeight}`;
-		const roundGap = currentMatchPosition.position.x - data.position.x - config.matchStyle.width;
+		const roundGap =
+			currentMatchPosition.position.x -
+			data.position.x -
+			config.matchStyle.width;
 		const halfWidth = roundGap / 2 - widthMargin;
 		const verticalSize = currentMatchPosition.position.y + matchHalfHeight;
 
@@ -54,7 +57,7 @@
 		fill="transparent"
 		class={clsx(
 			isTopHighlighted ? "stroke-white" : "stroke-gray-600",
-			"transition-colors -z-10",
+			"-z-10 transition-colors",
 		)}
 	/>
 {/if}
@@ -74,4 +77,3 @@
 		)}
 	/>
 {/if}
-

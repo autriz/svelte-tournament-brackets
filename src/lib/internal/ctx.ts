@@ -1,5 +1,5 @@
 import { getContext, setContext } from "svelte";
-import { createBracket, type CreateBracketProps } from "./Bracket.js";
+import { createBracket } from "./Bracket.js";
 import type {
 	BracketConfig as BaseBracketConfig,
 	BaseEntrant,
@@ -16,14 +16,14 @@ export function setCtx<
 	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
 	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
 	Entrant extends BaseEntrant = BaseEntrant,
->(props: CreateBracketProps<BracketConfig, MatchEntrant, Match>) {
+>(config?: BracketConfig) {
 	const bracket = createBracket<
 		BracketConfig,
 		Round,
 		MatchEntrant,
 		Match,
 		Entrant
-	>(props);
+	>(config);
 
 	setContext(BRACKET_ROOT, { ...bracket });
 

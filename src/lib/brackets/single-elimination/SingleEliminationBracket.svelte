@@ -1,5 +1,5 @@
-<script 
-	lang="ts" 
+<script
+	lang="ts"
 	generics="
 		BracketConfig extends BaseBracketConfig = BaseBracketConfig,
 		Round extends BaseRound = BaseRound, 
@@ -9,86 +9,96 @@
 	"
 >
 	import { clsx } from "clsx";
-	import { setCtx } from "$lib/internal/ctx.js";
+	import { setCtx } from "$lib/internal/ctx";
 	import type {
-		BaseEntrant, 
-		BaseRound, 
-		BaseMatch, 
-		SingleEliminationProps, 
-		BracketConfig as BaseBracketConfig, 
+		BaseEntrant,
+		BaseRound,
+		BaseMatch,
+		SingleEliminationProps,
+		BracketConfig as BaseBracketConfig,
 		BaseMatchEntrant,
-	} from "$lib/internal/types.js";
-	import { 
-		ConnectorWrapper, 
-		Connector, 
-		MatchWrapper, 
-		Match, 
-		RoundHeader 
-	} from "$lib/brackets/components/index.js";
+	} from "$lib/internal/types";
+	import {
+		ConnectorWrapper,
+		Connector,
+		MatchWrapper,
+		Match,
+		RoundHeader,
+	} from "$lib/brackets/components/index";
 	import {
 		generateBracketData,
 		getPreviousMatches,
 		shiftHeaderXPos,
 		shiftMatchXPos,
-	} from "$lib/internal/utils.js";
+	} from "$lib/internal/utils";
 
-	export let data: SingleEliminationProps<Round, MatchEntrant, Match, Entrant>;
+	export let data: SingleEliminationProps<
+		Round,
+		MatchEntrant,
+		Match,
+		Entrant
+	>;
 	export let bracketConfig: BracketConfig | undefined = undefined;
 	export let onMatchClick: ((match: Match) => void) | undefined = undefined;
 
-	const { config } = setCtx({
-		config: bracketConfig,
-		onMatchClick
-	});
+	const { config } = setCtx(bracketConfig);
 
 	let className: HTMLDivElement["className"] = "";
 	export { className as class };
 
 	const headerHeight = config.showRoundHeaders
-		? config.roundHeaderStyle.height +
-			config.roundHeaderStyle.bottomMargin
+		? config.roundHeaderStyle.height + config.roundHeaderStyle.bottomMargin
 		: 0;
 
 	const bracketData = generateBracketData(
-		data, 
-		config, 
-		(data, round) => data.matches.filter(
-			(match) => match.roundId === round.roundId,
-		),
-		{ 
+		data,
+		config,
+		(data, round) =>
+			data.matches.filter((match) => match.roundId === round.roundId),
+		{
 			additionalY: headerHeight + config.padding.top,
-			additionalX: config.padding.left
-		}
+			additionalX: config.padding.left,
+		},
 	);
 
 	const calculateBracketDimensions = () => {
-		const [height, width] = bracketData.reduce(([height, width], round) => {
-			const lowestMatchInRound = round.matches[round.matches.length - 1];
+		const [height, width] = bracketData.reduce(
+			([height, width], round) => {
+				const lowestMatchInRound =
+					round.matches[round.matches.length - 1];
 
-			if (!lowestMatchInRound)
-				throw new Error(`[Malformed data] Missing matches in round with ID: ${round.roundId}`);
+				if (!lowestMatchInRound)
+					throw new Error(
+						`[Malformed data] Missing matches in round with ID: ${round.roundId}`,
+					);
 
-			height = Math.max(
-				height, 
-				lowestMatchInRound.position.y + config.matchStyle.height
-			);
+				height = Math.max(
+					height,
+					lowestMatchInRound.position.y + config.matchStyle.height,
+				);
 
-			width = Math.max(
-				width,
-				lowestMatchInRound.position.x + Math.max(config.matchStyle.width, config.roundHeaderStyle.width)
-			);
+				width = Math.max(
+					width,
+					lowestMatchInRound.position.x +
+						Math.max(
+							config.matchStyle.width,
+							config.roundHeaderStyle.width,
+						),
+				);
 
-			return [height, width];
-		}, [0, 0]);
+				return [height, width];
+			},
+			[0, 0],
+		);
 
-		return { 
-			width: width + config.padding.right, 
-			height: height + config.padding.top + config.padding.bottom 
+		return {
+			width: width + config.padding.right,
+			height: height + config.padding.top + config.padding.bottom,
 		};
 	};
 
 	const { width, height } = calculateBracketDimensions();
-	
+
 	export { height, width };
 </script>
 
@@ -119,10 +129,10 @@
 							snippet={{
 								currentMatch: match,
 								...getPreviousMatches(
-									bracketData, 
-									roundIdx, 
-									matchIdx
-								)
+									bracketData,
+									roundIdx,
+									matchIdx,
+								),
 							}}
 							let:topMatchPosition
 							let:bottomMatchPosition
@@ -151,6 +161,7 @@
 						</ConnectorWrapper>
 					{/if}
 					<foreignObject
+						overflow="visible"
 						x={shiftMatchXPos(x, config)}
 						{y}
 						width={config.matchStyle.width}
@@ -178,7 +189,7 @@
 						>
 							<slot
 								name="match"
-								{match}
+								match={match.data}
 								{entrant1}
 								{entrant2}
 								{isTopHovered}
@@ -186,6 +197,7 @@
 								{isMatchHovered}
 								{onEnter}
 								{onLeave}
+								{onMatchClick}
 							>
 								<Match
 									match={match.data}
@@ -195,6 +207,7 @@
 									{isBottomHovered}
 									{onEnter}
 									{onLeave}
+									{onMatchClick}
 								/>
 							</slot>
 						</MatchWrapper>

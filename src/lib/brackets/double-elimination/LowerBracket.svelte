@@ -1,4 +1,4 @@
-<script 
+<script
 	lang="ts"
 	generics="
 		Round extends BaseRound = BaseRound,
@@ -8,16 +8,18 @@
 >
 	import { ConnectorWrapper } from "$lib/brackets/components";
 	import { getPreviousMatches, shiftMatchXPos } from "$lib/internal/utils";
-	import type { 
-		BaseMatch, 
-		BaseRound, 
-		MatchData, 
-		BracketConfig, 
-		DeepRequired, 
-		BaseMatchEntrant
+	import type {
+		BaseMatch,
+		BaseRound,
+		MatchData,
+		BracketConfig,
+		DeepRequired,
+		BaseMatchEntrant,
 	} from "$lib/internal";
 
-	export let bracketData: (Round & { matches: MatchData<MatchEntrant, Match>[]; })[];
+	export let bracketData: (Round & {
+		matches: MatchData<MatchEntrant, Match>[];
+	})[];
 	export let config: DeepRequired<BracketConfig>;
 </script>
 
@@ -26,15 +28,15 @@
 	<g>
 		<g>
 			{#each round.matches as match, matchIdx}
-                {@const y = match.position.y}
+				{@const y = match.position.y}
 				{#if roundIdx !== 0}
 					<ConnectorWrapper
 						snippet={{
 							currentMatch: match,
 							...getPreviousMatches(
-								bracketData, 
-								roundIdx, 
-								matchIdx
+								bracketData,
+								roundIdx,
+								matchIdx,
 							),
 						}}
 						let:topMatchPosition
@@ -54,12 +56,13 @@
 					</ConnectorWrapper>
 				{/if}
 				<foreignObject
+					overflow="visible"
 					{x}
 					{y}
 					width={config.matchStyle.width}
 					height={config.matchStyle.height}
 				>
-					<slot name="match" {match} />
+					<slot name="match" match={match.data} />
 				</foreignObject>
 			{/each}
 		</g>

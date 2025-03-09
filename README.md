@@ -18,6 +18,4 @@ todo
 
 # Inspirations
 
-- [`React Tournament Brackets`](https://github.com/g-loot/react-tournament-brackets) by [g-loot](https://github.com/g-loot)
-
-- [`Melt UI`](https://github.com/melt-ui/melt-ui)
+-   [`React Tournament Brackets`](https://github.com/g-loot/react-tournament-brackets) by [g-loot](https://github.com/g-loot)
