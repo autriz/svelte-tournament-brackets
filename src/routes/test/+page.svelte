@@ -1,4 +1,5 @@
 <script lang="ts">
+	import CopyButton from "$components/CopyButton.svelte";
 	import {
 		DoubleEliminationBracket,
 		SingleEliminationBracket,
@@ -10,6 +11,7 @@
 		singleElimTwo,
 		doubleElimOne,
 	} from "$mock-data/index.js";
+	import { SvelteLogo } from "../../images";
 	import FantasyMatch from "./FantasyMatch.svelte";
 	import GlassmorphismMatch from "./GlassmorphismMatch.svelte";
 
@@ -209,55 +211,110 @@
 	{/each} -->
 </div>
 
-<div class="flex flex-col h-full w-full items-center justify-center">
-	<SingleEliminationBracket
-		class="fill-transparent overflow-visible"
-		{data}
-		bracketConfig={{
-			matchStyle: { width: 320, height: 159 },
-			roundHeaderStyle: { height: 48, width: 200 },
-			roundGap: 100,
-			showRoundHeaders: false,
-			bracketGap: 100,
-		}}
-	>
-		<div 
-			slot="match" 
-			class="w-full h-full" 
-			let:match 
-			let:entrant1
-			let:entrant2
-		>
-			<FantasyMatch 
-				{match}
-				{entrant1}
-				{entrant2}
-			/>
+<div class="relative flex flex-col overflow-clip h-[calc(100vh-3.75rem)] w-[100vw] items-center justify-center">
+	<div id="translated-1">
+		<div id="tournament-1">
+			<SingleEliminationBracket
+				class="fill-transparent overflow-visible"
+				{data}
+				bracketConfig={{
+					matchStyle: { width: 320, height: 159 },
+					roundHeaderStyle: { height: 48, width: 200 },
+					roundGap: 100,
+					showRoundHeaders: false,
+					bracketGap: 100,
+				}}
+			>
+				<div 
+					slot="match" 
+					class="w-full h-full" 
+					let:match 
+					let:entrant1
+					let:entrant2
+				>
+					<FantasyMatch 
+						{match}
+						{entrant1}
+						{entrant2}
+					/>
+				</div>
+			</SingleEliminationBracket>
 		</div>
-	</SingleEliminationBracket>
-	<SingleEliminationBracket
-		class="fill-transparent  overflow-visible"
-		{data}
-		bracketConfig={{
-			matchStyle: { width: 320, height: 159 },
-			roundHeaderStyle: { height: 48, width: 200 },
-			roundGap: 100,
-			showRoundHeaders: false,
-			bracketGap: 100,
-		}}
-	>
-		<div 
-			slot="match" 
-			class="w-full h-full" 
-			let:match 
-			let:entrant1
-			let:entrant2
-		>
-			<GlassmorphismMatch 
-				{match}
-				{entrant1}
-				{entrant2}
-			/>
+	</div>
+	<div class="z-10 flex flex-col items-center justify-center">
+		<div class="my-4">
+			<h1
+				class="inline-flex items-center gap-3 text-2xl md:text-5xl lg:text-6xl"
+			>
+				<span class="flex w-fit items-center text-[#f96743]">
+					<img
+						class="size-10 md:size-20 self-center"
+						src={SvelteLogo}
+						alt="S"
+					/>velte
+				</span> Tournament Brackets
+			</h1>
 		</div>
-	</SingleEliminationBracket>
+		<CopyButton class="mt-6 w-fit" />
+	</div>
+	<div id="translated-2">
+		<div id="tournament-2">
+			<SingleEliminationBracket
+				class="fill-transparent  overflow-visible"
+				{data}
+				bracketConfig={{
+					matchStyle: { width: 320, height: 159 },
+					roundHeaderStyle: { height: 48, width: 200 },
+					roundGap: 100,
+					showRoundHeaders: false,
+					bracketGap: 100,
+				}}
+			>
+				<div 
+					slot="match" 
+					class="w-full h-full" 
+					let:match 
+					let:entrant1
+					let:entrant2
+				>
+					<GlassmorphismMatch 
+						{match}
+						{entrant1}
+						{entrant2}
+					/>
+				</div>
+			</SingleEliminationBracket>
+		</div>
+	</div>
 </div>
+
+<style :global>
+	#translated-1, #translated-2 {
+		position: absolute;
+		perspective: 1000px;
+		transform: scale(0.9);
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	#translated-1 {
+		left: 2.5%;
+		bottom: 2.5%;
+	}
+
+	#translated-2 {
+		right: 0;
+		top: 0;
+	}
+
+	#tournament-1 {
+		transition: .3s;
+		transform: rotateY(35deg);
+		transform-style: preserve-3d;
+	}
+
+	#tournament-2 {
+		transform: rotateY(-35deg);
+		transform-style: preserve-3d;
+	}
+</style>
