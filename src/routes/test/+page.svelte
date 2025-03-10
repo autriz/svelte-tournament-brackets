@@ -216,6 +216,7 @@
 		bracketConfig={{
 			matchStyle: { width: 320, height: 159 },
 			roundHeaderStyle: { height: 48, width: 200 },
+			roundGap: 100,
 			showRoundHeaders: false,
 			bracketGap: 100,
 		}}
@@ -240,6 +241,7 @@
 		bracketConfig={{
 			matchStyle: { width: 320, height: 159 },
 			roundHeaderStyle: { height: 48, width: 200 },
+			roundGap: 100,
 			showRoundHeaders: false,
 			bracketGap: 100,
 		}}
