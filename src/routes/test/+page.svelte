@@ -211,11 +211,17 @@
 	{/each} -->
 </div>
 
-<div class="relative flex flex-col overflow-clip h-[calc(100vh-3.75rem)] w-[100vw] items-center justify-center">
-	<div id="translated-1">
-		<div id="tournament-1">
+<div class="relative flex flex-col overflow-clip h-[calc(100vh-3.75rem)] 
+	w-[100vw] items-center justify-center"
+>
+	<div class="absolute antialiased bottom-[25vh] 
+		right-[-20%] lg:left-[2.5%] lg:bottom-[2.5%]"
+		style="transform: perspective(3200px) rotateX(3deg) rotateY(-32deg) rotate(1deg) skew(-5deg);"
+	>
+		<div class="[transition:_.3s] [transform-style:_preserve-3d]"
+		>
 			<SingleEliminationBracket
-				class="fill-transparent overflow-visible"
+				class="fill-transparent overflow-visible select-none"
 				{data}
 				bracketConfig={{
 					matchStyle: { width: 320, height: 159 },
@@ -257,10 +263,14 @@
 		</div>
 		<CopyButton class="mt-6 w-fit" />
 	</div>
-	<div id="translated-2">
-		<div id="tournament-2">
+	<div class="absolute [perspective:_1000px] scale-90 
+		antialiased top-0 right-0 hidden lg:block"
+	>
+		<div class="[transition:_.3s] [transform:_rotateY(-35deg)] 
+			[transform-style:_preserve-3d]"
+		>
 			<SingleEliminationBracket
-				class="fill-transparent  overflow-visible"
+				class="fill-transparent overflow-visible select-none"
 				{data}
 				bracketConfig={{
 					matchStyle: { width: 320, height: 159 },
@@ -287,34 +297,3 @@
 		</div>
 	</div>
 </div>
-
-<style :global>
-	#translated-1, #translated-2 {
-		position: absolute;
-		perspective: 1000px;
-		transform: scale(0.9);
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-	}
-
-	#translated-1 {
-		left: 2.5%;
-		bottom: 2.5%;
-	}
-
-	#translated-2 {
-		right: 0;
-		top: 0;
-	}
-
-	#tournament-1 {
-		transition: .3s;
-		transform: rotateY(35deg);
-		transform-style: preserve-3d;
-	}
-
-	#tournament-2 {
-		transform: rotateY(-35deg);
-		transform-style: preserve-3d;
-	}
-</style>
