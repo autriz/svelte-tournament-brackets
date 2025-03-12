@@ -14,6 +14,12 @@
 	} from "$lib/internal/types";
 
 	export let match: Match;
+	export let indices: { 
+		entrant1: number | undefined; 
+		entrant2: number | undefined; 
+		round: number; 
+		match: number; 
+	};
 	export let entrant1: Entrant | null = null;
 	export let entrant2: Entrant | null = null;
 
@@ -26,6 +32,8 @@
 	export let onEnter: (entrantId: MatchEntrant["entrantId"]) => void;
 	export let onLeave: () => void;
 	export let onMatchClick: ((match: Match) => void) | undefined;
+
+	const isValidNumber = (value: unknown): value is number => Number.isInteger(value);
 
 	$: hasEnded = match.entrant1?.entrantStatus && match.entrant1?.entrantStatus;
 	$: isTopWon = match.entrant1?.entrantStatus === "WON";
@@ -53,8 +61,8 @@
 			class="pointer-events-none flex h-full w-[24px] items-center justify-center 
 			text-center text-xs text-gray-500"
 		>
-			{#if match.entrant1 && entrant1}
-				{entrant1.entrantId}
+			{#if match.entrant1 && entrant1 && isValidNumber(indices.entrant1)}
+				{indices.entrant1 + 1}
 			{/if}
 		</span>
 		<span class="grow pl-2 text-sm">
@@ -95,8 +103,8 @@
 			class="pointer-events-none flex h-full w-[24px] items-center justify-center 
 			text-center text-xs text-gray-500"
 		>
-			{#if match.entrant2 && entrant2}
-				{entrant2.entrantId}
+			{#if match.entrant2 && entrant2 && isValidNumber(indices.entrant2)}
+				{indices.entrant2 + 1}
 			{/if}
 		</span>
 		<span class="grow pl-2 text-sm">

@@ -27,7 +27,7 @@
 	const extractPosition = (
 		match: MatchData<MatchEntrant, Match>,
 	): MatchPositionData => ({
-		index: match.index,
+		indices: match.indices,
 		position: {
 			x: shiftMatchXPos(match.position.x, config),
 			y: match.position.y,

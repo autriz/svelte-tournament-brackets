@@ -7,6 +7,7 @@ import type {
 	BaseProps,
 	DeepRequired,
 	BaseMatchEntrant,
+	BaseEntrant,
 } from "./types.js";
 
 export const shiftHeaderXPos = (
@@ -48,6 +49,25 @@ export const shiftMatchXPos = (
 
 	return x;
 };
+
+export function getEntrantIndices<
+	Round extends BaseRound = BaseRound,
+	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
+	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
+	Entrant extends BaseEntrant = BaseEntrant,
+>(data: BaseProps<Round, Entrant>, match: Match) {
+	const entrant1 = data.entrants.findIndex(
+		(entrant) => entrant.entrantId === match.entrant1?.entrantId,
+	);
+	const entrant2 = data.entrants.findIndex(
+		(entrant) => entrant.entrantId === match.entrant2?.entrantId,
+	);
+
+	return {
+		entrant1: entrant1 < 0 ? undefined : entrant1,
+		entrant2: entrant2 < 0 ? undefined : entrant2,
+	};
+}
 
 export const generateBracketData = <
 	Props extends BaseProps = BaseProps,
@@ -302,7 +322,7 @@ export const getMatchPositionDataInner = <
 	);
 
 	return {
-		index: {
+		indices: {
 			round: roundIdx,
 			match: matchIdx,
 		},

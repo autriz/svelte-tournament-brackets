@@ -62,7 +62,11 @@
 					width={config.matchStyle.width}
 					height={config.matchStyle.height}
 				>
-					<slot name="match" match={match.data} />
+					<slot 
+						name="match" 
+						match={match.data} 
+						indices={match.indices}
+					/>
 				</foreignObject>
 			{/each}
 		</g>

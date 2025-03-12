@@ -27,6 +27,7 @@
 	} from "$lib/brackets/components/index";
 	import {
 		generateBracketData,
+		getEntrantIndices,
 		getPreviousMatches,
 		shiftHeaderXPos,
 		shiftMatchXPos,
@@ -187,9 +188,14 @@
 							let:onEnter
 							let:onLeave
 						>
+							{@const entrantIndices = getEntrantIndices(data, match.data)}
 							<slot
 								name="match"
 								match={match.data}
+								indices={{
+									...entrantIndices,
+									...match.indices
+								}}
 								{entrant1}
 								{entrant2}
 								{isTopHovered}
@@ -201,6 +207,10 @@
 							>
 								<Match
 									match={match.data}
+									indices={{
+										...entrantIndices,
+										...match.indices
+									}}
 									{entrant1}
 									{entrant2}
 									{isTopHovered}

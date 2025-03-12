@@ -193,7 +193,7 @@
 			/>
 		</div>
 	{/each} -->
-	<!-- <h1 class="text-4xl">Double Elimination Brackets</h1>
+	<h1 class="text-4xl">Double Elimination Brackets</h1>
 	{#each doubleElimMockData as data, dataIdx}
 		<div class="mb-4">
 			<h2 class="text-3xl">{dataIdx + 1}</h2>
@@ -208,10 +208,10 @@
 				}}
 			/>
 		</div>
-	{/each} -->
+	{/each}
 </div>
 
-<div class="relative flex flex-col overflow-clip h-[calc(100vh-3.75rem)] 
+<!-- <div class="relative flex flex-col overflow-clip h-[calc(100vh-3.75rem)] 
 	w-[100vw] items-center justify-center"
 >
 	<div class="absolute antialiased bottom-[25vh] 
@@ -296,4 +296,4 @@
 			</SingleEliminationBracket>
 		</div>
 	</div>
-</div>
+</div> -->

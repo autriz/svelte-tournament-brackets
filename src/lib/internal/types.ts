@@ -43,10 +43,8 @@ export interface BaseProps<
 export interface MatchData<
 	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
 	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
-> {
+> extends MatchPositionData {
 	data: Match;
-	position: { x: number; y: number };
-	index: { round: number; match: number };
 }
 
 export interface SingleEliminationProps<
@@ -140,7 +138,7 @@ export interface DoubleElimBracketConfig extends BracketConfig {
 }
 
 export type MatchPositionData = {
-	index: {
+	indices: {
 		round: number;
 		match: number;
 	};

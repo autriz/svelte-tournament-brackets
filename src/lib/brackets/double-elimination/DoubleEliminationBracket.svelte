@@ -16,6 +16,7 @@
 		DoubleElimBracketConfig,
 		MatchData,
 		BaseMatchEntrant,
+		BaseProps,
 	} from "$lib/internal/types";
 	import { clsx } from "clsx";
 	import { setCtx } from "$lib/internal/ctx";
@@ -27,6 +28,7 @@
 	} from "$lib/brackets/components";
 	import {
 		generateBracketData,
+		getEntrantIndices,
 		getMatchPositionDataInner,
 	} from "$lib/internal/utils";
 	import UpperBracket from "./UpperBracket.svelte";
@@ -235,7 +237,9 @@
 			xmlns="http://www.w3.org/1999/xhtml"
 			style="width: 100%; height: 100%;"
 			let:match
+			let:indices
 		>
+			{@const entrantIndices = getEntrantIndices(data, match)}
 			<MatchWrapper
 				{match}
 				entrant1={data.entrants.find(
@@ -257,6 +261,10 @@
 				<slot
 					name="winner-match"
 					{match}
+					indices={{
+						...entrantIndices,
+						...indices
+					}}
 					{entrant1}
 					{entrant2}
 					{isTopHovered}
@@ -268,6 +276,10 @@
 				>
 					<Match
 						{match}
+						indices={{
+							...entrantIndices,
+							...indices
+						}}
 						{entrant1}
 						{entrant2}
 						{isTopHovered}
@@ -314,7 +326,9 @@
 			xmlns="http://www.w3.org/1999/xhtml"
 			style="width: 100%; height: 100%;"
 			let:match
+			let:indices
 		>
+			{@const entrantIndices = getEntrantIndices(data, match)}
 			<MatchWrapper
 				{match}
 				entrant1={data.entrants.find(
@@ -336,6 +350,10 @@
 				<slot
 					name="loser-match"
 					{match}
+					indices={{
+						...entrantIndices,
+						...indices
+					}}
 					{entrant1}
 					{entrant2}
 					{isTopHovered}
@@ -347,6 +365,10 @@
 				>
 					<Match
 						{match}
+						indices={{
+							...entrantIndices,
+							...indices
+						}}
 						{entrant1}
 						{entrant2}
 						{isTopHovered}
@@ -412,7 +434,9 @@
 				xmlns="http://www.w3.org/1999/xhtml"
 				style="width: 100%; height: 100%;"
 				let:match
+				let:indices
 			>
+				{@const entrantIndices = getEntrantIndices(data, match)}
 				<MatchWrapper
 					{match}
 					entrant1={data.entrants.find(
@@ -436,6 +460,10 @@
 					<slot
 						name="finals-match"
 						{match}
+						indices={{
+							...entrantIndices,
+							...indices
+						}}
 						{entrant1}
 						{entrant2}
 						{isTopHovered}
@@ -447,6 +475,10 @@
 					>
 						<Match
 							{match}
+							indices={{
+								...entrantIndices,
+								...indices
+							}}
 							{entrant1}
 							{entrant2}
 							{isTopHovered}
