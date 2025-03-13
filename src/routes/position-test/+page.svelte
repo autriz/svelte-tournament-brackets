@@ -1,27 +1,30 @@
 <script lang="ts">
 	import type { SingleEliminationProps } from "$lib";
 	import SingleEliminationBracket from "$lib/brackets/single-elimination/SingleEliminationBracket.svelte";
+	import clsx from "clsx";
 	import FantasyMatch from "../test/FantasyMatch.svelte";
 
-    let perspective: number = 0;
-    let rotateY: number = 0;
-    let rotateX: number = 0;
-    let rotateZ: number = 0;
-    let rotate: number = 0;
-    let skew: number = 0;
-    let skewX: number = 0;
-    let skewY: number = 0;
-    let scale: number = 1;
+    let perspective: number | undefined = 0;
+    let rotateY: number | undefined = 0;
+    let rotateX: number | undefined = 0;
+    let rotateZ: number | undefined = 0;
+    let rotate: number | undefined = 0;
+    let skew: number | undefined = 0;
+    let skewX: number | undefined = 0;
+    let skewY: number | undefined = 0;
+    let scale: number | undefined = 1;
 
-    $: perspectiveStr = perspective !== 0 ? `perspective(${perspective}px)` : '';
-    $: rotateXStr = rotateX !== 0 ? `rotateX(${rotateX}deg)` : '';
-    $: rotateYStr = rotateY !== 0 ? `rotateY(${rotateY}deg)` : '';
-    $: rotateZStr = rotateZ !== 0 ? `rotateZ(${rotateZ}deg)` : '';
-    $: rotateStr = rotate !== 0 ? `rotate(${rotate}deg)` : '';
-    $: skewStr = skew !== 0 ? `skew(${skew}deg)` : '';
-    $: skewXStr = skewX !== 0 ? `skewX(${skewX}deg)` : '';
-    $: skewYStr = skewY !== 0 ? `skewY(${skewY}deg)` : '';
-    $: scaleStr = scale !== 1 ? `scale(${scale})` : '';
+    let disableBg: boolean = false;
+
+    $: perspectiveStr = perspective && perspective !== 0 ? `perspective(${perspective}px)` : '';
+    $: rotateXStr = rotateX && rotateX !== 0 ? `rotateX(${rotateX}deg)` : '';
+    $: rotateYStr = rotateY && rotateY !== 0 ? `rotateY(${rotateY}deg)` : '';
+    $: rotateZStr = rotateZ && rotateZ !== 0 ? `rotateZ(${rotateZ}deg)` : '';
+    $: rotateStr = rotate && rotate !== 0 ? `rotate(${rotate}deg)` : '';
+    $: skewStr = skew && skew !== 0 ? `skew(${skew}deg)` : '';
+    $: skewXStr = skewX && skewX !== 0 ? `skewX(${skewX}deg)` : '';
+    $: skewYStr = skewY && skewY !== 0 ? `skewY(${skewY}deg)` : '';
+    $: scaleStr = scale && scale !== 1 ? `scale(${scale})` : '';
 
     $: style = `transform: ${perspectiveStr} ${rotateXStr} ${rotateYStr} ${rotateZStr} ${rotateStr} ${skewStr} ${skewXStr} ${skewYStr} ${scaleStr};`.replaceAll(/ +/g, ' ');
 
@@ -137,6 +140,10 @@
         <input id="scale" bind:value={scale} type="number" step="0.1" />
         <label for="scale">Scale</label>
     </div>
+    <div>
+        <input type="checkbox" id="bg" bind:checked={disableBg} />
+        <label for="bg">Disable background</label>
+    </div>
 </div>
 
 <pre>
@@ -145,7 +152,7 @@
 
 <div class="flex flex-col items-center justify-center mt-20">
     <div {style}>
-        <div class="p-4 dark:bg-neutral-900 bg-neutral-100 rounded-lg shadow-lg">
+        <div class={clsx(["p-4 rounded-lg shadow-lg", !disableBg && "dark:bg-neutral-900 bg-neutral-100"])}>
             <SingleEliminationBracket
                 class="fill-transparent overflow-visible select-none"
                 {data}
