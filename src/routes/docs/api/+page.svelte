@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CodeBlock from "$components/CodeBlock.svelte";
 	import FooterNavigation from "$components/FooterNavigation.svelte";
+	import Preview from "$components/Preview.svelte";
 	import type { PageData } from "./$types";
 
 	export let data: PageData;
@@ -33,6 +34,11 @@
 >
 	Single Elimination Bracket
 </h2>
+
+<Preview highlighter={data.highlighter}>
+	<div>Hello</div>
+	<div>World!</div>
+</Preview>
 <!-- <p>Bracket can be placed with no setup, just import it:</p>
 <h3 class="text-[16px] mt-8 ml-3 font-semibold mb-2 lg:mb-3 text-primary">Single Elimination Bracket</h3>
 <CodeBlock
