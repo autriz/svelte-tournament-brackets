@@ -4,8 +4,10 @@
 	import { singleElimTwo } from "$mock-data";
 </script>
 
-<main class="relative flex min-h-screen w-full flex-col items-center justify-center overflow-y-clip">
-	<section class="flex flex-col items-center z-10">
+<main
+	class="relative flex min-h-screen w-full flex-col items-center justify-center overflow-y-clip"
+>
+	<section class="z-10 flex flex-col items-center">
 		<div class="mt-4">
 			<h1
 				class="inline-flex items-center gap-3 text-2xl md:text-5xl lg:text-6xl"
@@ -17,17 +19,30 @@
 		</div>
 		<!-- <CopyButton class="mt-6" /> -->
 	</section>
-	<svg class="absolute h-screen w-full stroke-neutral-200 dark:stroke-neutral-800" stroke-dasharray="5">
+	<svg
+		class="absolute h-screen w-full stroke-neutral-200 dark:stroke-neutral-800"
+		stroke-dasharray="5"
+	>
 		<defs>
-			<pattern id="block" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
+			<pattern
+				id="block"
+				width="200"
+				height="200"
+				x="50%"
+				y="-1"
+				patternUnits="userSpaceOnUse"
+			>
 				<path d="M100 200V.5M.5 .5H200"></path>
 			</pattern>
 		</defs>
-		<rect width="100%" height="100%" stroke-width="0" fill="url(#block)"></rect>
+		<rect width="100%" height="100%" stroke-width="0" fill="url(#block)"
+		></rect>
 	</svg>
-	<div class="absolute h-full overflow-y-clip overflow-x-visible flex mx-auto top-16">
-		<SingleEliminationBracket 
-			class="fill-transparent overflow-visible"
+	<div
+		class="absolute top-16 mx-auto flex h-full overflow-y-clip overflow-x-visible"
+	>
+		<SingleEliminationBracket
+			class="overflow-visible fill-transparent"
 			data={singleElimTwo}
 			bracketConfig={{
 				showRoundHeaders: false,
@@ -36,6 +51,7 @@
 			}}
 		/>
 	</div>
-	<div class="absolute bg-gradient-to-b from-transparent to-background w-full h-full">
-	</div>
+	<div
+		class="absolute h-full w-full bg-gradient-to-b from-transparent to-background"
+	></div>
 </main>

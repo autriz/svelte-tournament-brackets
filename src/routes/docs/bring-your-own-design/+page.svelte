@@ -7,6 +7,6 @@
 </section>
 
 <FooterNavigation
-	previous={{ href: "/docs/api", title: "API" }} 
-	next={{ href: "/docs/extendable-data", title: "Extendable Data" }} 
+	previous={{ href: "/docs/api", title: "API" }}
+	next={{ href: "/docs/extendable-data", title: "Extendable Data" }}
 />

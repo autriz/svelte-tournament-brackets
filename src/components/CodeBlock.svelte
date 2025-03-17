@@ -1,6 +1,6 @@
 <script lang="ts">
 	import clsx from "clsx";
-import { Clipboard } from "lucide-svelte";
+	import { Clipboard } from "lucide-svelte";
 	import type { HighlighterCore } from "shiki";
 
 	export let highlighter: HighlighterCore;
@@ -9,28 +9,25 @@ import { Clipboard } from "lucide-svelte";
 	let className: string | undefined = undefined;
 	export { className as class };
 
-	$: html = highlighter.codeToHtml(
-		code, 
-		{ 
-			lang,
-			themes: {
-				light: "vitesse-light", 
-				dark: "vitesse-dark" 
-			},
+	$: html = highlighter.codeToHtml(code, {
+		lang,
+		themes: {
+			light: "vitesse-light",
+			dark: "vitesse-dark",
 		},
-	);
+	});
 
 	function copyCode() {
 		navigator.clipboard.writeText(code);
 	}
 </script>
 
-<div class={clsx("relative group rounded-lg overflow-x-auto", className)}>
-	<button 
-		class="absolute top-[12px] right-[12px] p-1.5 rounded-lg border 
-		dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-900
-		border-neutral-400 bg-neutral-100 hover:bg-neutral-50
-		opacity-0 group-hover:opacity-100 transition-all"
+<div class={clsx("group relative overflow-x-auto rounded-lg", className)}>
+	<button
+		class="absolute right-[12px] top-[12px] rounded-lg border border-neutral-400
+		bg-neutral-100 p-1.5 opacity-0
+		transition-all hover:bg-neutral-50 group-hover:opacity-100
+		dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-900"
 		title="Copy code"
 		on:click={copyCode}
 	>
@@ -41,6 +38,6 @@ import { Clipboard } from "lucide-svelte";
 
 <style>
 	div > :global(.shiki) {
-		@apply py-5 px-6 overflow-x-auto;
+		@apply overflow-x-auto px-6 py-5;
 	}
 </style>

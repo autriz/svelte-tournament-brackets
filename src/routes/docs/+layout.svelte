@@ -10,56 +10,69 @@
 	let onTop = true;
 
 	onMount(() => {
-		const observer = new IntersectionObserver((entry) => {
-			onTop = entry[0].isIntersecting;
-		}, {
-			rootMargin: "0px 0px 0px",
-			root: null,
-			threshold: 0
-		});
+		const observer = new IntersectionObserver(
+			(entry) => {
+				onTop = entry[0].isIntersecting;
+			},
+			{
+				rootMargin: "0px 0px 0px",
+				root: null,
+				threshold: 0,
+			},
+		);
 
 		observer.observe(document.getElementsByTagName("h1")[0]);
 
 		return () => {
 			observer.disconnect();
-		}
+		};
 	});
 </script>
-<div class="xl:mx-auto lg:grid grid-cols-[240px_1fr] flex xl:max-w-[1360px]">
+
+<div class="flex grid-cols-[240px_1fr] lg:grid xl:mx-auto xl:max-w-[1360px]">
 	<div></div>
-	<nav class="w-[240px] h-screen bg-foreground/[2%] fixed pt-5 pb-4 hidden lg:flex flex-col border-x border-dashed border-neutral-300 dark:border-neutral-700">
+	<nav
+		class="fixed hidden h-screen w-[240px] flex-col border-x border-dashed
+			border-neutral-300 bg-foreground/[2%] pb-4 pt-5 dark:border-neutral-700 lg:flex"
+	>
 		<div class="px-4">
-			<div class="pb-3.5 font-semibold border-b border-dashed border-neutral-300 dark:border-neutral-700">
+			<div
+				class="border-b border-dashed border-neutral-300 pb-3.5 font-semibold dark:border-neutral-700"
+			>
 				<a class="flex gap-1" href="/">
 					<p class="text-[#f96743]">Svelte</p>
 					<span><p>Tournament Brackets</p></span>
 				</a>
 			</div>
 		</div>
-		<div class="grow overflow-y-auto pt-5 px-4 w-full">
-			<div class="pb-2 border-b border-neutral-300 dark:border-neutral-700 border-dashed">
-				<span class="text-xs text-muted-foreground mb-2 font-medium">Basics</span>
+		<div class="w-full grow overflow-y-auto px-4 pt-5">
+			<div
+				class="border-b border-dashed border-neutral-300 pb-2 dark:border-neutral-700"
+			>
+				<span class="mb-2 text-xs font-medium text-muted-foreground"
+					>Basics</span
+				>
 				<ul class="space-y-1">
 					<li>
-						<Link 
-							href="getting-started" 
-							class="flex text-sm px-2 py-1 rounded-md dark:text-neutral-300 
-							dark:hover:text-white dark:data-[current]:text-white text-neutral-800 
-							hover:text-black data-[current]:text-black dark:hover:bg-neutral-700 
-							dark:data-[current]:bg-neutral-700 hover:bg-neutral-200 
-							data-[current]:bg-neutral-200 transition-colors [transition-duration:100ms]"
+						<Link
+							href="getting-started"
+							class="flex rounded-md px-2 py-1 text-sm text-neutral-800 
+							transition-colors [transition-duration:100ms] hover:bg-neutral-200 
+							hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
+							dark:text-neutral-300 dark:hover:bg-neutral-700 
+							dark:hover:text-white dark:data-[current]:bg-neutral-700 dark:data-[current]:text-white"
 						>
 							Getting Started
 						</Link>
 					</li>
 					<li>
-						<Link 
-							href="api" 
-							class="flex text-sm px-2 py-1 rounded-md dark:text-neutral-300 
-							dark:hover:text-white dark:data-[current]:text-white text-neutral-800 
-							hover:text-black data-[current]:text-black dark:hover:bg-neutral-700 
-							dark:data-[current]:bg-neutral-700 hover:bg-neutral-200 
-							data-[current]:bg-neutral-200 transition-colors [transition-duration:100ms]"
+						<Link
+							href="api"
+							class="flex rounded-md px-2 py-1 text-sm text-neutral-800 
+							transition-colors [transition-duration:100ms] hover:bg-neutral-200 
+							hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
+							dark:text-neutral-300 dark:hover:bg-neutral-700 
+							dark:hover:text-white dark:data-[current]:bg-neutral-700 dark:data-[current]:text-white"
 						>
 							API
 						</Link>
@@ -67,28 +80,30 @@
 				</ul>
 			</div>
 			<div class="pt-2">
-				<span class="text-xs text-muted-foreground mb-2 font-medium">Advanced usage</span>
+				<span class="mb-2 text-xs font-medium text-muted-foreground"
+					>Advanced usage</span
+				>
 				<ul class="space-y-1">
 					<li>
-						<Link 
-							href="bring-your-own-design" 
-							class="flex text-sm px-2 py-1 rounded-md dark:text-neutral-300 
-							dark:hover:text-white dark:data-[current]:text-white text-neutral-800 
-							hover:text-black data-[current]:text-black dark:hover:bg-neutral-700 
-							dark:data-[current]:bg-neutral-700 hover:bg-neutral-200 
-							data-[current]:bg-neutral-200 transition-colors [transition-duration:100ms]"
+						<Link
+							href="bring-your-own-design"
+							class="flex rounded-md px-2 py-1 text-sm text-neutral-800 
+							transition-colors [transition-duration:100ms] hover:bg-neutral-200 
+							hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
+							dark:text-neutral-300 dark:hover:bg-neutral-700 
+							dark:hover:text-white dark:data-[current]:bg-neutral-700 dark:data-[current]:text-white"
 						>
 							Bring Your Own Design
 						</Link>
 					</li>
 					<li>
-						<Link 
-							href="extendable-data" 
-							class="flex text-sm px-2 py-1 rounded-md dark:text-neutral-300 
-							dark:hover:text-white dark:data-[current]:text-white text-neutral-800 
-							hover:text-black data-[current]:text-black dark:hover:bg-neutral-700 
-							dark:data-[current]:bg-neutral-700 hover:bg-neutral-200 
-							data-[current]:bg-neutral-200 transition-colors [transition-duration:100ms]"
+						<Link
+							href="extendable-data"
+							class="flex rounded-md px-2 py-1 text-sm text-neutral-800 
+							transition-colors [transition-duration:100ms] hover:bg-neutral-200 
+							hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
+							dark:text-neutral-300 dark:hover:bg-neutral-700 
+							dark:hover:text-white dark:data-[current]:bg-neutral-700 dark:data-[current]:text-white"
 						>
 							Extendable Data
 						</Link>
@@ -96,46 +111,57 @@
 				</ul>
 			</div>
 			<div>
-				<span class="text-xs text-muted-foreground mb-2 font-medium">Examples</span>
+				<span class="mb-2 text-xs font-medium text-muted-foreground"
+					>Examples</span
+				>
 				<ul class="space-y-1">
-					<li class="flex text-sm px-2 py-1 w-full rounded-md hover:bg-neutral-700">TODO!</li>
+					<li
+						class="flex w-full rounded-md px-2 py-1 text-sm hover:bg-neutral-700"
+					>
+						TODO!
+					</li>
 				</ul>
 			</div>
 		</div>
 		<div class="px-4">
-			<div class="pt-3 flex flex-row justify-between border-t border-dashed 
-				border-neutral-300 dark:border-neutral-700"
+			<div
+				class="flex flex-row justify-between border-t border-dashed border-neutral-300
+				pt-3 dark:border-neutral-700"
 			>
-				<ThemeToggleButton class="hover:bg-foreground/10 transition-colors cursor-default size-8 border border-muted [&_svg]:size-4"/>
-				<Link 
-					href="https://github.com/autriz/svelte-tournament-brackets" 
-					title="Go to GitHub page" 
-					class="relative inline-flex items-center justify-center px-2 
-					py-1 rounded-md border border-muted size-8 hover:bg-foreground/10 transition-colors"
+				<ThemeToggleButton
+					class="size-8 cursor-default border border-muted transition-colors hover:bg-foreground/10 [&_svg]:size-4"
+				/>
+				<Link
+					href="https://github.com/autriz/svelte-tournament-brackets"
+					title="Go to GitHub page"
+					class="relative inline-flex size-8 items-center justify-center 
+					rounded-md border border-muted px-2 py-1 transition-colors hover:bg-foreground/10"
 				>
 					<GithubMark class="size-6" />
 				</Link>
 			</div>
 		</div>
 	</nav>
-	<div class="self-center flex lg:ml-8 lg:py-16 gap-4">
-		<main class="mx-auto max-w-[672px] w-full">
+	<div class="flex gap-4 self-center lg:ml-8 lg:py-16">
+		<main class="mx-auto w-full max-w-[672px]">
 			<slot></slot>
 		</main>
-		<aside class="lg:w-[240px] h-px hidden lg:block">
+		<aside class="hidden h-px lg:block lg:w-[240px]">
 			<!-- TODO: TOC -->
 		</aside>
 	</div>
 </div>
 {#if !onTop}
-	<button 
-		transition:fade={{ duration: 100 }} 
-		class="fixed bottom-0 right-0 mr-10 mb-10 px-3 py-3 rounded-md 
-			border border-muted border-dashed hover:border-muted-foreground
-			hover:border-solid transition-all text-muted-foreground
+	<button
+		transition:fade={{ duration: 100 }}
+		class="fixed bottom-0 right-0 mb-10 mr-10 rounded-md border border-dashed
+			border-muted px-3 py-3 text-muted-foreground
+			transition-all hover:border-solid hover:border-muted-foreground
 			hover:text-primary"
 		title="Go to the top"
-		on:click={() => { window.scrollTo({ top: 0, behavior: "smooth" }) }}
+		on:click={() => {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}}
 	>
 		<ArrowUp class="size-6"></ArrowUp>
 	</button>

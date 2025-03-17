@@ -16,9 +16,7 @@
 	darkClassNames={["dark"]}
 />
 
-<div
-	class="min-h-screen flex flex-col bg-background text-foreground font-sans"
->
+<div class="flex min-h-screen flex-col font-sans">
 	{#if $page.url.pathname === "/"}
 		<Header />
 	{/if}

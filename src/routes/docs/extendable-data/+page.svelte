@@ -7,5 +7,8 @@
 </section>
 
 <FooterNavigation
-	previous={{ href: "/docs/bring-your-own-design", title: "Bring Your Own Design" }} 
+	previous={{
+		href: "/docs/bring-your-own-design",
+		title: "Bring Your Own Design",
+	}}
 />
