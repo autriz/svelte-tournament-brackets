@@ -1,7 +1,28 @@
 <script lang="ts">
-    import "./styles.css";
+	import "./styles.css";
+	import { ModeWatcher } from "mode-watcher";
+	import Header from "$components/Header.svelte";
+	import { page } from "$app/stores";
 </script>
 
-<main class="w-screen min-h-screen overflow-hidden h-fit dark:bg-black bg-white dark:text-white text-black">
-    <slot />
-</main>
+<svelte:head>
+	<title>Svelte Tournament Brackets</title>
+</svelte:head>
+
+<ModeWatcher
+	modeStorageKey={"color-theme"}
+	defaultMode={"system"}
+	lightClassNames={["light"]}
+	darkClassNames={["dark"]}
+/>
+
+<div
+	class="min-h-screen flex flex-col bg-background text-foreground font-sans"
+>
+	{#if $page.url.pathname === "/"}
+		<Header />
+	{/if}
+	<div class="flex-1">
+		<slot />
+	</div>
+</div>

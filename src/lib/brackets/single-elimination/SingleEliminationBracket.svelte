@@ -27,6 +27,7 @@
 	} from "$lib/brackets/components/index.js";
 	import {
 		generateBracketData,
+		getEntrantIndices,
 		getPreviousMatches,
 		shiftHeaderXPos,
 		shiftMatchXPos,
@@ -176,23 +177,34 @@
 							let:onEnter
 							let:onLeave
 						>
+							{@const entrantIndices = getEntrantIndices(data, match.data)}
 							<slot
 								name="match"
-								{match}
+								match={match.data}
+								indices={{
+									...entrantIndices,
+									...match.indices
+								}}
 								{entrant1}
 								{entrant2}
 								{isTopHovered}
 								{isBottomHovered}
 								{isMatchHovered}
+								{onMatchClick}
 								{onEnter}
 								{onLeave}
 							>
 								<Match
 									match={match.data}
+									indices={{
+										...entrantIndices,
+										...match.indices
+									}}
 									{entrant1}
 									{entrant2}
 									{isTopHovered}
 									{isBottomHovered}
+									{onMatchClick}
 									{onEnter}
 									{onLeave}
 								/>

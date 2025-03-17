@@ -27,6 +27,7 @@
 	} from "$lib/brackets/components";
 	import {
 		generateBracketData,
+		getEntrantIndices,
 		getMatchPositionDataInner
 	} from "$lib/internal/utils";
 	import UpperBracket from "./UpperBracket.svelte";
@@ -207,18 +208,18 @@
 				/>
 			</slot>
 		</g>
-		<div slot="match" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:match>
+		<div slot="match" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:match let:indices>
 			<MatchWrapper
-				match={match.data}
+				match={match}
 				entrant1={data.entrants.find(
 					(entrant) =>
 						entrant.entrantId ===
-						match.data.entrant1?.entrantId,
+						match.entrant1?.entrantId,
 				)}
 				entrant2={data.entrants.find(
 					(entrant) =>
 						entrant.entrantId ===
-						match.data.entrant2?.entrantId,
+						match.entrant2?.entrantId,
 				)}
 				let:entrant1
 				let:entrant2
@@ -228,23 +229,34 @@
 				let:onEnter
 				let:onLeave
 			>
+				{@const entrantIndices = getEntrantIndices(data, match)}
 				<slot 
 					name="winner-match"
-					{match}
+					match={match}
+					indices={{
+						...entrantIndices,
+						...indices
+					}}
 					{entrant1}
 					{entrant2}
 					{isTopHovered}
 					{isBottomHovered}
 					{isMatchHovered}
+					{onMatchClick}
 					{onEnter}
 					{onLeave}
 				>
 					<Match
-						match={match.data}
+						match={match}
+						indices={{
+							...entrantIndices,
+							...indices
+						}}
 						{entrant1}
 						{entrant2}
 						{isTopHovered}
 						{isBottomHovered}
+						{onMatchClick}
 						{onEnter}
 						{onLeave}
 					/>
@@ -281,18 +293,18 @@
 				/>
 			</slot>
 		</g>
-		<div slot="match" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:match>
+		<div slot="match" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:match let:indices>
 			<MatchWrapper 
-				match={match.data}
+				match={match}
 				entrant1={data.entrants.find(
 					(entrant) =>
 						entrant.entrantId ===
-						match.data.entrant1?.entrantId,
+						match.entrant1?.entrantId,
 				)}
 				entrant2={data.entrants.find(
 					(entrant) =>
 						entrant.entrantId ===
-						match.data.entrant2?.entrantId,
+						match.entrant2?.entrantId,
 				)}
 				let:entrant1
 				let:entrant2
@@ -302,23 +314,34 @@
 				let:onEnter
 				let:onLeave
 			>
+				{@const entrantIndices = getEntrantIndices(data, match)}
 				<slot 
 					name="loser-match"
 					{match}
+					indices={{
+						...entrantIndices,
+						...indices
+					}}
 					{entrant1}
 					{entrant2}
 					{isTopHovered}
 					{isBottomHovered}
 					{isMatchHovered}
+					{onMatchClick}
 					{onEnter}
 					{onLeave}
 				>
 					<Match
-						match={match.data}
+						{match}
+						indices={{
+							...entrantIndices,
+							...indices
+						}}
 						{entrant1}
 						{entrant2}
 						{isTopHovered}
 						{isBottomHovered}
+						{onMatchClick}
 						{onEnter}
 						{onLeave}
 					/>
@@ -373,18 +396,18 @@
 					/>
 				</slot>
 			</g>
-			<div slot="match" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:match>
+			<div slot="match" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:match let:indices>
 				<MatchWrapper 
-					match={match.data}
+					match={match}
 					entrant1={data.entrants.find(
 						(entrant) =>
 							entrant.entrantId ===
-							match.data.entrant1?.entrantId,
+							match.entrant1?.entrantId,
 					)}
 					entrant2={data.entrants.find(
 						(entrant) =>
 							entrant.entrantId ===
-							match.data.entrant2?.entrantId,
+							match.entrant2?.entrantId,
 					)}
 					let:entrant1
 					let:entrant2
@@ -394,23 +417,34 @@
 					let:onEnter
 					let:onLeave
 				>
+					{@const entrantIndices = getEntrantIndices(data, match)}
 					<slot 
 						name="finals-match"
 						{match}
+						indices={{
+							...entrantIndices,
+							...indices
+						}}
 						{entrant1}
 						{entrant2}
 						{isTopHovered}
 						{isBottomHovered}
 						{isMatchHovered}
+						{onMatchClick}
 						{onEnter}
 						{onLeave}
 					>
 						<Match
-							match={match.data}
+							match={match}
+							indices={{
+								...entrantIndices,
+								...indices
+							}}
 							{entrant1}
 							{entrant2}
 							{isTopHovered}
 							{isBottomHovered}
+							{onMatchClick}
 							{onEnter}
 							{onLeave}
 						/>
