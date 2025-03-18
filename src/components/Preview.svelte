@@ -1,16 +1,13 @@
-<script lang="ts">
-	import type { HighlighterCore } from "shiki";
+<!-- <script lang="ts">
 	import { onMount } from "svelte";
-
-	export let highlighter: HighlighterCore;
-	// export let path: string;
+	import { getHighlighter } from "./utils";
 
 	let showCode = false;
 	let container: HTMLDivElement;
 	let code: string = "";
 
 	onMount(() => {
-		code = highlighter.codeToHtml(container.innerHTML, {
+		code = getHighlighter().codeToHtml(container.innerHTML, {
 			lang: "svelte",
 			themes: {
 				light: "vitesse-light",
@@ -58,6 +55,6 @@
 
 <style>
 	div > :global(.shiki) {
-		@apply size-full p-3;
+		@apply h-fit min-h-full w-fit min-w-full p-3;
 	}
-</style>
+</style> -->

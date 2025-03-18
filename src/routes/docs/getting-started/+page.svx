@@ -1,0 +1,48 @@
+<script lang="ts">
+	import CodeBlock from "$components/CodeBlock.svelte";
+    import { h3 as H3 } from "$components/markdown/index";
+	import FooterNavigation from "$components/FooterNavigation.svelte";
+</script>
+
+# Getting started
+
+## Installation
+Install package with your package manager of choice:
+```bash style="margin-top: 2rem;"
+pnpm i svelte-tournament-brackets
+```
+
+## Create a component
+Bracket can be placed with no setup, just import it and give it some data to work with:
+
+<H3 class="ml-3">Single Elimination Bracket</H3>
+
+```svelte
+<script lang="ts">
+	import { 
+		SingleEliminationBracket, 
+		type SingleEliminationProps 
+	} from "svelte-tournament-brackets";
+
+	let data: SingleEliminationProps = {/* data */};
+</script>
+
+<SingleEliminationBracket {data} />
+```
+
+<H3 class="ml-3">Double Elimination Bracket</H3>
+
+```svelte
+<script lang="ts">
+	import { 
+		DoubleEliminationBracket, 
+		type DoubleEliminationProps 
+	} from "svelte-tournament-brackets";
+
+	let data: DoubleEliminationProps = {/* data */};
+</script>
+
+<DoubleEliminationBracket {data} />
+```
+
+<FooterNavigation next={{ href: "/docs/api", title: "API" }} />

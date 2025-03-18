@@ -1,16 +1,23 @@
 <script lang="ts">
+	import { page } from "$app/stores";
 	import GithubMark from "$components/GithubMark.svelte";
 	import Link from "$components/Link.svelte";
 	import ThemeToggleButton from "$components/ThemeToggleButton.svelte";
-	import clsx from "clsx";
 	import { ArrowUp } from "lucide-svelte";
 	import { onMount } from "svelte";
 	import { fade } from "svelte/transition";
 
 	let onTop = true;
 
+	$: {
+		$page.url.pathname;
+		updateObserver();
+	}
+
+	let observer: IntersectionObserver;
+
 	onMount(() => {
-		const observer = new IntersectionObserver(
+		observer = new IntersectionObserver(
 			(entry) => {
 				onTop = entry[0].isIntersecting;
 			},
@@ -27,6 +34,11 @@
 			observer.disconnect();
 		};
 	});
+
+	function updateObserver() {
+		observer?.disconnect();
+		observer?.observe(document.getElementsByTagName("h1")[0]);
+	}
 </script>
 
 <div class="flex grid-cols-[240px_1fr] lg:grid xl:mx-auto xl:max-w-[1360px]">

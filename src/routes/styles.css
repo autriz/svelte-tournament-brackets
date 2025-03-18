@@ -12,6 +12,11 @@ img {
 	max-height: fit-content;
 }
 
+html .shiki,
+html .shiki span {
+	background-color: #f7f7f7 !important;
+}
+
 html.dark .shiki,
 html.dark .shiki span {
 	color: var(--shiki-dark) !important;

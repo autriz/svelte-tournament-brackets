@@ -1,0 +1,33 @@
+<script lang="ts">
+	import CodeBlock from "$components/CodeBlock.svelte";
+	import FooterNavigation from "$components/FooterNavigation.svelte";
+	import Preview from "$components/Preview.svelte";
+</script>
+
+# API
+
+## General types
+
+## Anatomy
+
+### Single Elimination Bracket
+
+<!-- <Preview>
+	<div>Hello</div>
+	<div>World!</div>
+</Preview> -->
+
+### Double Elimination Bracket
+
+<!-- <Preview>
+	<div>Hello</div>
+	<div>World!</div>
+</Preview> -->
+
+<FooterNavigation
+	previous={{ href: "/docs/getting-started", title: "Getting Started" }}
+	next={{
+		href: "/docs/bring-your-own-design",
+		title: "Bring Your Own Design",
+	}}
+/>
