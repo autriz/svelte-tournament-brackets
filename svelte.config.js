@@ -15,10 +15,10 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter(),
 		alias: {
-			$components: "./src/components",
-			"$components/*": "./src/components/*",
-			"$mock-data": "./src/mock-data",
-			"$mock-data/*": "./src/mock-data/*",
+			$components: "./src/docs/components",
+			"$components/*": "./src/docs/components/*",
+			$docs: "./src/docs",
+			"$docs/*": "./src/docs/*",
 		},
 	},
 };

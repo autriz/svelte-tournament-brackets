@@ -1,7 +1,7 @@
 <script lang="ts">
 	// import CopyButton from "$components/CopyButton.svelte";
 	import SingleEliminationBracket from "$lib/brackets/single-elimination/SingleEliminationBracket.svelte";
-	import { singleElimTwo } from "$mock-data";
+	import { singleElimTwo } from "$docs/mock-data";
 </script>
 
 <main

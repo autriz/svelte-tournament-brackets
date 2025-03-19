@@ -19,7 +19,7 @@ export const highlighter = createHighlighterCoreSync({
 
 export const mdsvexOptions = {
 	extensions: [".svx"],
-	layout: resolve(__dirname, "./src/components/markdown/Layout.svelte"),
+	layout: resolve(__dirname, "./src/docs/components/markdown/Layout.svelte"),
 	smartypants: {
 		quotes: false,
 		ellipses: false,
