@@ -21,11 +21,13 @@
 	const widthMargin = 8; // turn into a configurable value
 	const matchHalfHeight = config.matchStyle.height / 2;
 
-    const getRoundGap = (data: MatchPositionData) => {
-        return currentMatchPosition.position.x -
+	const getRoundGap = (data: MatchPositionData) => {
+		return (
+			currentMatchPosition.position.x -
 			data.position.x -
-			config.matchStyle.width;
-    };
+			config.matchStyle.width
+		);
+	};
 
 	const calcPath = (data: MatchPositionData) => {
 		const startPos = `${
@@ -37,30 +39,23 @@
 
 		// config.roundGap / 2 - widthMargin
 
-		let path = [
-			`M${startPos}`,
-			`h${halfWidth}`,
-			`V${verticalSize}`
-		];
+		let path = [`M${startPos}`, `h${halfWidth}`, `V${verticalSize}`];
 
 		return path.join(" ");
 	};
 
-    const calcCenterPath = () => {
+	const calcCenterPath = () => {
 		const roundGap = Math.max(
-            bottomMatchPosition ? getRoundGap(bottomMatchPosition) : 0, 
-            topMatchPosition ? getRoundGap(topMatchPosition) : 0
-        );
+			bottomMatchPosition ? getRoundGap(bottomMatchPosition) : 0,
+			topMatchPosition ? getRoundGap(topMatchPosition) : 0,
+		);
 		const halfWidth = roundGap / 2 - widthMargin;
-        const startPos = `${currentMatchPosition.position.x - halfWidth - widthMargin} ${currentMatchPosition.position.y + matchHalfHeight}`;
+		const startPos = `${currentMatchPosition.position.x - halfWidth - widthMargin} ${currentMatchPosition.position.y + matchHalfHeight}`;
 
-		let path = [
-			`M${startPos}`,
-			`h${halfWidth}`,
-		];
+		let path = [`M${startPos}`, `h${halfWidth}`];
 
 		return path.join(" ");
-    };
+	};
 </script>
 
 {#if isTopHighlighted}
@@ -76,10 +71,8 @@
 		d={calcPath(topMatchPosition)}
 		id={`conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-t`}
 		fill="transparent"
-		class={clsx(
-			isTopHighlighted ? "stroke-white" : "stroke-neutral-600",
-			"-z-10 transition-colors",
-		)}
+		class="stroke-neutral-500 transition-colors data-[highlighted]:stroke-black dark:data-[highlighted]:stroke-white"
+		data-highlighted={isTopHighlighted ? "" : undefined}
 	/>
 {/if}
 {#if isBottomHighlighted}
@@ -95,20 +88,18 @@
 		d={calcPath(bottomMatchPosition)}
 		id={`conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-b`}
 		fill="transparent"
-		class={clsx(
-			isBottomHighlighted ? "stroke-white" : "stroke-neutral-600",
-			"transition-colors",
-		)}
+		class="stroke-neutral-500 transition-colors data-[highlighted]:stroke-black dark:data-[highlighted]:stroke-white"
+		data-highlighted={isBottomHighlighted ? "" : undefined}
 	/>
 {/if}
 {#if topMatchPosition || bottomMatchPosition}
-    <path
+	<path
 		d={calcCenterPath()}
 		id={`conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-c`}
 		fill="transparent"
-		class={clsx(
-			isBottomHighlighted || isTopHighlighted ? "stroke-white" : "stroke-neutral-600",
-			"transition-colors",
-		)}
+		class="stroke-neutral-500 transition-colors data-[highlighted]:stroke-black dark:data-[highlighted]:stroke-white"
+		data-highlighted={isTopHighlighted || isBottomHighlighted
+			? ""
+			: undefined}
 	/>
 {/if}
