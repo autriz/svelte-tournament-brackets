@@ -41,7 +41,7 @@
 </script>
 
 <button
-	class="grid h-full text-start w-full grid-flow-row grid-rows-2 rounded-sm dark:bg-neutral-900 bg-neutral-100 shadow-medium shadow-black/30"
+	class="grid h-full text-start w-full overflow-visible grid-flow-row grid-rows-2 rounded-sm dark:bg-neutral-900 bg-neutral-100 shadow-md dark:shadow-none shadow-black/30"
 	on:click={() => onMatchClick?.(match)}
 >
 	<div
@@ -73,7 +73,7 @@
 			{/if}
 		</span>
 		<span
-			class={clsx(["flex h-full w-[38px] items-center justify-center self-end dark:bg-neutral-800 bg-neutral-200 text-center text-xs",
+			class={clsx(["flex h-full w-[38px] rounded-tr-sm items-center justify-center self-end dark:bg-neutral-800 bg-neutral-200 text-center text-xs",
 				hasEnded ? isTopWon ? `text-green-400` : `text-red-400` : undefined
 			])}
 		>
@@ -115,7 +115,7 @@
 			{/if}
 		</span>
 		<span
-			class={clsx(["flex h-full w-[38px] items-center justify-center self-end dark:bg-neutral-800 bg-neutral-200 text-center text-xs",
+			class={clsx(["flex h-full w-[38px] rounded-br-sm items-center justify-center self-end dark:bg-neutral-800 bg-neutral-200 text-center text-xs",
 				hasEnded ? isBottomWon ? `text-green-400` : `text-red-400` : undefined
 			])}
 		>

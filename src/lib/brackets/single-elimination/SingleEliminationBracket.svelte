@@ -152,6 +152,7 @@
 						</ConnectorWrapper>
 					{/if}
 					<foreignObject
+						class="overflow-visible"
 						x={shiftMatchXPos(x, config)}
 						{y}
 						width={config.matchStyle.width}

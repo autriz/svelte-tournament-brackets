@@ -1,55 +1,130 @@
-<!-- <script lang="ts">
-	import { onMount } from "svelte";
-	import { getHighlighter } from "./utils";
+<script lang="ts">
+	import clsx from "clsx";
+	import { AlertCircle, Check } from "lucide-svelte";
+	import { scale, crossfade } from "svelte/transition";
+
+	/** Name pointing to preview source code file. */
+	// svelte-ignore unused-export-let
+	export const name: string | undefined = undefined;
 
 	let showCode = false;
-	let container: HTMLDivElement;
-	let code: string = "";
+	let blockRef: HTMLElement;
 
-	onMount(() => {
-		code = getHighlighter().codeToHtml(container.innerHTML, {
-			lang: "svelte",
-			themes: {
-				light: "vitesse-light",
-				dark: "vitesse-dark",
-			},
-		});
-	});
+	let copyTimeout: Timer | undefined;
+	let copyStatus: "copied" | "failed" | null = null;
+
+	const [send, receive] = crossfade({ duration: 150 });
+
+	function copyCode() {
+		if (navigator.clipboard) {
+			try {
+				navigator.clipboard.writeText(blockRef.innerText);
+				copyStatus = "copied";
+			} catch (err) {
+				console.error(
+					"Failed to copy code: Writing to the clipboard is not allowed",
+				);
+				copyStatus = "failed";
+			}
+		} else {
+			console.error(
+				"Failed to copy code: Clipboard API is not available in not secure contexts",
+			);
+			copyStatus = "failed";
+		}
+
+		clearTimeout(copyTimeout);
+
+		copyTimeout = setTimeout(() => {
+			copyStatus = null;
+		}, 1500);
+	}
 </script>
 
-<div class="flex flex-col">
+<div class="mt-5 flex flex-col">
 	<div
 		class="flex flex-row justify-between border-b border-muted px-4 pb-2 text-sm text-muted-foreground"
 	>
 		<div class="flex flex-row gap-3">
 			<button
-				class="font-semibold transition-colors hover:text-primary data-[active]:text-primary"
+				class="relative font-semibold transition-colors hover:text-primary data-[active]:text-primary"
 				on:click={() => (showCode = false)}
 				data-active={!showCode ? "" : undefined}
 			>
 				Preview
+				{#if !showCode}
+					<div
+						in:send={{ key: "tab" }}
+						out:receive={{ key: "tab" }}
+						class="absolute -bottom-[0.5625rem] h-px w-full bg-primary"
+					></div>
+				{/if}
 			</button>
 			<button
-				class="font-semibold transition-colors hover:text-primary data-[active]:text-primary"
+				class="relative font-semibold transition-colors hover:text-primary data-[active]:text-primary"
 				on:click={() => (showCode = true)}
 				data-active={showCode ? "" : undefined}
 			>
 				Code
+				{#if showCode}
+					<div
+						in:send={{ key: "tab" }}
+						out:receive={{ key: "tab" }}
+						class="absolute -bottom-[0.5625rem] h-px w-full bg-primary"
+					></div>
+				{/if}
 			</button>
 		</div>
-		<button class="font-semibold transition-colors hover:text-primary">
+		<button
+			class="relative font-semibold transition-colors hover:text-primary"
+			on:click={copyCode}
+		>
 			Copy code
+			{#if copyStatus === "copied"}
+				<div
+					class="absolute -left-12 inline-flex h-full w-full items-center justify-center"
+					transition:scale={{
+						duration: 100,
+						delay: 50,
+						start: 0.7,
+					}}
+				>
+					<Check class="size-5 text-green-600"></Check>
+				</div>
+			{:else if copyStatus === "failed"}
+				<div
+					class="absolute -left-12 inline-flex h-full w-full items-center justify-center"
+					transition:scale={{
+						duration: 100,
+						delay: 50,
+						start: 0.7,
+					}}
+				>
+					<AlertCircle class="size-5 text-red-500"></AlertCircle>
+				</div>
+			{/if}
 		</button>
 	</div>
-	<div
-		class="mt-4 h-[300px] w-full overflow-auto rounded-lg border border-muted shadow-md"
-		bind:this={container}
-	>
-		{#if !showCode}
+	<div class="mt-4 w-full rounded-lg border border-muted shadow-md">
+		<div
+			class="relative"
+			data-preview
+			hidden={!!showCode && $$slots.preview}
+		>
+			<div
+				class="relative flex max-h-[700px] min-h-[350px] w-full items-center justify-center"
+			>
+				<slot name="preview" />
+			</div>
+		</div>
+		<div
+			class="max-h-[700px] min-h-[350px] w-full overflow-auto"
+			data-preview-code
+			hidden={!showCode && $$slots.default}
+			bind:this={blockRef}
+		>
 			<slot />
-		{:else}
-			{@html code}
-		{/if}
+		</div>
 	</div>
 </div>
 
@@ -57,4 +132,54 @@
 	div > :global(.shiki) {
 		@apply h-fit min-h-full w-fit min-w-full p-3;
 	}
-</style> -->
+
+	[data-preview] {
+		--background-color: 247 247 247;
+		background-color: rgb(var(--background-color));
+	}
+
+	[data-preview]:is(.dark *) {
+		--background-color: 18 18 18;
+	}
+
+	[data-preview]::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background-image: radial-gradient(
+				circle at center,
+				rgba(0, 0, 0, 0) 50%,
+				rgb(var(--background-color)) 80%,
+				rgb(var(--background-color)) 100%
+			),
+			radial-gradient(
+				circle at 1px 1px,
+				rgb(115 115 115 / 0.5) 1px,
+				transparent 0
+			);
+		background-size:
+			115% 115%,
+			1.5rem 1.5rem;
+		background-repeat: no-repeat, repeat;
+		background-position:
+			center center,
+			0.5rem center;
+		z-index: 1;
+	}
+
+	[data-preview]::after {
+		background-image: radial-gradient(
+			ellipse at center,
+			rgba(255, 255, 255, 0) 0%,
+			rgba(255, 255, 255, 1) 70%,
+			rgba(255, 255, 255, 1) 100%
+		);
+	}
+
+	[data-preview] > :global(*) {
+		z-index: 10;
+	}
+</style>

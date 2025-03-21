@@ -1,5 +1,4 @@
 <script lang="ts">
-	import CodeBlock from "$components/CodeBlock.svelte";
     import { h3 as H3 } from "$components/markdown/index";
 	import FooterNavigation from "$components/FooterNavigation.svelte";
 </script>

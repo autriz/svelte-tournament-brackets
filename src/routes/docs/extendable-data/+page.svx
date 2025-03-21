@@ -1,6 +1,5 @@
 <script lang="ts">
 	import FooterNavigation from "$components/FooterNavigation.svelte";
-	import CodeBlock from "$components/CodeBlock.svelte";
 </script>
 
 # Extendable data

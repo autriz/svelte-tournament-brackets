@@ -97,6 +97,6 @@
 
 <style>
 	div > :global(.shiki) {
-		@apply overflow-x-auto px-6 py-5;
+		@apply overflow-auto px-6 py-5;
 	}
 </style>

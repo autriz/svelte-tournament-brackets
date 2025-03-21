@@ -79,6 +79,7 @@ export default {
 			},
 			fontFamily: {
 				sans: ["Inter", ...defaultTheme.fontFamily.sans],
+				geist: ["Geist Mono", ...defaultTheme.fontFamily.mono],
 			},
 			keyframes: {
 				animatedgradient: {

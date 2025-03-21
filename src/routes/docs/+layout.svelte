@@ -49,11 +49,11 @@
 	>
 		<div class="px-4">
 			<div
-				class="border-b border-dashed border-neutral-300 pb-3.5 font-semibold dark:border-neutral-700"
+				class="border-b border-dashed border-neutral-300 pb-3.5 text-[15px] font-semibold dark:border-neutral-700"
 			>
 				<a class="flex gap-1" href="/">
 					<p class="text-[#f96743]">Svelte</p>
-					<span><p>Tournament Brackets</p></span>
+					<p>Tournament Brackets</p>
 				</a>
 			</div>
 		</div>
@@ -141,13 +141,13 @@
 				pt-3 dark:border-neutral-700"
 			>
 				<ThemeToggleButton
-					class="size-8 cursor-default border border-muted transition-colors hover:bg-foreground/10 [&_svg]:size-4"
+					class="size-8 cursor-default border border-neutral-300 transition-colors hover:bg-foreground/10 dark:border-neutral-700 [&_svg]:size-4"
 				/>
 				<Link
 					href="https://github.com/autriz/svelte-tournament-brackets"
 					title="Go to GitHub page"
 					class="relative inline-flex size-8 items-center justify-center 
-					rounded-md border border-muted px-2 py-1 transition-colors hover:bg-foreground/10"
+					rounded-md border border-neutral-300 px-2 py-1 transition-colors hover:bg-foreground/10 dark:border-neutral-700"
 				>
 					<GithubMark class="size-6" />
 				</Link>

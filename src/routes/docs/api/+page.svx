@@ -1,7 +1,7 @@
 <script lang="ts">
-	import CodeBlock from "$components/CodeBlock.svelte";
 	import FooterNavigation from "$components/FooterNavigation.svelte";
 	import Preview from "$components/Preview.svelte";
+	import SingleElimSimple from "$components/demos/single-elim-simple.svelte";
 </script>
 
 # API
@@ -12,17 +12,19 @@
 
 ### Single Elimination Bracket
 
-<!-- <Preview>
-	<div>Hello</div>
-	<div>World!</div>
-</Preview> -->
+<Preview name="single-elim-simple">
+	<slot slot="preview">
+		<SingleElimSimple />
+	</slot>
+</Preview>
 
 ### Double Elimination Bracket
 
-<!-- <Preview>
-	<div>Hello</div>
-	<div>World!</div>
-</Preview> -->
+<Preview name="single-elim-simple">
+	<slot slot="preview">
+		<SingleElimSimple />
+	</slot>
+</Preview>
 
 <FooterNavigation
 	previous={{ href: "/docs/getting-started", title: "Getting Started" }}

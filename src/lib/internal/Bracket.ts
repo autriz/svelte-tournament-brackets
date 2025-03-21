@@ -16,15 +16,15 @@ export const defaultConfig = {
 		right: 10,
 	},
 	matchStyle: {
-		height: 54,
-		width: 150,
+		height: 55,
+		width: 152,
 		gap: 60,
 		align: "center",
 	},
 	showRoundHeaders: true,
 	roundHeaderStyle: {
 		height: 48,
-		width: 150,
+		width: 152,
 		bottomMargin: 50,
 		align: "center",
 	},

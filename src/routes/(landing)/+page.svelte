@@ -12,9 +12,8 @@
 			<h1
 				class="inline-flex items-center gap-3 text-2xl md:text-5xl lg:text-6xl"
 			>
-				<span class="flex w-fit items-center text-[#f96743]">
-					Svelte
-				</span> Tournament Brackets
+				<span class="text-[#f96743]">Svelte</span>
+				<span>Tournament Brackets</span>
 			</h1>
 		</div>
 		<!-- <CopyButton class="mt-6" /> -->
