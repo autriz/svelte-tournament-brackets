@@ -67,7 +67,7 @@
 				<ul class="space-y-1">
 					<li>
 						<Link
-							href="getting-started"
+							href="/docs/getting-started"
 							class="flex rounded-md px-2 py-1 text-sm text-neutral-800 
 							transition-colors [transition-duration:100ms] hover:bg-neutral-200 
 							hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
@@ -79,7 +79,7 @@
 					</li>
 					<li>
 						<Link
-							href="api"
+							href="/docs/api"
 							class="flex rounded-md px-2 py-1 text-sm text-neutral-800 
 							transition-colors [transition-duration:100ms] hover:bg-neutral-200 
 							hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
@@ -98,7 +98,7 @@
 				<ul class="space-y-1">
 					<li>
 						<Link
-							href="bring-your-own-design"
+							href="/docs/bring-your-own-design"
 							class="flex rounded-md px-2 py-1 text-sm text-neutral-800 
 							transition-colors [transition-duration:100ms] hover:bg-neutral-200 
 							hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
@@ -110,7 +110,7 @@
 					</li>
 					<li>
 						<Link
-							href="extendable-data"
+							href="/docs/extendable-data"
 							class="flex rounded-md px-2 py-1 text-sm text-neutral-800 
 							transition-colors [transition-duration:100ms] hover:bg-neutral-200 
 							hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
@@ -127,10 +127,17 @@
 					>Examples</span
 				>
 				<ul class="space-y-1">
-					<li
-						class="flex w-full rounded-md px-2 py-1 text-sm hover:bg-neutral-700"
-					>
-						TODO!
+					<li>
+						<Link
+							href="/docs/examples/default"
+							class="flex rounded-md px-2 py-1 text-sm text-neutral-800 
+							transition-colors [transition-duration:100ms] hover:bg-neutral-200 
+							hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
+							dark:text-neutral-300 dark:hover:bg-neutral-700 
+							dark:hover:text-white dark:data-[current]:bg-neutral-700 dark:data-[current]:text-white"
+						>
+							Default
+						</Link>
 					</li>
 				</ul>
 			</div>
