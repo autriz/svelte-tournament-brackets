@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { copyToClipboard, type CopyResult } from "$docs/utils/clipboard";
 	import clsx from "clsx";
 	import { AlertCircle, Check } from "lucide-svelte";
 	import { scale, crossfade } from "svelte/transition";
@@ -11,27 +12,12 @@
 	let blockRef: HTMLElement;
 
 	let copyTimeout: Timer | undefined;
-	let copyStatus: "copied" | "failed" | null = null;
+	let copyStatus: CopyResult | null = null;
 
 	const [send, receive] = crossfade({ duration: 150 });
 
 	function copyCode() {
-		if (navigator.clipboard) {
-			try {
-				navigator.clipboard.writeText(blockRef.innerText);
-				copyStatus = "copied";
-			} catch (err) {
-				console.error(
-					"Failed to copy code: Writing to the clipboard is not allowed",
-				);
-				copyStatus = "failed";
-			}
-		} else {
-			console.error(
-				"Failed to copy code: Clipboard API is not available in not secure contexts",
-			);
-			copyStatus = "failed";
-		}
+		copyStatus = copyToClipboard(blockRef.innerText);
 
 		clearTimeout(copyTimeout);
 
