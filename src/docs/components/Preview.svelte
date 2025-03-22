@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { copyToClipboard, type CopyResult } from "$docs/utils/clipboard";
-	import clsx from "clsx";
 	import { AlertCircle, Check } from "lucide-svelte";
 	import { scale, crossfade } from "svelte/transition";
 
 	/** Name pointing to preview source code file. */
-	// svelte-ignore unused-export-let
 	export const name: string | undefined = undefined;
 
 	let showCode = false;
