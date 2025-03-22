@@ -16,18 +16,18 @@
 		<a class="items-end flex flex-row-reverse mr-auto group" href={previous.href}>
 			<div class="flex flex-col text-start">
 				<span class="text-[14px] text-muted-foreground">Previous page</span>
-				<span class="text-[20px]">{previous.title}</span>
+				<span class="text-[15px] font-medium">{previous.title}</span>
 			</div>
-			<ChevronLeft class="mr-3 text-muted-foreground group-hover:text-foreground group-hover:-translate-x-0.5 transition-all" />
+			<ChevronLeft class="mr-1 text-muted-foreground group-hover:text-foreground group-hover:-translate-x-0.5 transition-all" />
 		</a>
 	{/if}
 	{#if next}
 		<a class="items-end flex ml-auto group" href={next.href}>
 			<div class="flex flex-col text-end">
 				<span class="text-[14px] text-muted-foreground">Next page</span>
-				<span class="text-[20px]">{next.title}</span>
+				<span class="text-[15px] font-medium">{next.title}</span>
 			</div>
-			<ChevronRight class="ml-3 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
+			<ChevronRight class="ml-1 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
 		</a>
 	{/if}
 </div>
