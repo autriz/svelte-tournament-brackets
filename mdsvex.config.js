@@ -52,7 +52,7 @@ export const mdsvexOptions = {
 
 			meta = meta ?? "";
 
-			return `<Components.CodeBlock ${meta} code={\`${code}\`}>{@html \`${html}\`}</Components.CodeBlock>`;
+			return `<Components.CodeBlock ${meta}>{@html \`${html}\`}</Components.CodeBlock>`;
 		},
 	},
 };

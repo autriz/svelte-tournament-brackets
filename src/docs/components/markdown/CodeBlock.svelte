@@ -4,17 +4,17 @@
 	import { AlertCircle, Check, Clipboard } from "lucide-svelte";
 	import { scale } from "svelte/transition";
 
-	export let code: string;
 	let className: string | undefined = undefined;
 	export { className as class };
 	export let style: string | undefined = undefined;
 	export let disableCopy: boolean = false;
 
+	let blockRef: HTMLElement;
 	let copyTimeout: Timer | undefined;
 	let copyStatus: "copied" | "failed" | null = null;
 
 	function copyCode() {
-		copyStatus = copyToClipboard(code);
+		copyStatus = copyToClipboard(blockRef.innerText);
 
 		clearTimeout(copyTimeout);
 
@@ -24,13 +24,7 @@
 	}
 </script>
 
-<div
-	class={clsx(
-		"group relative overflow-x-auto rounded-lg shadow-md",
-		className,
-	)}
-	{style}
->
+<div class={clsx("group relative", className)} {style}>
 	{#if !disableCopy}
 		<div class="absolute right-[12px] top-[12px] inline-flex size-8">
 			<button
@@ -78,7 +72,13 @@
 			</button>
 		</div>
 	{/if}
-	<slot />
+	<div
+		class="overflow-x-auto rounded-lg shadow-md"
+		data-code-block
+		bind:this={blockRef}
+	>
+		<slot />
+	</div>
 </div>
 
 <style>
