@@ -11,4 +11,8 @@ TODO
 		href: "/docs/bring-your-own-design",
 		title: "Bring Your Own Design",
 	}}
+	next={{
+		href: "/docs/examples/default",
+		title: "Default"
+	}}
 />

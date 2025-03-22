@@ -151,7 +151,11 @@ function visitorCallback(node, index, parent) {
 				),
 				node.value.slice(node.value.indexOf("</Preview>")),
 			];
-			parts.splice(2, 0, `\t${highlightedCode}\n`);
+			parts.splice(
+				2,
+				0,
+				`\t<slot slot="code">${highlightedCode}</slot>\n`,
+			);
 
 			parent.children[index].value = parts.join("");
 		}

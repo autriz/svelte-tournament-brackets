@@ -13,17 +13,13 @@
 ### Single Elimination Bracket
 
 <Preview name="single-elim-simple">
-	<slot slot="preview">
-		<SingleElimSimple />
-	</slot>
+	<SingleElimSimple />
 </Preview>
 
 ### Double Elimination Bracket
 
 <Preview name="single-elim-simple">
-	<slot slot="preview">
-		<SingleElimSimple />
-	</slot>
+	<SingleElimSimple />
 </Preview>
 
 <FooterNavigation

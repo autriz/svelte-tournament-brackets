@@ -4,7 +4,9 @@
 	import { scale, crossfade } from "svelte/transition";
 
 	/** Name pointing to preview source code file. */
-	export const name: string | undefined = undefined;
+	export let name: string | undefined = undefined;
+
+	$: shouldRenderPreviewCode = !!name;
 
 	let showCode = false;
 	let blockRef: HTMLElement;
@@ -26,94 +28,107 @@
 </script>
 
 <div class="mt-5 flex flex-col">
-	<div
-		class="flex flex-row justify-between border-b border-muted px-4 pb-2 text-sm text-muted-foreground"
-	>
-		<div class="flex flex-row gap-3">
+	{#if shouldRenderPreviewCode}
+		<div
+			class="flex flex-row justify-between border-b border-muted px-4 pb-2 text-sm text-muted-foreground"
+		>
+			<div class="flex flex-row gap-3">
+				<button
+					class="relative font-semibold transition-colors hover:text-primary data-[active]:text-primary"
+					on:click={() => (showCode = false)}
+					data-active={!showCode ? "" : undefined}
+				>
+					Preview
+					{#if !showCode}
+						<div
+							in:send={{ key: "tab" }}
+							out:receive={{ key: "tab" }}
+							class="absolute -bottom-[0.5625rem] h-px w-full bg-primary"
+						></div>
+					{/if}
+				</button>
+				<button
+					class="relative font-semibold transition-colors hover:text-primary data-[active]:text-primary"
+					on:click={() => (showCode = true)}
+					data-active={showCode ? "" : undefined}
+				>
+					Code
+					{#if showCode}
+						<div
+							in:send={{ key: "tab" }}
+							out:receive={{ key: "tab" }}
+							class="absolute -bottom-[0.5625rem] h-px w-full bg-primary"
+						></div>
+					{/if}
+				</button>
+			</div>
 			<button
-				class="relative font-semibold transition-colors hover:text-primary data-[active]:text-primary"
-				on:click={() => (showCode = false)}
-				data-active={!showCode ? "" : undefined}
+				class="relative font-semibold transition-colors hover:text-primary"
+				on:click={copyCode}
 			>
-				Preview
-				{#if !showCode}
+				Copy code
+				{#if copyStatus === "copied"}
 					<div
-						in:send={{ key: "tab" }}
-						out:receive={{ key: "tab" }}
-						class="absolute -bottom-[0.5625rem] h-px w-full bg-primary"
-					></div>
-				{/if}
-			</button>
-			<button
-				class="relative font-semibold transition-colors hover:text-primary data-[active]:text-primary"
-				on:click={() => (showCode = true)}
-				data-active={showCode ? "" : undefined}
-			>
-				Code
-				{#if showCode}
+						class="absolute -left-12 inline-flex h-full w-full items-center justify-center"
+						transition:scale={{
+							duration: 100,
+							delay: 50,
+							start: 0.7,
+						}}
+					>
+						<Check class="size-5 text-green-600"></Check>
+					</div>
+				{:else if copyStatus === "failed"}
 					<div
-						in:send={{ key: "tab" }}
-						out:receive={{ key: "tab" }}
-						class="absolute -bottom-[0.5625rem] h-px w-full bg-primary"
-					></div>
+						class="absolute -left-12 inline-flex h-full w-full items-center justify-center"
+						transition:scale={{
+							duration: 100,
+							delay: 50,
+							start: 0.7,
+						}}
+					>
+						<AlertCircle class="size-5 text-red-500"></AlertCircle>
+					</div>
 				{/if}
 			</button>
 		</div>
-		<button
-			class="relative font-semibold transition-colors hover:text-primary"
-			on:click={copyCode}
-		>
-			Copy code
-			{#if copyStatus === "copied"}
+		<div class="mt-4 w-full rounded-lg border border-muted shadow-md">
+			<div
+				class="relative"
+				data-preview
+				hidden={!!showCode && $$slots.default}
+			>
 				<div
-					class="absolute -left-12 inline-flex h-full w-full items-center justify-center"
-					transition:scale={{
-						duration: 100,
-						delay: 50,
-						start: 0.7,
-					}}
+					class="relative flex max-h-[700px] min-h-[350px] w-full items-center justify-center"
 				>
-					<Check class="size-5 text-green-600"></Check>
+					<slot />
 				</div>
-			{:else if copyStatus === "failed"}
-				<div
-					class="absolute -left-12 inline-flex h-full w-full items-center justify-center"
-					transition:scale={{
-						duration: 100,
-						delay: 50,
-						start: 0.7,
-					}}
-				>
-					<AlertCircle class="size-5 text-red-500"></AlertCircle>
-				</div>
-			{/if}
-		</button>
-	</div>
-	<div class="mt-4 w-full rounded-lg border border-muted shadow-md">
+			</div>
+			<div
+				class="max-h-[700px] min-h-[350px] w-full overflow-auto"
+				data-preview-code
+				hidden={!showCode && $$slots.code}
+				bind:this={blockRef}
+			>
+				<slot name="code" />
+			</div>
+		</div>
+	{:else}
 		<div
-			class="relative"
+			class="relative w-full rounded-lg border border-muted shadow-md"
 			data-preview
-			hidden={!!showCode && $$slots.preview}
 		>
 			<div
 				class="relative flex max-h-[700px] min-h-[350px] w-full items-center justify-center"
 			>
-				<slot name="preview" />
+				<slot />
 			</div>
 		</div>
-		<div
-			class="max-h-[700px] min-h-[350px] w-full overflow-auto"
-			data-preview-code
-			hidden={!showCode && $$slots.default}
-			bind:this={blockRef}
-		>
-			<slot />
-		</div>
-	</div>
+	{/if}
 </div>
 
 <style>
-	div > :global(.shiki) {
+	[data-preview-code] > :global(.shiki) {
 		@apply h-fit min-h-full w-fit min-w-full p-3;
 	}
 
