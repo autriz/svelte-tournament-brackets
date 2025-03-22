@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { copyToClipboard } from "$docs/utils/clipboard";
+	import { copyToClipboard, type CopyResult } from "$docs/utils/clipboard";
 	import clsx from "clsx";
 	import { AlertCircle, Check, Clipboard } from "lucide-svelte";
 	import { scale } from "svelte/transition";
@@ -11,7 +11,7 @@
 
 	let blockRef: HTMLElement;
 	let copyTimeout: Timer | undefined;
-	let copyStatus: "copied" | "failed" | null = null;
+	let copyStatus: CopyResult | null = null;
 
 	function copyCode() {
 		copyStatus = copyToClipboard(blockRef.innerText);
