@@ -45,12 +45,12 @@
 	on:click={() => onMatchClick?.(match)}
 >
 	<div
-		class={clsx([
-			"box-border flex grow items-center rounded-t-sm border dark:border-neutral-600 border-neutral-400 \
-			transition-colors dark:hover:!border-neutral-400 hover:!border-neutral-600 data-[disabled]:opacity-80 \
-			data-[disabled]:select-none data-[disabled]:cursor-auto",
-			match.entrant1 && `id-${match.entrant1.entrantId} data-[hovered]:dark:!border-neutral-400 data-[hovered]:!border-neutral-600`
-		])}
+		class="box-border flex grow items-center rounded-t-sm border 
+			dark:border-neutral-600 border-neutral-400 transition-colors 
+			dark:hover:!border-neutral-400 hover:!border-neutral-600 
+			data-[disabled]:opacity-80 data-[disabled]:select-none 
+			data-[disabled]:cursor-auto data-[hovered]:dark:!border-neutral-400 
+			data-[hovered]:!border-neutral-600"
 		data-disabled={match.entrant1 ? undefined : true}
 		aria-disabled={match.entrant1 ? undefined : true}
 		data-hovered={isTopHovered ? true : undefined}
@@ -87,12 +87,12 @@
 		</span>
 	</div>
 	<div
-		class={clsx([
-			"box-border flex grow items-center rounded-b-sm border dark:border-neutral-600 border-neutral-400 \
-			transition-colors dark:hover:!border-neutral-400 hover:!border-neutral-600 data-[disabled]:opacity-80 \
-			data-[disabled]:select-none data-[disabled]:cursor-auto",
-			match.entrant2 && `id-${match.entrant2.entrantId} data-[hovered]:dark:!border-neutral-400 data-[hovered]:!border-neutral-600`
-		])}
+		class="box-border flex grow items-center rounded-b-sm border 
+			dark:border-neutral-600 border-neutral-400 transition-colors 
+			dark:hover:!border-neutral-400 hover:!border-neutral-600 
+			data-[disabled]:opacity-80 data-[disabled]:select-none 
+			data-[disabled]:cursor-auto data-[hovered]:dark:!border-neutral-400 
+			data-[hovered]:!border-neutral-600"
 		data-disabled={match.entrant2 ? undefined : true}
 		aria-disabled={match.entrant2 ? undefined : true}
 		data-hovered={isBottomHovered ? true : undefined}
