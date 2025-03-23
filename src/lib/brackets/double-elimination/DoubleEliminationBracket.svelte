@@ -26,6 +26,7 @@
 		RoundHeader 
 	} from "$lib/brackets/components";
 	import {
+	cn,
 		generateBracketData,
 		getEntrantIndices,
 		getMatchPositionDataInner
@@ -168,7 +169,7 @@
 	export { height, width };
 </script>
 
-<svg x="0" y="0" width={width} {height} class={clsx(className)}>
+<svg x="0" y="0" width={width} {height} class={cn("fill-transparent", className)}>
 	<rect x="0" y="0" width={width} {height} />
 	<UpperBracket bracketData={winnerBracketData} {config}>
 		<!-- 

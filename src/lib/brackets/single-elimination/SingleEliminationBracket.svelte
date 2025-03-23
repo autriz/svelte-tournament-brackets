@@ -26,6 +26,7 @@
 		RoundHeader 
 	} from "$lib/brackets/components/index.js";
 	import {
+	cn,
 		generateBracketData,
 		getEntrantIndices,
 		getPreviousMatches,
@@ -93,7 +94,7 @@
 	export { height, width };
 </script>
 
-<svg x="0" y="0" {width} {height} class={clsx(className)}>
+<svg x="0" y="0" {width} {height} class={cn("fill-transparent", className)}>
 	<rect x="0" y="0" {width} {height} />
 	{#each bracketData as round, roundIdx}
 		{@const x = round.matches[0].position.x}
