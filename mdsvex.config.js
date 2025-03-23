@@ -102,22 +102,22 @@ function visitorCallback(node, index, parent) {
 		 * 	This AST visitor treats continuous block of code as one node
 		 * 	i.e this:
 		 *
-		 * 	<Preview name="slot-comp">
-		 * 		<slot slot="preview">...</slot>
+		 * 	<Preview name="test-comp">
+		 * 		<TestComp />
 		 * 	</Preview>
 		 *
 		 * 	will result in something like this:
 		 *
 		 * 	{
 		 * 		type: 'raw',
-		 * 		value: '<Preview name="test-comp">\n\t<slot slot="preview">\n\t\t<TestComp />\n\t</slot>\n</Preview>'
+		 * 		value: '<Preview name="test-comp">\n\t<TestComp />\n</Preview>'
 		 * 	},
 		 *
 		 * 	whereas this:
 		 *
-		 * 	<Preview name="slot-comp">
+		 * 	<Preview name="test-comp">
 		 *
-		 * 		<slot slot="preview">...</slot>
+		 * 		<TestComp />
 		 *
 		 * 	</Preview>
 		 *
@@ -134,7 +134,7 @@ function visitorCallback(node, index, parent) {
 		 * 		},
 		 * 		{
 		 * 			type: 'raw',
-		 * 			value: '\t<slot slot="preview">\n\t\t<TestComp />\n\t</slot>\n\t\n</Preview>'
+		 * 			value: '\t<TestComp />\n\t\n</Preview>'
 		 * 		}
 		 * 	]
 		 *
@@ -161,7 +161,8 @@ function visitorCallback(node, index, parent) {
 		}
 		// if not, treat as if it contains spaces around preview snippet
 		else {
-			parent.children[index + 1].value = highlightedCode;
+			parent.children[index + 1].value =
+				`\t<slot slot="code">${highlightedCode}</slot>\n`;
 		}
 	}
 }

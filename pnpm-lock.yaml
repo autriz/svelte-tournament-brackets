@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      tailwind-merge:
+        specifier: ^3.0.2
+        version: 3.0.2
     devDependencies:
       '@sveltejs/adapter-auto':
         specifier: ^3.2.4
@@ -1190,6 +1194,9 @@ packages:
     resolution: {integrity: sha512-IY1rnGr6izd10B0A8LqsBfmlT5OILVuZ7XsI0vdGPEvuonFV7NYEUK4dAkm9Zg2q0Um92kYjTpS1CAP3Nh/KWw==}
     engines: {node: '>=16'}
 
+  tailwind-merge@3.0.2:
+    resolution: {integrity: sha512-l7z+OYZ7mu3DTqrL88RiKrKIqO3NcpEO8V/Od04bNpvk0kiIFndGEoqfuzvj4yuhRkHKjRkII2z+KS2HfPcSxw==}
+
   tailwindcss@3.4.11:
     resolution: {integrity: sha512-qhEuBcLemjSJk5ajccN9xJFtM/h0AVCPaA6C92jNP+M2J8kX+eMJHI7R2HFKUvvAsMpcfLILMCFYSeDwpMmlUg==}
     engines: {node: '>=14.0.0'}
@@ -2330,6 +2337,8 @@ snapshots:
       locate-character: 3.0.0
       magic-string: 0.30.11
       periscopic: 3.1.0
+
+  tailwind-merge@3.0.2: {}
 
   tailwindcss@3.4.11:
     dependencies:
