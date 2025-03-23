@@ -79,4 +79,4 @@
 	};
 </script>
 
-<SingleEliminationBracket class="fill-transparent" {data} />
+<SingleEliminationBracket {data} />
