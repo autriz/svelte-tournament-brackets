@@ -8,7 +8,6 @@
 		Entrant extends BaseEntrant = BaseEntrant
 	"
 >
-	import { clsx } from "clsx";
 	import { setCtx } from "$lib/internal/ctx.js";
 	import type {
 		BaseEntrant, 

@@ -17,8 +17,7 @@
 		MatchData,
 		BaseMatchEntrant
 	} from "$lib/internal/types";
-		import { clsx } from "clsx";
-		import { setCtx } from "$lib/internal/ctx";
+	import { setCtx } from "$lib/internal/ctx";
 	import { 
 		Connector, 
 		MatchWrapper, 
@@ -26,7 +25,7 @@
 		RoundHeader 
 	} from "$lib/brackets/components";
 	import {
-	cn,
+		cn,
 		generateBracketData,
 		getEntrantIndices,
 		getMatchPositionDataInner
