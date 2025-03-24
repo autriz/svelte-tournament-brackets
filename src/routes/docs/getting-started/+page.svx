@@ -44,4 +44,9 @@ Bracket can be placed with no setup, just import it and give it some data to wor
 <DoubleEliminationBracket {data} />
 ```
 
-<FooterNavigation next={{ href: "/docs/api", title: "API" }} />
+<FooterNavigation 
+	next={{ 
+		href: "/docs/single-elimination-bracket", 
+		title: "Single Elimination Bracket" 
+	}} 
+/>

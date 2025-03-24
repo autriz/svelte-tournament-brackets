@@ -19,41 +19,41 @@
 			{
 				matchId: 1,
 				roundId: 1,
-				entrant1: {
-					entrantId: 1,
-					entrantScore: 2,
-					entrantStatus: "LOST",
+				opponent1: {
+					opponentId: 1,
+					opponentScore: 2,
+					opponentStatus: "LOST",
 				},
-				entrant2: {
-					entrantId: 2,
-					entrantScore: 3,
-					entrantStatus: "WON",
+				opponent2: {
+					opponentId: 2,
+					opponentScore: 3,
+					opponentStatus: "WON",
 				},
 				status: "DONE",
 			},
 			{
 				matchId: 2,
 				roundId: 1,
-				entrant1: {
-					entrantId: 3,
-					entrantScore: 3,
-					entrantStatus: "WON",
+				opponent1: {
+					opponentId: 3,
+					opponentScore: 3,
+					opponentStatus: "WON",
 				},
-				entrant2: {
-					entrantId: 4,
-					entrantScore: 1,
-					entrantStatus: "LOST",
+				opponent2: {
+					opponentId: 4,
+					opponentScore: 1,
+					opponentStatus: "LOST",
 				},
 				status: "DONE",
 			},
 			{
 				matchId: 3,
 				roundId: 2,
-				entrant1: {
-					entrantId: 2,
+				opponent1: {
+					opponentId: 2,
 				},
-				entrant2: {
-					entrantId: 3,
+				opponent2: {
+					opponentId: 3,
 				},
 				status: "PENDING",
 			},

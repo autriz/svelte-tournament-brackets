@@ -5,11 +5,11 @@
 	export { className as class };
 </script>
 
-<h3
+<code
 	class={cn(
-		"mb-2 mt-8 text-[16px] font-semibold text-primary lg:mb-3",
+		"rounded-sm border border-border bg-background px-1 py-0.5 text-foreground",
 		className,
 	)}
 >
 	<slot />
-</h3>
+</code>

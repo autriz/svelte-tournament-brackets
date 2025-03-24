@@ -1,8 +1,8 @@
 <script lang="ts">
-	import clsx from "clsx";
+	import { cn } from "$lib/internal/utils";
 
 	let className: string | undefined = undefined;
 	export { className as class };
 </script>
 
-<p class={clsx("text-muted-foreground", className)}><slot /></p>
+<p class={cn("text-muted-foreground", className)}><slot /></p>

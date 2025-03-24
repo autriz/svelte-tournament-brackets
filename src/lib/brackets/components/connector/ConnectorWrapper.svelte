@@ -1,33 +1,31 @@
 <script 
 	lang="ts"
 	generics="
-		MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-		Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>
+		Match extends BaseMatch = BaseMatch
 	"
 >
-	import { getCtx } from "$lib/internal/ctx.js";
-	import type { 
-		BaseMatch, 
+	import { getCtx } from "$lib/internal/ctx";
+	import type { BaseMatch } from "$lib";
+	import type {
 		MatchData,
 		MatchPositionData,
-		BaseMatchEntrant
 	} from "$lib/internal/types.js";
 	import { shiftMatchXPos } from "$lib/internal/utils";
 
 	let { hoveredEntrantId, config } = getCtx();
 
 	export let snippet: {
-		currentMatch: MatchData<MatchEntrant,Match>;
-		previousTopMatch?: MatchData<MatchEntrant,Match>;
-		previousBottomMatch?: MatchData<MatchEntrant,Match>;
+		currentMatch: MatchData<Match>;
+		previousTopMatch?: MatchData<Match>;
+		previousBottomMatch?: MatchData<Match>;
 	};
 
 	let { currentMatch, previousTopMatch, previousBottomMatch } = snippet;
 
 	const extractPosition = (
-		match: MatchData<MatchEntrant,Match>
+		match: MatchData<Match>
 	): MatchPositionData => ({ 
-		index: match.index, 
+		indices: match.indices, 
 		position: {
 			x: shiftMatchXPos(match.position.x, config),
 			y: match.position.y
@@ -41,16 +39,16 @@
 	let currentMatchPosition: MatchPositionData = extractPosition(currentMatch);
 
 	$: isTopHighlighted =
-		(currentMatch.data.entrant1?.entrantId === $hoveredEntrantId ||
-			currentMatch.data.entrant2?.entrantId === $hoveredEntrantId) &&
-		(previousTopMatch?.data.entrant1?.entrantId === $hoveredEntrantId ||
-			previousTopMatch?.data.entrant2?.entrantId === $hoveredEntrantId);
+		(currentMatch.data.opponent1?.opponentId === $hoveredEntrantId ||
+			currentMatch.data.opponent2?.opponentId === $hoveredEntrantId) &&
+		(previousTopMatch?.data.opponent1?.opponentId === $hoveredEntrantId ||
+			previousTopMatch?.data.opponent2?.opponentId === $hoveredEntrantId);
 
 	$: isBottomHighlighted =
-		(currentMatch.data.entrant1?.entrantId === $hoveredEntrantId ||
-			currentMatch.data.entrant2?.entrantId === $hoveredEntrantId) &&
-		(previousBottomMatch?.data.entrant1?.entrantId === $hoveredEntrantId ||
-			previousBottomMatch?.data.entrant2?.entrantId === $hoveredEntrantId);
+		(currentMatch.data.opponent1?.opponentId === $hoveredEntrantId ||
+			currentMatch.data.opponent2?.opponentId === $hoveredEntrantId) &&
+		(previousBottomMatch?.data.opponent1?.opponentId === $hoveredEntrantId ||
+			previousBottomMatch?.data.opponent2?.opponentId === $hoveredEntrantId);
 </script>
 
 <slot 

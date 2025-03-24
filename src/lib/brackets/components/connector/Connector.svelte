@@ -4,9 +4,8 @@
 		BracketConfig extends BaseBracketConfig = BaseBracketConfig
 	"
 >
-	import clsx from "clsx";
+	import type { BracketConfig as BaseBracketConfig } from "$lib";
 	import type {
-		BracketConfig as BaseBracketConfig,
 		DeepRequired,
 		MatchPositionData,
 	} from "$lib/internal/types.js";

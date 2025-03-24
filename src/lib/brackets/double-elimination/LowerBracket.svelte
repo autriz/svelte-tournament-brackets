@@ -2,8 +2,7 @@
 	lang="ts"
 	generics="
 		Round extends BaseRound = BaseRound,
-		MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-		Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>, 
+		Match extends BaseMatch = BaseMatch, 
 	"
 >
 	import { ConnectorWrapper } from "$lib/brackets/components";
@@ -11,15 +10,14 @@
 	import type {
 		BaseMatch,
 		BaseRound,
-		MatchData,
 		BracketConfig,
+	} from "$lib";
+	import type {
 		DeepRequired,
-		BaseMatchEntrant,
+		RoundWithMatchData,
 	} from "$lib/internal";
 
-	export let bracketData: (Round & {
-		matches: MatchData<MatchEntrant, Match>[];
-	})[];
+	export let bracketData: RoundWithMatchData<Round, Match>[];
 	export let config: DeepRequired<BracketConfig>;
 </script>
 
@@ -65,7 +63,7 @@
 					<slot
 						name="match"
 						match={match.data}
-						indices={match.indices}
+						matchIndices={match.indices}
 					/>
 				</foreignObject>
 			{/each}

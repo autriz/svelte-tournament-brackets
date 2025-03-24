@@ -22,15 +22,15 @@ export default {
 				roundId: 1,
 				nextMatchId: 5,
 				nextLoserMatchId: 9,
-				entrant1: {
-					entrantId: 1,
-					entrantScore: 2,
-					entrantStatus: "WON",
+				opponent1: {
+					opponentId: 1,
+					opponentScore: 2,
+					opponentStatus: "WON",
 				},
-				entrant2: {
-					entrantId: 2,
-					entrantScore: 0,
-					entrantStatus: "LOST",
+				opponent2: {
+					opponentId: 2,
+					opponentScore: 0,
+					opponentStatus: "LOST",
 				},
 				status: "DONE",
 			},
@@ -39,15 +39,15 @@ export default {
 				roundId: 1,
 				nextMatchId: 5,
 				nextLoserMatchId: 9,
-				entrant1: {
-					entrantId: 3,
-					entrantScore: 0,
-					entrantStatus: "LOST",
+				opponent1: {
+					opponentId: 3,
+					opponentScore: 0,
+					opponentStatus: "LOST",
 				},
-				entrant2: {
-					entrantId: 4,
-					entrantScore: 2,
-					entrantStatus: "WON",
+				opponent2: {
+					opponentId: 4,
+					opponentScore: 2,
+					opponentStatus: "WON",
 				},
 				status: "DONE",
 			},
@@ -56,15 +56,15 @@ export default {
 				roundId: 1,
 				nextMatchId: 6,
 				nextLoserMatchId: 10,
-				entrant1: {
-					entrantId: 5,
-					entrantScore: 2,
-					entrantStatus: "WON",
+				opponent1: {
+					opponentId: 5,
+					opponentScore: 2,
+					opponentStatus: "WON",
 				},
-				entrant2: {
-					entrantId: 6,
-					entrantScore: 1,
-					entrantStatus: "LOST",
+				opponent2: {
+					opponentId: 6,
+					opponentScore: 1,
+					opponentStatus: "LOST",
 				},
 				status: "DONE",
 			},
@@ -73,15 +73,15 @@ export default {
 				roundId: 1,
 				nextMatchId: 6,
 				nextLoserMatchId: 10,
-				entrant1: {
-					entrantId: 7,
-					entrantScore: 0,
-					entrantStatus: "LOST",
+				opponent1: {
+					opponentId: 7,
+					opponentScore: 0,
+					opponentStatus: "LOST",
 				},
-				entrant2: {
-					entrantId: 8,
-					entrantScore: 2,
-					entrantStatus: "WON",
+				opponent2: {
+					opponentId: 8,
+					opponentScore: 2,
+					opponentStatus: "WON",
 				},
 				status: "DONE",
 			},
@@ -90,15 +90,15 @@ export default {
 				roundId: 2,
 				nextMatchId: 7,
 				nextLoserMatchId: 11,
-				entrant1: {
-					entrantId: 1,
-					entrantScore: 2,
-					entrantStatus: "WON",
+				opponent1: {
+					opponentId: 1,
+					opponentScore: 2,
+					opponentStatus: "WON",
 				},
-				entrant2: {
-					entrantId: 4,
-					entrantScore: 1,
-					entrantStatus: "LOST",
+				opponent2: {
+					opponentId: 4,
+					opponentScore: 1,
+					opponentStatus: "LOST",
 				},
 				status: "DONE",
 			},
@@ -107,15 +107,15 @@ export default {
 				roundId: 2,
 				nextMatchId: 7,
 				nextLoserMatchId: 11,
-				entrant1: {
-					entrantId: 5,
-					entrantScore: 1,
-					entrantStatus: "LOST",
+				opponent1: {
+					opponentId: 5,
+					opponentScore: 1,
+					opponentStatus: "LOST",
 				},
-				entrant2: {
-					entrantId: 8,
-					entrantScore: 2,
-					entrantStatus: "WON",
+				opponent2: {
+					opponentId: 8,
+					opponentScore: 2,
+					opponentStatus: "WON",
 				},
 				status: "DONE",
 			},
@@ -124,15 +124,15 @@ export default {
 				matchId: 7,
 				roundId: 3,
 				nextMatchId: 13,
-				entrant1: {
-					entrantId: 1,
-					entrantScore: 2,
-					entrantStatus: "WON",
+				opponent1: {
+					opponentId: 1,
+					opponentScore: 2,
+					opponentStatus: "WON",
 				},
-				entrant2: {
-					entrantId: 8,
-					entrantScore: 0,
-					entrantStatus: "LOST",
+				opponent2: {
+					opponentId: 8,
+					opponentScore: 0,
+					opponentStatus: "LOST",
 				},
 				status: "DONE",
 			},
@@ -142,15 +142,15 @@ export default {
 				matchId: 9,
 				roundId: 1,
 				nextMatchId: 11,
-				entrant1: {
-					entrantId: 2,
-					entrantScore: 0,
-					entrantStatus: "LOST",
+				opponent1: {
+					opponentId: 2,
+					opponentScore: 0,
+					opponentStatus: "LOST",
 				},
-				entrant2: {
-					entrantId: 3,
-					entrantScore: 2,
-					entrantStatus: "WON",
+				opponent2: {
+					opponentId: 3,
+					opponentScore: 2,
+					opponentStatus: "WON",
 				},
 				status: "DONE",
 			},
@@ -158,15 +158,15 @@ export default {
 				matchId: 10,
 				roundId: 1,
 				nextMatchId: 12,
-				entrant1: {
-					entrantId: 6,
-					entrantScore: 2,
-					entrantStatus: "WON",
+				opponent1: {
+					opponentId: 6,
+					opponentScore: 2,
+					opponentStatus: "WON",
 				},
-				entrant2: {
-					entrantId: 7,
-					entrantScore: 0,
-					entrantStatus: "LOST",
+				opponent2: {
+					opponentId: 7,
+					opponentScore: 0,
+					opponentStatus: "LOST",
 				},
 				status: "DONE",
 			},
@@ -174,15 +174,15 @@ export default {
 				matchId: 11,
 				roundId: 2,
 				nextMatchId: 12,
-				entrant1: {
-					entrantId: 3,
-					entrantScore: 2,
-					entrantStatus: "WON",
+				opponent1: {
+					opponentId: 3,
+					opponentScore: 2,
+					opponentStatus: "WON",
 				},
-				entrant2: {
-					entrantId: 4,
-					entrantScore: 0,
-					entrantStatus: "LOST",
+				opponent2: {
+					opponentId: 4,
+					opponentScore: 0,
+					opponentStatus: "LOST",
 				},
 				status: "DONE",
 			},
@@ -190,15 +190,15 @@ export default {
 				matchId: 12,
 				roundId: 3,
 				nextMatchId: 13,
-				entrant1: {
-					entrantId: 6,
-					entrantScore: 0,
-					entrantStatus: "LOST",
+				opponent1: {
+					opponentId: 6,
+					opponentScore: 0,
+					opponentStatus: "LOST",
 				},
-				entrant2: {
-					entrantId: 3,
-					entrantScore: 2,
-					entrantStatus: "WON",
+				opponent2: {
+					opponentId: 3,
+					opponentScore: 2,
+					opponentStatus: "WON",
 				},
 				status: "DONE",
 			},
@@ -214,15 +214,15 @@ export default {
 		{
 			matchId: 13,
 			roundId: 4,
-			entrant1: {
-				entrantId: 1,
-				entrantScore: 2,
-				entrantStatus: "WON",
+			opponent1: {
+				opponentId: 1,
+				opponentScore: 2,
+				opponentStatus: "WON",
 			},
-			entrant2: {
-				entrantId: 3,
-				entrantScore: 1,
-				entrantStatus: "LOST",
+			opponent2: {
+				opponentId: 3,
+				opponentScore: 1,
+				opponentStatus: "LOST",
 			},
 			status: "DONE",
 		},

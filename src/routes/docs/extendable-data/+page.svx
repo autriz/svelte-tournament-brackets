@@ -1,10 +1,53 @@
 <script lang="ts">
 	import FooterNavigation from "$components/FooterNavigation.svelte";
+	import Title from "$components/Title.svelte";
 </script>
+
+<Title>
 
 # Extendable data
 
-TODO
+The library allows for flexible type extensions to help you suit your needs and data requirements.
+
+</Title>
+
+## Base types
+
+Library exposes [these base types](https://github.com/autriz/svelte-tournament-brackets/blob/master/src/lib/internal/types.ts) 
+that used to structure data object for brackets. These are bare necesseties to generate a bracket. 
+
+## How to extend
+
+For example we will look at `BaseMatch` interface and try to extend it.
+
+```ts
+export interface BaseMatch {
+	matchId: Id;
+	roundId: Id;
+	nextMatchId?: Id;
+	nextLoserMatchId?: Id;
+	opponent1?: Opponent;
+	opponent2?: Opponent;
+	status: any;
+}
+```
+
+As we can see, `status` property is `any`, because statuses may differ from one implementation 
+to another. We can extend this base interface and change status property to the one we need.
+
+```ts
+interface MyMatch extends BaseMatch {
+	status: "PLAYING" | "DONE" | "TBD" | "PREPARING";
+}
+```
+
+And add our extended interface to the needed `Props` interface as generic.
+
+```ts
+interface MyProps extends BaseProps {
+	matches: MyMatch[];
+};
+```
 
 <FooterNavigation
 	previous={{

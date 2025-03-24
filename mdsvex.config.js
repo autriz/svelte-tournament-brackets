@@ -85,7 +85,12 @@ function visitorCallback(node, index, parent) {
 
 		// TODO: wrap try/catch block around it
 		// Search for source code based on provided name
-		const sourceCode = getComponentSourceCode(name);
+		// and when found, replace all "$lib" imports with
+		// "svelte-tournament-brackets"
+		const sourceCode = getComponentSourceCode(name).replaceAll(
+			"$lib",
+			"svelte-tournament-brackets",
+		);
 
 		// Make it pretty
 		const highlightedCode = escapeSvelte(

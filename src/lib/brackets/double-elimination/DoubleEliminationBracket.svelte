@@ -3,8 +3,7 @@
 	generics="
 		BracketConfig extends DoubleElimBracketConfig = DoubleElimBracketConfig,
 		Round extends BaseRound = BaseRound, 
-		MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-		Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>, 
+		Match extends BaseMatch = BaseMatch,
 		Entrant extends BaseEntrant = BaseEntrant
 	"
 >
@@ -13,10 +12,9 @@
 		BaseRound, 
 		BaseMatch, 
 		DoubleEliminationProps, 
-		DoubleElimBracketConfig, 
-		MatchData,
-		BaseMatchEntrant
-	} from "$lib/internal/types";
+		DoubleElimBracketConfig,
+	} from "$lib";
+	import type { RoundWithMatchData } from "$lib/internal/types";
 	import { setCtx } from "$lib/internal/ctx";
 	import { 
 		Connector, 
@@ -34,7 +32,7 @@
 	import LowerBracket from "./LowerBracket.svelte";
 	import FinalBracket from "./FinalBracket.svelte";
 
-	export let data: DoubleEliminationProps<Round, MatchEntrant, Match, Entrant>;
+	export let data: DoubleEliminationProps<Round, Match, Entrant>;
 	export let bracketConfig: BracketConfig | undefined = undefined;
 	export let onMatchClick: ((match: Match) => void) | undefined = undefined;
 
@@ -47,20 +45,18 @@
 	export { className as class };
 
 	const calculateBracketDimensions = (
-		bracketData: (Round & {
-			matches: MatchData<MatchEntrant, Match>[];
-		})[],
+		bracketData: RoundWithMatchData<Round, Match>[],
 		options?: {
 			additionalX?: number;
 			additionalY?: number;
 		}
 	) => {
 		const [height, width] = bracketData.reduce(
-			([height, width], round) => {
-				const lowestMatchInRound = round.matches[round.matches.length - 1];
+			([height, width], roundData) => {
+				const lowestMatchInRound = roundData.matches[roundData.matches.length - 1];
 
 				if (!lowestMatchInRound)
-					throw new Error(`[Malformed data] Missing matches in round with ID: ${round.roundId}`);
+					throw new Error(`[Malformed data] Missing matches in round with ID: ${roundData.round.roundId}`);
 
 				height = Math.max(
 					height,
@@ -97,7 +93,7 @@
 			additionalY: headerHeight + config.padding.top, 
 			additionalX: config.padding.left
 		}
-	) as (Round & { matches: MatchData<MatchEntrant, Match>[]; })[];
+	);
 	const winnerDimensions = calculateBracketDimensions(
 		winnerBracketData, 
 		{
@@ -116,7 +112,7 @@
 			additionalY: winnerDimensions.height + config.bracketGap,
 			additionalX: config.padding.left
 		}
-	) as (Round & { matches: MatchData<MatchEntrant, Match>[]; })[];
+	);
 	const loserDimensions = calculateBracketDimensions(
 		loserBracketData,
 		{
@@ -126,14 +122,15 @@
 	);
 	const widthWithoutFinals = Math.max(winnerDimensions.width, loserDimensions.width);
 
-	const finalsBracketData = data.finalRounds ?
+	// TODO: rework how finals are stored
+	const finalsBracketData: RoundWithMatchData<Round, Match>[] = data.finalRounds ?
 		data.finalRounds.map((round) => {
 			const roundMatches = data.finalMatches.filter(
 				(match) => match.roundId === round.roundId
 			);
 
 			return {
-				...round,
+				round,
 				matches: roundMatches,
 			};
 		}).map((round, roundIdx, rounds) => {
@@ -153,7 +150,7 @@
 			});
 
 			return {
-				...round,
+				round: round.round,
 				matches: extendedMatches,
 			};
 		}) : [];
@@ -172,213 +169,32 @@
 	<rect x="0" y="0" width={width} {height} />
 	<UpperBracket bracketData={winnerBracketData} {config}>
 		<!-- 
-			we cannot use <slot name="winner-header" slot="header" /> 
-			there, so wrapping tag around slot is the only solution
+			Due to indirection type system can't infer 
+		 	correct type from the passed round property,
+			instead of that we use index to get round object
+			from the root.
 		-->
-		<div slot="header" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:round>
-			<slot name="winner-header" round={round}>
-				<RoundHeader {round} />
-			</slot>
-		</div>
-		<g 
+		<slot slot="header" let:roundIdx>
+			{@const idx = Number(roundIdx)}
+			{#if !$$slots["winner-header"]}
+				<slot name="header" round={winnerBracketData[idx].round}>
+					<RoundHeader round={winnerBracketData[idx].round} />
+				</slot>
+			{:else}
+				<slot name="winner-header" round={winnerBracketData[idx].round} />
+			{/if}
+		</slot>
+		<slot 
 			slot="connector" 
-			style="width: 100%; height: 100%;" 
 			let:topMatchPosition
 			let:bottomMatchPosition
 			let:currentMatchPosition
 			let:isTopHighlighted
 			let:isBottomHighlighted
 		>
-			<slot 
-				name="winner-connector" 
-				{topMatchPosition}
-				{bottomMatchPosition}
-				{currentMatchPosition}
-				{isTopHighlighted}
-				{isBottomHighlighted}
-				{config}
-			>
-				<Connector
-					{topMatchPosition}
-					{bottomMatchPosition}
-					{currentMatchPosition}
-					{isTopHighlighted}
-					{isBottomHighlighted}
-					{config}
-				/>
-			</slot>
-		</g>
-		<div slot="match" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:match let:indices>
-			<MatchWrapper
-				match={match}
-				entrant1={data.entrants.find(
-					(entrant) =>
-						entrant.entrantId ===
-						match.entrant1?.entrantId,
-				)}
-				entrant2={data.entrants.find(
-					(entrant) =>
-						entrant.entrantId ===
-						match.entrant2?.entrantId,
-				)}
-				let:entrant1
-				let:entrant2
-				let:isMatchHovered
-				let:isTopHovered
-				let:isBottomHovered
-				let:onEnter
-				let:onLeave
-			>
-				{@const entrantIndices = getEntrantIndices(data, match)}
+			{#if !$$slots["winner-connector"]}
 				<slot 
-					name="winner-match"
-					match={match}
-					indices={{
-						...entrantIndices,
-						...indices
-					}}
-					{entrant1}
-					{entrant2}
-					{isTopHovered}
-					{isBottomHovered}
-					{isMatchHovered}
-					{onMatchClick}
-					{onEnter}
-					{onLeave}
-				>
-					<Match
-						match={match}
-						indices={{
-							...entrantIndices,
-							...indices
-						}}
-						{entrant1}
-						{entrant2}
-						{isTopHovered}
-						{isBottomHovered}
-						{onMatchClick}
-						{onEnter}
-						{onLeave}
-					/>
-				</slot>
-			</MatchWrapper>
-		</div>
-	</UpperBracket>
-	<LowerBracket bracketData={loserBracketData} {config}>
-		<g 
-			slot="connector" 
-			style="width: 100%; height: 100%;" 
-			let:topMatchPosition
-			let:bottomMatchPosition
-			let:currentMatchPosition
-			let:isTopHighlighted
-			let:isBottomHighlighted
-		>
-			<slot 
-				name="loser-connector" 
-				{topMatchPosition}
-				{bottomMatchPosition}
-				{currentMatchPosition}
-				{isTopHighlighted}
-				{isBottomHighlighted}
-				{config}
-			>
-				<Connector
-					{topMatchPosition}
-					{bottomMatchPosition}
-					{currentMatchPosition}
-					{isTopHighlighted}
-					{isBottomHighlighted}
-					{config}
-				/>
-			</slot>
-		</g>
-		<div slot="match" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:match let:indices>
-			<MatchWrapper 
-				match={match}
-				entrant1={data.entrants.find(
-					(entrant) =>
-						entrant.entrantId ===
-						match.entrant1?.entrantId,
-				)}
-				entrant2={data.entrants.find(
-					(entrant) =>
-						entrant.entrantId ===
-						match.entrant2?.entrantId,
-				)}
-				let:entrant1
-				let:entrant2
-				let:isMatchHovered
-				let:isTopHovered
-				let:isBottomHovered
-				let:onEnter
-				let:onLeave
-			>
-				{@const entrantIndices = getEntrantIndices(data, match)}
-				<slot 
-					name="loser-match"
-					{match}
-					indices={{
-						...entrantIndices,
-						...indices
-					}}
-					{entrant1}
-					{entrant2}
-					{isTopHovered}
-					{isBottomHovered}
-					{isMatchHovered}
-					{onMatchClick}
-					{onEnter}
-					{onLeave}
-				>
-					<Match
-						{match}
-						indices={{
-							...entrantIndices,
-							...indices
-						}}
-						{entrant1}
-						{entrant2}
-						{isTopHovered}
-						{isBottomHovered}
-						{onMatchClick}
-						{onEnter}
-						{onLeave}
-					/>
-				</slot>
-			</MatchWrapper>
-		</div>
-	</LowerBracket>
-	{#if finalsBracketData.length > 0}
-		<FinalBracket 
-			bracketData={finalsBracketData} 
-			bracketHeight={loserDimensions.height}
-			lastWinnerMatch={
-				winnerBracketData[winnerBracketData.length - 1]
-					.matches[0]
-			}
-			lastLoserMatch={
-				loserBracketData[loserBracketData.length - 1]
-					.matches[0]
-			}
-			{config} 
-		>
-			<div slot="header" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:round>
-				<slot name="winner-header" round={round}>
-					<RoundHeader {round} />
-				</slot>
-			</div>
-			<g 
-				slot="connector" 
-				style="width: 100%; height: 100%;" 
-				let:topMatchPosition
-				let:bottomMatchPosition
-				let:currentMatchPosition
-				let:isTopHighlighted
-				let:isBottomHighlighted
-			>
-				<slot 
-					name="finals-connector" 
+					name="connector" 
 					{topMatchPosition}
 					{bottomMatchPosition}
 					{currentMatchPosition}
@@ -395,36 +211,40 @@
 						{config}
 					/>
 				</slot>
-			</g>
-			<div slot="match" xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;" let:match let:indices>
-				<MatchWrapper 
-					match={match}
-					entrant1={data.entrants.find(
-						(entrant) =>
-							entrant.entrantId ===
-							match.entrant1?.entrantId,
-					)}
-					entrant2={data.entrants.find(
-						(entrant) =>
-							entrant.entrantId ===
-							match.entrant2?.entrantId,
-					)}
-					let:entrant1
-					let:entrant2
-					let:isMatchHovered
-					let:isTopHovered
-					let:isBottomHovered
-					let:onEnter
-					let:onLeave
-				>
-					{@const entrantIndices = getEntrantIndices(data, match)}
+			{:else}
+				<slot 
+					name="winner-connector" 
+					{topMatchPosition}
+					{bottomMatchPosition}
+					{currentMatchPosition}
+					{isTopHighlighted}
+					{isBottomHighlighted}
+					{config}
+				/>
+			{/if}
+		</slot>
+		<slot slot="match" let:match let:matchIndices>
+			<MatchWrapper
+				match={match}
+				let:isMatchHovered
+				let:isTopHovered
+				let:isBottomHovered
+				let:onEnter
+				let:onLeave
+			>
+				{@const entrantIndices = getEntrantIndices(data, match)}
+				{@const indices = { ...entrantIndices, ...matchIndices }}
+				{@const entrant1 = data.entrants.find(
+					(entrant) => entrant.entrantId === match.opponent1?.opponentId
+				)}
+				{@const entrant2 = data.entrants.find(
+					(entrant) => entrant.entrantId === match.opponent2?.opponentId
+				)}
+				{#if !$$slots["winner-match"]}
 					<slot 
-						name="finals-match"
+						name="match"
 						{match}
-						indices={{
-							...entrantIndices,
-							...indices
-						}}
+						{indices}
 						{entrant1}
 						{entrant2}
 						{isTopHovered}
@@ -435,11 +255,8 @@
 						{onLeave}
 					>
 						<Match
-							match={match}
-							indices={{
-								...entrantIndices,
-								...indices
-							}}
+							{match}
+							{indices}
 							{entrant1}
 							{entrant2}
 							{isTopHovered}
@@ -449,8 +266,254 @@
 							{onLeave}
 						/>
 					</slot>
+				{:else}
+					<slot 
+						name="winner-match"
+						{match}
+						{indices}
+						{entrant1}
+						{entrant2}
+						{isTopHovered}
+						{isBottomHovered}
+						{isMatchHovered}
+						{onMatchClick}
+						{onEnter}
+						{onLeave}
+					/>
+				{/if}
+			</MatchWrapper>
+		</slot>
+	</UpperBracket>
+	<LowerBracket bracketData={loserBracketData} {config}>
+		<slot 
+			slot="connector"
+			let:topMatchPosition
+			let:bottomMatchPosition
+			let:currentMatchPosition
+			let:isTopHighlighted
+			let:isBottomHighlighted
+		>
+			{#if !$$slots["loser-connector"]}
+				<slot 
+					name="connector"
+					{topMatchPosition}
+					{bottomMatchPosition}
+					{currentMatchPosition}
+					{isTopHighlighted}
+					{isBottomHighlighted}
+					{config}
+				>
+					<Connector
+						{topMatchPosition}
+						{bottomMatchPosition}
+						{currentMatchPosition}
+						{isTopHighlighted}
+						{isBottomHighlighted}
+						{config}
+					/>
+				</slot>
+			{:else}
+				<slot 
+					name="loser-connector" 
+					{topMatchPosition}
+					{bottomMatchPosition}
+					{currentMatchPosition}
+					{isTopHighlighted}
+					{isBottomHighlighted}
+					{config}
+				/>
+			{/if}
+		</slot>
+		<slot slot="match" let:match let:matchIndices>
+			<MatchWrapper 
+				{match}
+				let:isMatchHovered
+				let:isTopHovered
+				let:isBottomHovered
+				let:onEnter
+				let:onLeave
+			>
+				{@const entrantIndices = getEntrantIndices(data, match)}
+				{@const indices = { ...entrantIndices, ...matchIndices }}
+				{@const entrant1 = data.entrants.find(
+					(entrant) => entrant.entrantId === match.opponent1?.opponentId
+				)}
+				{@const entrant2 = data.entrants.find(
+					(entrant) => entrant.entrantId === match.opponent2?.opponentId
+				)}
+				{#if !$$slots["loser-match"]}
+					<slot 
+						name="match"
+						{match}
+						{indices}
+						{entrant1}
+						{entrant2}
+						{isTopHovered}
+						{isBottomHovered}
+						{isMatchHovered}
+						{onMatchClick}
+						{onEnter}
+						{onLeave}
+					>
+						<Match
+							{match}
+							{indices}
+							{entrant1}
+							{entrant2}
+							{isTopHovered}
+							{isBottomHovered}
+							{onMatchClick}
+							{onEnter}
+							{onLeave}
+						/>
+					</slot>
+				{:else}
+					<slot 
+						name="loser-match"
+						{match}
+						{indices}
+						{entrant1}
+						{entrant2}
+						{isTopHovered}
+						{isBottomHovered}
+						{isMatchHovered}
+						{onMatchClick}
+						{onEnter}
+						{onLeave}
+					/>
+				{/if}
+			</MatchWrapper>
+		</slot>
+	</LowerBracket>
+	{#if finalsBracketData.length > 0}
+		<FinalBracket 
+			bracketData={finalsBracketData} 
+			bracketHeight={loserDimensions.height}
+			lastWinnerMatch={
+				winnerBracketData[winnerBracketData.length - 1]
+					.matches[0]
+			}
+			lastLoserMatch={
+				loserBracketData[loserBracketData.length - 1]
+					.matches[0]
+			}
+			{config} 
+		>
+			<!-- 
+				Due to indirection type system can't infer 
+				correct type from the passed round property,
+				instead of that we use index to get round object
+				from the root.
+			-->
+			<slot slot="header" let:roundIdx>
+				{@const idx = Number(roundIdx)}
+				{#if !$$slots["finals-header"]}
+					<slot name="header" round={finalsBracketData[idx].round}>
+						<RoundHeader round={finalsBracketData[idx].round} />
+					</slot>
+				{:else}
+					<slot name="finals-header" round={finalsBracketData[idx].round} />
+				{/if}
+			</slot>
+			<slot
+				slot="connector"
+				let:topMatchPosition
+				let:bottomMatchPosition
+				let:currentMatchPosition
+				let:isTopHighlighted
+				let:isBottomHighlighted
+			>
+				{#if !$$slots["finals-connector"]}
+					<slot 
+						name="connector" 
+						{topMatchPosition}
+						{bottomMatchPosition}
+						{currentMatchPosition}
+						{isTopHighlighted}
+						{isBottomHighlighted}
+						{config}
+					>
+						<Connector
+							{topMatchPosition}
+							{bottomMatchPosition}
+							{currentMatchPosition}
+							{isTopHighlighted}
+							{isBottomHighlighted}
+							{config}
+						/>
+					</slot>
+				{:else}
+					<slot 
+						name="finals-connector" 
+						{topMatchPosition}
+						{bottomMatchPosition}
+						{currentMatchPosition}
+						{isTopHighlighted}
+						{isBottomHighlighted}
+						{config}
+					/>
+				{/if}
+			</slot>
+			<slot slot="match" let:match let:matchIndices>
+				<MatchWrapper 
+					{match}
+					let:isMatchHovered
+					let:isTopHovered
+					let:isBottomHovered
+					let:onEnter
+					let:onLeave
+				>
+					{@const entrantIndices = getEntrantIndices(data, match)}
+					{@const indices = { ...entrantIndices, ...matchIndices }}
+					{@const entrant1 = data.entrants.find(
+						(entrant) => entrant.entrantId === match.opponent1?.opponentId
+					)}
+					{@const entrant2 = data.entrants.find(
+						(entrant) => entrant.entrantId === match.opponent2?.opponentId
+					)}
+					{#if !$$slots["finals-match"]}
+						<slot 
+							name="match"
+							{match}
+							{indices}
+							{entrant1}
+							{entrant2}
+							{isTopHovered}
+							{isBottomHovered}
+							{isMatchHovered}
+							{onMatchClick}
+							{onEnter}
+							{onLeave}
+						>
+							<Match
+								{match}
+								{indices}
+								{entrant1}
+								{entrant2}
+								{isTopHovered}
+								{isBottomHovered}
+								{onMatchClick}
+								{onEnter}
+								{onLeave}
+							/>
+						</slot>
+					{:else}
+						<slot 
+							name="finals-match"
+							{match}
+							{indices}
+							{entrant1}
+							{entrant2}
+							{isTopHovered}
+							{isBottomHovered}
+							{isMatchHovered}
+							{onMatchClick}
+							{onEnter}
+							{onLeave}
+						/>
+					{/if}
 				</MatchWrapper>
-			</div>
+			</slot>
 		</FinalBracket>
 	{/if}
 </svg>

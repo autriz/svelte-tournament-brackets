@@ -1,12 +1,12 @@
 <script lang="ts">
-	import clsx from "clsx";
+	import { cn } from "$lib/internal/utils";
 
 	let className: string | undefined = undefined;
 	export { className as class };
 </script>
 
 <h2
-	class={clsx(
+	class={cn(
 		"mb-3 mt-8 text-[24px] font-semibold text-primary lg:mb-4",
 		className,
 	)}

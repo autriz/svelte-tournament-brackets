@@ -2,32 +2,31 @@
 	lang="ts"
 	generics="
 		Round extends BaseRound = BaseRound,
-		MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-		Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>, 
+		Match extends BaseMatch = BaseMatch, 
 	"
 >
 	import { ConnectorWrapper } from "$lib/brackets/components";
 	import type {
 		BaseMatch,
 		BaseRound,
-		MatchData,
 		BracketConfig,
+	} from "$lib";
+	import type {
+		MatchData,
 		DeepRequired,
-		BaseMatchEntrant,
+		RoundWithMatchData,
 	} from "$lib/internal";
 	import { shiftHeaderXPos, shiftMatchXPos } from "$lib/internal/utils";
 
-	export let bracketData: (Round & {
-		matches: MatchData<MatchEntrant, Match>[];
-	})[];
+	export let bracketData: RoundWithMatchData<Round, Match>[];
 	export let config: DeepRequired<BracketConfig>;
 	export let bracketHeight: number;
-	export let lastWinnerMatch: MatchData;
-	export let lastLoserMatch: MatchData;
+	export let lastWinnerMatch: MatchData<Match>;
+	export let lastLoserMatch: MatchData<Match>;
 </script>
 
-{#each bracketData as round}
-	{@const x = round.matches[0].position.x}
+{#each bracketData as {matches, round: round}, roundIdx}
+	{@const x = matches[0].position.x}
 	<g>
 		{#if config.showRoundHeaders}
 			<g>
@@ -37,12 +36,12 @@
 					width={config.roundHeaderStyle.width}
 					height={config.roundHeaderStyle.height}
 				>
-					<slot name="header" {round} />
+					<slot name="header" {round} {roundIdx} />
 				</foreignObject>
 			</g>
 		{/if}
 		<g>
-			{#each round.matches as match}
+			{#each matches as match}
 				{@const y =
 					(bracketHeight + config.roundHeaderStyle.bottomMargin) / 2}
 				<ConnectorWrapper
@@ -82,7 +81,7 @@
 					<slot
 						name="match"
 						match={match.data}
-						indices={match.indices}
+						matchIndices={match.indices}
 					/>
 				</foreignObject>
 			{/each}

@@ -1,0 +1,22 @@
+<script lang="ts">
+    import FooterNavigation from "$components/FooterNavigation.svelte";
+	import Preview from "$components/Preview.svelte";
+	import SingleElimSimple from "$components/demos/single-elim-simple.svelte";
+</script>
+
+# Double Elimination Bracket
+
+<Preview name="single-elim-simple">
+	<SingleElimSimple />
+</Preview>
+
+<FooterNavigation 
+    previous={{ 
+        href: "/docs/single-elimination-bracket", 
+        title: "Single Elimination Bracket" 
+    }} 
+    next={{
+        href: "/docs/bring-your-own-design",
+        title: "Bring Your Own Design"
+    }}
+/>

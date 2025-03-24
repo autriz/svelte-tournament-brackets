@@ -7,6 +7,12 @@
 TODO
 
 <FooterNavigation
-	previous={{ href: "/docs/api", title: "API" }}
-	next={{ href: "/docs/extendable-data", title: "Extendable Data" }}
+	previous={{ 
+        href: "/docs/double-elimination-bracket", 
+        title: "Double Elimination Bracket" 
+    }}
+	next={{ 
+        href: "/docs/extendable-data", 
+        title: "Extendable Data" 
+    }}
 />

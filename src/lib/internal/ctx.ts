@@ -4,26 +4,18 @@ import type {
 	BracketConfig as BaseBracketConfig,
 	BaseEntrant,
 	BaseMatch,
-	BaseMatchEntrant,
 	BaseRound,
-} from "./types.js";
+} from "$lib";
 
 const BRACKET_ROOT = Symbol("BRACKET_ROOT");
 
 export function setCtx<
 	BracketConfig extends BaseBracketConfig = BaseBracketConfig,
 	Round extends BaseRound = BaseRound,
-	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
+	Match extends BaseMatch = BaseMatch,
 	Entrant extends BaseEntrant = BaseEntrant,
->(props: CreateBracketProps<BracketConfig, MatchEntrant, Match>) {
-	const bracket = createBracket<
-		BracketConfig,
-		Round,
-		MatchEntrant,
-		Match,
-		Entrant
-	>(props);
+>(props: CreateBracketProps<BracketConfig, Match>) {
+	const bracket = createBracket<BracketConfig, Round, Match, Entrant>(props);
 
 	setContext(BRACKET_ROOT, { ...bracket });
 
@@ -35,13 +27,10 @@ export function setCtx<
 export function getCtx<
 	BracketConfig extends BaseBracketConfig = BaseBracketConfig,
 	Round extends BaseRound = BaseRound,
-	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
+	Match extends BaseMatch = BaseMatch,
 	Entrant extends BaseEntrant = BaseEntrant,
 >() {
 	return getContext<
-		ReturnType<
-			typeof setCtx<BracketConfig, Round, MatchEntrant, Match, Entrant>
-		>
+		ReturnType<typeof setCtx<BracketConfig, Round, Match, Entrant>>
 	>(BRACKET_ROOT);
 }

@@ -2,11 +2,10 @@ import { writable } from "svelte/store";
 import type {
 	BaseMatch,
 	BracketConfig as BaseBracketConfig,
-	DeepRequired,
 	BaseEntrant,
 	BaseRound,
-	BaseMatchEntrant,
-} from "./types.js";
+} from "$lib";
+import type { DeepRequired } from "./types.js";
 
 export const defaultConfig = {
 	padding: {
@@ -34,8 +33,7 @@ export const defaultConfig = {
 
 export type CreateBracketProps<
 	BracketConfig extends BaseBracketConfig = BaseBracketConfig,
-	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
+	Match extends BaseMatch = BaseMatch,
 > = {
 	config?: BracketConfig;
 	onMatchClick?: (match: Match) => void;
@@ -44,10 +42,9 @@ export type CreateBracketProps<
 export function createBracket<
 	BracketConfig extends BaseBracketConfig = BaseBracketConfig,
 	Round extends BaseRound = BaseRound,
-	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
+	Match extends BaseMatch = BaseMatch,
 	Entrant extends BaseEntrant = BaseEntrant,
->(props: CreateBracketProps<BracketConfig, MatchEntrant, Match>) {
+>(props: CreateBracketProps<BracketConfig, Match>) {
 	const config = (props.config
 		? {
 				...defaultConfig,

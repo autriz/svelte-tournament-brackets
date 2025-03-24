@@ -23,93 +23,93 @@ export default {
 		{
 			matchId: 1,
 			roundId: 1,
-			entrant1: {
-				entrantId: 1,
-				entrantScore: 2,
-				entrantStatus: "LOST",
+			opponent1: {
+				opponentId: 1,
+				opponentScore: 2,
+				opponentStatus: "LOST",
 			},
-			entrant2: {
-				entrantId: 2,
-				entrantScore: 3,
-				entrantStatus: "WON",
+			opponent2: {
+				opponentId: 2,
+				opponentScore: 3,
+				opponentStatus: "WON",
 			},
 			status: "DONE",
 		},
 		{
 			matchId: 2,
 			roundId: 1,
-			entrant1: {
-				entrantId: 3,
-				entrantScore: 3,
-				entrantStatus: "WON",
+			opponent1: {
+				opponentId: 3,
+				opponentScore: 3,
+				opponentStatus: "WON",
 			},
-			entrant2: {
-				entrantId: 4,
-				entrantScore: 1,
-				entrantStatus: "LOST",
+			opponent2: {
+				opponentId: 4,
+				opponentScore: 1,
+				opponentStatus: "LOST",
 			},
 			status: "DONE",
 		},
 		{
 			matchId: 3,
 			roundId: 1,
-			entrant1: {
-				entrantId: 5,
+			opponent1: {
+				opponentId: 5,
 			},
-			entrant2: {
-				entrantId: 6,
+			opponent2: {
+				opponentId: 6,
 			},
 			status: "PENDING",
 		},
 		{
 			matchId: 4,
 			roundId: 1,
-			entrant1: {
-				entrantId: 7,
+			opponent1: {
+				opponentId: 7,
 			},
-			entrant2: {
-				entrantId: 8,
+			opponent2: {
+				opponentId: 8,
 			},
 			status: "PENDING",
 		},
 		{
 			matchId: 5,
 			roundId: 1,
-			entrant1: {
-				entrantId: 9,
+			opponent1: {
+				opponentId: 9,
 			},
-			entrant2: {
-				entrantId: 10,
+			opponent2: {
+				opponentId: 10,
 			},
 			status: "PENDING",
 		},
 		{
 			matchId: 6,
 			roundId: 1,
-			entrant1: {
-				entrantId: 11,
+			opponent1: {
+				opponentId: 11,
 			},
-			entrant2: {
-				entrantId: 12,
+			opponent2: {
+				opponentId: 12,
 			},
 			status: "PENDING",
 		},
 		{
 			matchId: 7,
 			roundId: 2,
-			entrant1: {
-				entrantId: 2,
+			opponent1: {
+				opponentId: 2,
 			},
-			entrant2: {
-				entrantId: 3,
+			opponent2: {
+				opponentId: 3,
 			},
 			status: "PENDING",
 		},
 		{
 			matchId: 8,
 			roundId: 2,
-			entrant1: {
-				entrantId: 5,
+			opponent1: {
+				opponentId: 5,
 			},
 			status: "PENDING",
 		},
@@ -121,8 +121,8 @@ export default {
 		{
 			matchId: 10,
 			roundId: 3,
-			entrant1: {
-				entrantId: 3,
+			opponent1: {
+				opponentId: 3,
 			},
 			status: "PENDING",
 		},

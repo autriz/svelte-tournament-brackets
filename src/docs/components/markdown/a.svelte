@@ -1,15 +1,19 @@
 <script lang="ts">
 	import { cn } from "$lib/internal/utils";
 
+	export let href: string;
+
 	let className: string | undefined = undefined;
 	export { className as class };
 </script>
 
-<h3
+<a
+	{...$$restProps}
+	{href}
 	class={cn(
-		"mb-2 mt-8 text-[16px] font-semibold text-primary lg:mb-3",
+		"underline underline-offset-1 transition-colors hover:text-foreground",
 		className,
 	)}
 >
 	<slot />
-</h3>
+</a>

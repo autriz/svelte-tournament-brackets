@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { copyToClipboard, type CopyResult } from "$docs/utils/clipboard";
-	import clsx from "clsx";
+	import { cn } from "$lib/internal/utils";
 	import { AlertCircle, Check, Clipboard } from "lucide-svelte";
 	import { scale } from "svelte/transition";
 
@@ -24,7 +24,7 @@
 	}
 </script>
 
-<div class={clsx("group relative", className)} {style}>
+<div class={cn("group relative my-4", className)} {style}>
 	{#if !disableCopy}
 		<div class="absolute right-[12px] top-[12px] inline-flex size-8">
 			<button

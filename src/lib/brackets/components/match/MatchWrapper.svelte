@@ -2,34 +2,30 @@
 	lang="ts" 
 	generics="
 		Round extends BaseRound = BaseRound,
-		MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-		Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
+		Match extends BaseMatch = BaseMatch,
 		Entrant extends BaseEntrant = BaseEntrant
 	"
 >
 	import type { 
 		BaseMatch, 
-		BaseEntrant, 
-		BaseMatchEntrant, 
+		BaseEntrant,
 		BracketConfig, 
 		BaseRound 
-	} from "$lib/internal/types.js";
-	import { getCtx } from "$lib/internal/ctx.js";
+	} from "$lib";
+	import { getCtx } from "$lib/internal/ctx";
 
-	let { hoveredMatchId, hoveredRoundId, hoveredEntrantId } = getCtx<BracketConfig, Round, MatchEntrant, Match, Entrant>();
+	let { hoveredMatchId, hoveredRoundId, hoveredEntrantId } = getCtx<BracketConfig, Round, Match, Entrant>();
 
 	export let match: Match;
-	export let entrant1: Entrant | undefined = undefined;
-	export let entrant2: Entrant | undefined = undefined;
 
 	$: isMatchHovered =
 		$hoveredMatchId === match.matchId &&
 		$hoveredRoundId === match.roundId;
-	$: isTopHovered = $hoveredEntrantId === match.entrant1?.entrantId;
+	$: isTopHovered = $hoveredEntrantId === match.opponent1?.opponentId;
 	$: isBottomHovered =
-		$hoveredEntrantId === match.entrant2?.entrantId;
+		$hoveredEntrantId === match.opponent2?.opponentId;
 		
-	function onEnter(entrantId: MatchEntrant["entrantId"]) {
+	function onEnter(entrantId: Entrant["entrantId"]) {
 		$hoveredMatchId = match.matchId;
 		$hoveredRoundId = match.roundId;
 		$hoveredEntrantId = entrantId;
@@ -47,8 +43,6 @@
 	{isTopHovered}
 	{isBottomHovered}
 	{match}
-	{entrant1}
-	{entrant2}
 	{onEnter}
 	{onLeave}
 />

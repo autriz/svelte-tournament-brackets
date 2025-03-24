@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { RoundRobinProps } from "../../internal/types.js";
+	import type { RoundRobinProps } from "$lib";
 
 	export let data: RoundRobinProps;
 </script>

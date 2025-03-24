@@ -1,13 +1,15 @@
 import type {
 	BaseMatch,
 	BaseRound,
-	MatchData,
-	MatchPositionData,
 	BracketConfig,
 	BaseProps,
-	DeepRequired,
-	BaseMatchEntrant,
 	BaseEntrant,
+} from "$lib";
+import type {
+	MatchPositionData,
+	DeepRequired,
+	RoundWithMatches,
+	RoundWithMatchData,
 } from "./types.js";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -55,16 +57,15 @@ export function shiftMatchXPos(x: number, config: DeepRequired<BracketConfig>) {
 
 export function getEntrantIndices<
 	Round extends BaseRound = BaseRound,
-	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
+	Match extends BaseMatch = BaseMatch,
 	Entrant extends BaseEntrant = BaseEntrant,
 >(data: BaseProps<Round, Entrant>, match: Match) {
 	const entrant1 = data.entrants.findIndex(
-		(entrant) => entrant.entrantId === match.entrant1?.entrantId,
+		(entrant) => entrant.entrantId === match.opponent1?.opponentId,
 	);
 
 	const entrant2 = data.entrants.findIndex(
-		(entrant) => entrant.entrantId === match.entrant2?.entrantId,
+		(entrant) => entrant.entrantId === match.opponent2?.opponentId,
 	);
 
 	return {
@@ -76,8 +77,7 @@ export function getEntrantIndices<
 
 export function generateBracketData<
 	Props extends BaseProps = BaseProps,
-	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
+	Match extends BaseMatch = BaseMatch,
 >(
 	data: Props,
 	config: DeepRequired<BracketConfig>,
@@ -89,12 +89,12 @@ export function generateBracketData<
 		additionalX: 0,
 		additionalY: 0,
 	},
-) {
+): RoundWithMatchData<Props["rounds"][number], Match>[] {
 	const rounds = data.rounds.map((round) => {
 		const roundMatches = filter(data, round);
 
 		return {
-			...round,
+			round,
 			matches: roundMatches,
 		};
 	});
@@ -114,7 +114,7 @@ export function generateBracketData<
 		});
 
 		return {
-			...round,
+			round: round.round,
 			matches: extendedMatches,
 		};
 	});
@@ -122,15 +122,8 @@ export function generateBracketData<
 
 export function getPreviousMatches<
 	Round extends BaseRound = BaseRound,
-	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
->(
-	bracketData: (Round & {
-		matches: MatchData<MatchEntrant, Match>[];
-	})[],
-	roundIdx: number,
-	matchIdx: number,
-) {
+	Match extends BaseMatch = BaseMatch,
+>(bracketData: RoundWithMatchData[], roundIdx: number, matchIdx: number) {
 	if (roundIdx === 0)
 		return {
 			previousTopMatch: undefined,
@@ -157,15 +150,8 @@ export function getPreviousMatches<
 
 export function getPreviousMatchesIndices<
 	Round extends BaseRound = BaseRound,
-	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
->(
-	bracketData: (Round & {
-		matches: Match[];
-	})[],
-	roundIdx: number,
-	matchIdx: number,
-) {
+	Match extends BaseMatch = BaseMatch,
+>(bracketData: RoundWithMatches[], roundIdx: number, matchIdx: number) {
 	if (roundIdx === 0)
 		return {
 			previousTopMatch: undefined,
@@ -306,12 +292,9 @@ export function calcMatchPos(
 
 export function getMatchPositionDataInner<
 	Round extends BaseRound = BaseRound,
-	MatchEntrant extends BaseMatchEntrant = BaseMatchEntrant,
-	Match extends BaseMatch<MatchEntrant> = BaseMatch<MatchEntrant>,
+	Match extends BaseMatch = BaseMatch,
 >(
-	bracketData: (Round & {
-		matches: Match[];
-	})[],
+	bracketData: RoundWithMatches<Round, Match>[],
 	roundIdx: number,
 	matchIdx: number,
 	config: DeepRequired<BracketConfig>,
