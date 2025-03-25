@@ -1,15 +1,68 @@
 <script lang="ts">
 	import FooterNavigation from "$components/FooterNavigation.svelte";
+    import Preview from "$components/Preview.svelte";
+    import SingleElimCustomHeader from "$components/demos/single-elim-custom-round-header.svelte";
+    import Title from "$components/Title.svelte";
 </script>
+
+<Title class="mb-4">
 
 # Bring Your Own Design
 
-TODO
+Make brackets your own.
+
+</Title>
+
+## Default components
+
+Tournament brackets have its own internal components, such as `Match`, `Connector` and `RoundHeader`.
+These are default components and are not customizable at this point, but you can introduce your own
+components if you want to, or copy internal components from [here](https://github.com/autriz/svelte-tournament-brackets/tree/master/src/lib/brackets/components) 
+and customize them however you see fit.
+
+## Creating your own component
+
+```svelte
+<script lang="ts">
+    export let round: MyRound;
+</script>
+
+<div>{round.roundName}</div>
+
+<style>
+    div {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: red;
+        border-radius: 8px;
+        color: white;
+    }
+</style>
+```
+
+```svelte
+<script lang="ts">
+    import MyHeader from "./MyHeader.svelte";
+
+    let data = { /* data with custom round interface */ };
+</script>
+
+<SingleEliminationBracket {data}>
+    <div slot="header" let:round><MyHeader {round}/></div>
+</SingleEliminationBracket>
+```
+
+<Preview>
+    <SingleElimCustomHeader />
+</Preview>
 
 <FooterNavigation
 	previous={{ 
-        href: "/docs/double-elimination-bracket", 
-        title: "Double Elimination Bracket" 
+        href: "/docs/getting-started", 
+        title: "Getting Started" 
     }}
 	next={{ 
         href: "/docs/extendable-data", 

@@ -1,9 +1,14 @@
 <script lang="ts">
     import { h3 as H3 } from "$components/markdown/index";
 	import FooterNavigation from "$components/FooterNavigation.svelte";
+	import Title from "$components/Title.svelte";
 </script>
 
+<Title>
+
 # Getting started
+
+</Title>
 
 ## Installation
 Install package with your package manager of choice:
@@ -46,7 +51,7 @@ Bracket can be placed with no setup, just import it and give it some data to wor
 
 <FooterNavigation 
 	next={{ 
-		href: "/docs/single-elimination-bracket", 
-		title: "Single Elimination Bracket" 
+		href: "/docs/bring-your-own-design", 
+		title: "Bring Your Own Design" 
 	}} 
 />

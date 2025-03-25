@@ -13,7 +13,7 @@ The library allows for flexible type extensions to help you suit your needs and 
 
 ## Base types
 
-Library exposes [these base types](https://github.com/autriz/svelte-tournament-brackets/blob/master/src/lib/internal/types.ts) 
+Library exposes [these base types](https://github.com/autriz/svelte-tournament-brackets/blob/master/src/lib/brackets/types.ts) 
 that used to structure data object for brackets. These are bare necesseties to generate a bracket. 
 
 ## How to extend
@@ -55,7 +55,7 @@ interface MyProps extends BaseProps {
 		title: "Bring Your Own Design",
 	}}
 	next={{
-		href: "/docs/examples/default",
-		title: "Default"
+		href: "/docs/single-elimination-bracket",
+		title: "Single Elimination Bracket"
 	}}
 />

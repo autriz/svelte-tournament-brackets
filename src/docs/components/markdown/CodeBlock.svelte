@@ -26,9 +26,9 @@
 
 <div class={cn("group relative my-4", className)} {style}>
 	{#if !disableCopy}
-		<div class="absolute right-[12px] top-[12px] inline-flex size-8">
+		<div class="absolute right-[12px] top-[12px] inline-flex size-9">
 			<button
-				class="relative inline-flex size-8 items-center
+				class="relative inline-flex size-9 items-center
 				justify-center rounded-lg border border-neutral-400 bg-neutral-100 opacity-0
 				transition-all hover:bg-neutral-50 group-hover:opacity-100
 				dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-900"

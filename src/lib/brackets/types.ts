@@ -1,5 +1,3 @@
-import type { MatchPositionData } from "$lib/internal";
-
 export type Id = string | number;
 
 export interface BaseRound {

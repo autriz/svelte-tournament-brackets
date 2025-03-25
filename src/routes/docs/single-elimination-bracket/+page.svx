@@ -2,9 +2,14 @@
     import FooterNavigation from "$components/FooterNavigation.svelte";
 	import Preview from "$components/Preview.svelte";
 	import SingleElimSimple from "$components/demos/single-elim-simple.svelte";
+    import Title from "$components/Title.svelte";
 </script>
 
+<Title>
+
 # Single Elimination Bracket
+
+</Title>
 
 <Preview name="single-elim-simple">
 	<SingleElimSimple />
@@ -12,8 +17,8 @@
 
 <FooterNavigation 
     previous={{
-        href: "/docs/getting-started",
-        title: "Getting Started"
+        href: "/docs/extendable-data",
+        title: "Extendable Data"
     }}
     next={{ 
         href: "/docs/double-elimination-bracket", 

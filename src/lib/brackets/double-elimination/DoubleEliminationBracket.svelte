@@ -28,6 +28,7 @@
 		getEntrantIndices,
 		getMatchPositionDataInner
 	} from "$lib/internal/utils";
+	
 	import UpperBracket from "./UpperBracket.svelte";
 	import LowerBracket from "./LowerBracket.svelte";
 	import FinalBracket from "./FinalBracket.svelte";

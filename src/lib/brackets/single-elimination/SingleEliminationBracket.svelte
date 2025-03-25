@@ -21,7 +21,7 @@
 		MatchWrapper,
 		Match,
 		RoundHeader,
-	} from "$lib/brackets/components/index";
+	} from "$lib/brackets/components";
 	import {
 		cn,
 		generateBracketData,

@@ -2,9 +2,14 @@
     import FooterNavigation from "$components/FooterNavigation.svelte";
 	import Preview from "$components/Preview.svelte";
 	import SingleElimSimple from "$components/demos/single-elim-simple.svelte";
+    import Title from "$components/Title.svelte";
 </script>
 
+<Title>
+
 # Double Elimination Bracket
+
+</Title>
 
 <Preview name="single-elim-simple">
 	<SingleElimSimple />
@@ -16,7 +21,7 @@
         title: "Single Elimination Bracket" 
     }} 
     next={{
-        href: "/docs/bring-your-own-design",
-        title: "Bring Your Own Design"
+        href: "/docs/examples/default",
+        title: "Default"
     }}
 />

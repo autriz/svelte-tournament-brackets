@@ -92,7 +92,10 @@
 				{/if}
 			</button>
 		</div>
-		<div class="mt-4 w-full rounded-lg border border-muted shadow-md">
+		<div 
+			class="mt-4 w-full rounded-lg border border-muted shadow-md"
+			data-preview-content
+		>
 			<div
 				class="relative"
 				data-preview
@@ -116,6 +119,7 @@
 	{:else}
 		<div
 			class="relative w-full rounded-lg border border-muted shadow-md"
+			data-preview-content
 			data-preview
 		>
 			<div
@@ -132,12 +136,12 @@
 		@apply h-fit min-h-full w-fit min-w-full p-3;
 	}
 
-	[data-preview] {
+	[data-preview-content] {
 		--background-color: 247 247 247;
 		background-color: rgb(var(--background-color));
 	}
 
-	[data-preview]:is(.dark *) {
+	[data-preview-content]:is(.dark *) {
 		--background-color: 18 18 18;
 	}
 
