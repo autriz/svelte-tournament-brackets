@@ -10,10 +10,10 @@
 	import type {
 		BaseMatch,
 		BaseRound,
+		DeepRequired,
 		BracketConfig,
 	} from "$lib";
 	import type {
-		DeepRequired,
 		RoundWithMatchData,
 	} from "$lib/internal";
 

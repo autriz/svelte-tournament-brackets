@@ -18,9 +18,6 @@
 	export let entrant1: Entrant | undefined = undefined;
 	export let entrant2: Entrant | undefined = undefined;
 
-	export let entrant1Placeholder: string = "";
-	export let entrant2Placeholder: string = "";
-
 	export let isTopHovered: boolean;
 	export let isBottomHovered: boolean;
 
@@ -45,7 +42,6 @@
 		isHovered={isTopHovered}
 		{onEnter}
 		{onLeave}
-		placeholder={entrant1Placeholder}
 		side="top"
 	/>
 	<MatchSide
@@ -56,7 +52,6 @@
 		isHovered={isBottomHovered}
 		{onEnter}
 		{onLeave}
-		placeholder={entrant2Placeholder}
 		side="bottom"
 	/>
 </button>

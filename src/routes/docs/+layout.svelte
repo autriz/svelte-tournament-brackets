@@ -79,14 +79,14 @@
 					</li>
 					<li>
 						<Link
-							href="/docs/bring-your-own-design"
+							href="/docs/customizable-components"
 							class="flex rounded-md px-2 py-1 text-[13px] text-neutral-800 
 							transition-colors [transition-duration:100ms] hover:bg-neutral-200 
 							hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
 							dark:text-neutral-300 dark:hover:bg-neutral-700 
 							dark:hover:text-white dark:data-[current]:bg-neutral-700 dark:data-[current]:text-white"
 						>
-							Bring Your Own Design
+							Customizable Components
 						</Link>
 					</li>
 					<li>

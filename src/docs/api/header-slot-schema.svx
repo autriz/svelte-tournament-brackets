@@ -1,0 +1,5 @@
+```ts
+type SlotSchema<Round extends BaseRound = BaseRound> = {
+    round: Round;
+}
+```

@@ -9,11 +9,11 @@
 	import type {
 		BaseMatch,
 		BaseRound,
+		DeepRequired,
 		BracketConfig,
 	} from "$lib";
 	import type {
 		MatchData,
-		DeepRequired,
 		RoundWithMatchData,
 	} from "$lib/internal";
 	import { shiftHeaderXPos, shiftMatchXPos } from "$lib/internal/utils";

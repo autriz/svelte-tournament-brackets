@@ -4,8 +4,8 @@ import type {
 	BracketConfig as BaseBracketConfig,
 	BaseEntrant,
 	BaseRound,
+	DeepRequired,
 } from "$lib";
-import type { DeepRequired } from "./types.js";
 
 export const defaultConfig = {
 	padding: {

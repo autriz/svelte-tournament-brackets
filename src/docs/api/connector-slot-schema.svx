@@ -1,0 +1,10 @@
+```ts
+type SlotSchema<Config extends BracketConfig = BracketConfig> = {
+    topMatchPosition: MatchPositionData | undefined;
+    bottomMatchPosition: MatchPositionData | undefined;
+    currentMatchPosition: MatchPositionData;
+    isTopHighlighted: boolean;
+    isBottomHighlighted: boolean;
+    config: DeepRequired<Config>;
+}
+```

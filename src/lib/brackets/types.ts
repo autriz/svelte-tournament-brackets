@@ -1,3 +1,18 @@
+export type DeepRequired<T> = T extends object
+	? { [P in keyof T]-?: DeepRequired<T[P]> }
+	: T;
+
+export type MatchPositionData = {
+	indices: {
+		round: number;
+		match: number;
+	};
+	position: {
+		x: number;
+		y: number;
+	};
+};
+
 export type Id = string | number;
 
 export interface BaseRound {

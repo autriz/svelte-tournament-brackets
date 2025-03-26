@@ -4,11 +4,11 @@
 		BracketConfig extends BaseBracketConfig = BaseBracketConfig
 	"
 >
-	import type { BracketConfig as BaseBracketConfig } from "$lib";
 	import type {
+		BracketConfig as BaseBracketConfig,
 		DeepRequired,
 		MatchPositionData,
-	} from "$lib/internal/types.js";
+	} from "$lib";
 
 	export let isTopHighlighted: boolean;
 	export let isBottomHighlighted: boolean;

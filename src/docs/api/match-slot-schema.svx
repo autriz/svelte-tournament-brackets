@@ -1,0 +1,22 @@
+```ts
+type SlotSchema<
+    Entrant extends BaseEntrant = BaseEntrant,
+    Match extends BaseMatch = BaseMatch,
+> = {
+    match: Match;
+    indices: {
+        entrant1: number | undefined;
+        entrant2: number | undefined;
+        round: number;
+        match: number;
+    };
+    entrant1: Entrant | undefined;
+    entrant2: Entrant | undefined;
+    isTopHovered: boolean;
+    isBottomHovered: boolean;
+    isMatchHovered: boolean;
+    onMatchClick: ((match: Match) => void) | undefined;
+    onEnter: (entrantId: Entrant["entrantId"]) => void;
+    onLeave: () => void;
+}
+```

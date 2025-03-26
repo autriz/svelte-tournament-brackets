@@ -5,11 +5,8 @@
 	"
 >
 	import { getCtx } from "$lib/internal/ctx";
-	import type { BaseMatch } from "$lib";
-	import type {
-		MatchData,
-		MatchPositionData,
-	} from "$lib/internal/types.js";
+	import type { MatchPositionData, BaseMatch } from "$lib";
+	import type { MatchData } from "$lib/internal/types.js";
 	import { shiftMatchXPos } from "$lib/internal/utils";
 
 	let { hoveredEntrantId, config } = getCtx();
@@ -34,9 +31,9 @@
 	
 	let topMatchPosition =
 		previousTopMatch ? extractPosition(previousTopMatch) : undefined;
-	let bottomMatchPosition: MatchPositionData | undefined =
+	let bottomMatchPosition =
 		previousBottomMatch ? extractPosition(previousBottomMatch) : undefined;
-	let currentMatchPosition: MatchPositionData = extractPosition(currentMatch);
+	let currentMatchPosition = extractPosition(currentMatch);
 
 	$: isTopHighlighted =
 		(currentMatch.data.opponent1?.opponentId === $hoveredEntrantId ||

@@ -1,0 +1,142 @@
+<script lang="ts">
+	import FooterNavigation from "$components/FooterNavigation.svelte";
+    import Preview from "$components/Preview.svelte";
+    import SingleElimCustomHeader from "$components/demos/single-elim-custom-round-header.svelte";
+    import Title from "$components/Title.svelte";
+    import SlotPropsTable from "$components/SlotPropsTable.svelte";
+</script>
+
+<Title class="mb-4">
+
+# Customizable Components
+
+Brackets provide flexible customization for key visual elements. You can 
+override default components while maintaining the core bracket logic.
+
+</Title>
+
+## Customization Basics
+
+Use named slots with props to replace default components:
+
+```svelte
+<script lang="ts">
+    import MyHeader from "./MyHeader.svelte";
+    import type MyProps from "./MyProps.ts";
+
+    let data: MyProps = { /* data with custom round interface */ };
+</script>
+
+<SingleEliminationBracket {data}>
+    <div slot="header" let:round><MyHeader {round}/></div>
+</SingleEliminationBracket>
+```
+
+## Default Components
+
+Components that are used out of the box can be found [here](https://github.com/autriz/svelte-tournament-brackets/tree/master/src/lib/brackets/components). 
+These components are not customizable, but you can copy them and customize them however you see fit.
+
+## Customizable Components
+
+Below are all named props that can be customized.
+
+### Round Header
+
+#### How to use
+
+```svelte
+<div slot="header" let:round></div>
+```
+
+#### Properties
+
+<SlotPropsTable schema="header" />
+
+### Match
+
+#### How to use
+
+```svelte
+<div 
+    slot="match"
+    let:match
+    let:indices
+    let:entrant1
+    let:entrant2
+    let:isTopHovered
+    let:isBottomHovered
+    let:isMatchHovered
+    let:onMatchClick
+    let:onEnter
+    let:onLeave
+></div>
+```
+
+#### Properties
+
+<SlotPropsTable schema="match" />
+
+### Connector
+
+#### How to use
+
+```svelte
+<div 
+    slot="connector"
+    let:topMatchPosition
+    let:bottomMatchPosition
+    let:currentMatchPosition
+    let:isTopHighlighted
+    let:isBottomHighlighted
+    let:config
+></div>
+```
+
+#### Properties
+
+<SlotPropsTable schema="connector" />
+
+<!-- TODO: Note about double elim bracket -->
+<!--  -->
+<!--  -->
+
+## Using your own component
+
+
+
+```svelte
+<script lang="ts">
+    export let round: MyRound;
+</script>
+
+<div>{round.roundName}</div>
+
+<style>
+    div {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: red;
+        border-radius: 8px;
+        color: white;
+    }
+</style>
+```
+
+<Preview>
+    <SingleElimCustomHeader />
+</Preview>
+
+<FooterNavigation
+	previous={{ 
+        href: "/docs/getting-started", 
+        title: "Getting Started" 
+    }}
+	next={{ 
+        href: "/docs/extendable-data", 
+        title: "Extendable Data" 
+    }}
+/>

@@ -92,7 +92,7 @@
 				{/if}
 			</button>
 		</div>
-		<div 
+		<div
 			class="mt-4 w-full rounded-lg border border-muted shadow-md"
 			data-preview-content
 		>
@@ -133,7 +133,10 @@
 
 <style>
 	[data-preview-code] > :global(.shiki) {
-		@apply h-fit min-h-full w-fit min-w-full p-3;
+		height: fit-content;
+		min-height: 100%;
+		min-width: 100%;
+		padding: 0.75rem;
 	}
 
 	[data-preview-content] {

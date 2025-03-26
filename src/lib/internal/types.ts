@@ -1,8 +1,4 @@
-import type { BaseMatch, BaseRound } from "$lib";
-
-export type DeepRequired<T> = T extends object
-	? { [P in keyof T]-?: DeepRequired<T[P]> }
-	: T;
+import type { BaseMatch, BaseRound, MatchPositionData } from "$lib";
 
 export type RoundWithMatches<
 	Round extends BaseRound = BaseRound,
@@ -24,14 +20,3 @@ export interface MatchData<Match extends BaseMatch = BaseMatch>
 	extends MatchPositionData {
 	data: Match;
 }
-
-export type MatchPositionData = {
-	indices: {
-		round: number;
-		match: number;
-	};
-	position: {
-		x: number;
-		y: number;
-	};
-};

@@ -73,7 +73,7 @@
 		</div>
 	{/if}
 	<div
-		class="overflow-x-auto rounded-lg shadow-md"
+		class="overflow-x-auto rounded-lg border border-muted shadow-md"
 		data-code-block
 		bind:this={blockRef}
 	>

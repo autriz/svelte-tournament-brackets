@@ -4,13 +4,10 @@ import type {
 	BracketConfig,
 	BaseProps,
 	BaseEntrant,
-} from "$lib";
-import type {
 	MatchPositionData,
 	DeepRequired,
-	RoundWithMatches,
-	RoundWithMatchData,
-} from "./types.js";
+} from "$lib";
+import type { RoundWithMatches, RoundWithMatchData } from "./types.js";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 

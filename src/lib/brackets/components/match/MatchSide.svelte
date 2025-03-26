@@ -7,7 +7,6 @@
     /** Entrant data of the match */
     export let opponent: Opponent | undefined;
     export let entrantIdx: number | undefined;
-    export let placeholder: string;
     export let side: "top" | "bottom";
     export let isHovered: boolean;
     export let hasEnded: boolean;
@@ -43,8 +42,6 @@
     <span class="grow pl-2 text-sm text-foreground">
         {#if opponent && entrant}
             {entrant.entrantName}
-        {:else}
-            {placeholder}
         {/if}
     </span>
     <span
