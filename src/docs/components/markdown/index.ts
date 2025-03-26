@@ -4,3 +4,5 @@ export { default as h3 } from "./h3.svelte";
 export { default as a } from "./a.svelte";
 export { default as p } from "./p.svelte";
 export { default as code } from "./code.svelte";
+export { default as ul } from "./ul.svelte";
+export { default as li } from "./li.svelte";

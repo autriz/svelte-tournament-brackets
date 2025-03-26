@@ -3,6 +3,7 @@
     import Preview from "$components/Preview.svelte";
     import SingleElimCustomHeader from "$components/demos/single-elim-custom-round-header.svelte";
     import Title from "$components/Title.svelte";
+    import Note from "$components/Note.svelte";
     import SlotPropsTable from "$components/SlotPropsTable.svelte";
 </script>
 
@@ -96,6 +97,23 @@ Below are all named props that can be customized.
 #### Properties
 
 <SlotPropsTable schema="connector" />
+
+<Note>
+
+Double Elimination Bracket has other more specific slots
+
+- `winner-header`
+- `finals-header`
+- `winner-match`
+- `loser-match`
+- `finals-match`
+- `winner-connector`
+- `loser-connector`
+- `finals-connector`
+
+If provided, they will override non-specific slots
+
+</Note>
 
 <!-- TODO: Note about double elim bracket -->
 

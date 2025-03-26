@@ -11,7 +11,7 @@
 <Link
 	{href}
 	class={cn(
-		"underline underline-offset-1 transition-colors hover:text-foreground",
+		"underline underline-offset-4 transition-colors hover:text-foreground",
 		className,
 	)}
 >
