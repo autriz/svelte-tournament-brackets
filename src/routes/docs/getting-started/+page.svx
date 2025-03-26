@@ -51,7 +51,7 @@ Bracket can be placed with no setup, just import it and give it some data to wor
 
 <FooterNavigation 
 	next={{ 
-		href: "/docs/bring-your-own-design", 
-		title: "Bring Your Own Design" 
+		href: "/docs/customizable-components", 
+		title: "Customizable Components" 
 	}} 
 />
