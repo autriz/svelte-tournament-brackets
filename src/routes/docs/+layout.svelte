@@ -2,6 +2,7 @@
 	import { page } from "$app/stores";
 	import GithubMark from "$components/GithubMark.svelte";
 	import Link from "$components/Link.svelte";
+	import TableOfContents from "$components/TableOfContents.svelte";
 	import ThemeToggleButton from "$components/ThemeToggleButton.svelte";
 	import { ArrowUp } from "lucide-svelte";
 	import { onMount } from "svelte";
@@ -173,22 +174,24 @@
 			</div>
 		</div>
 	</nav>
-	<div class="flex gap-4 self-center lg:ml-8 lg:py-16">
-		<main class="mx-auto w-full max-w-[672px]">
+	<div class="mx-auto flex gap-4 self-center px-4 lg:ml-8 lg:py-16">
+		<main class="w-full max-w-[672px]">
 			<slot></slot>
 		</main>
-		<aside class="hidden h-px lg:block lg:w-[240px]">
-			<!-- TODO: TOC -->
+		<aside class="hidden xl:ml-8 xl:block xl:w-[240px]">
+			{#key $page}
+				<TableOfContents />
+			{/key}
 		</aside>
 	</div>
 </div>
 {#if !onTop}
 	<button
 		transition:fade={{ duration: 100 }}
-		class="fixed bottom-0 right-0 mb-10 mr-10 rounded-md border border-dashed
-			border-muted px-3 py-3 text-muted-foreground
-			transition-all hover:border-solid hover:border-muted-foreground
-			hover:text-primary"
+		class="fixed bottom-0 right-0 hidden rounded-md border border-dashed border-muted px-3 py-3
+			text-muted-foreground transition-all hover:border-solid hover:border-muted-foreground
+			hover:text-primary sm:mb-10 sm:mr-10
+			sm:block"
 		title="Go to the top"
 		on:click={() => {
 			window.scrollTo({ top: 0, behavior: "smooth" });
