@@ -6,31 +6,73 @@
 	import { crossfade } from "svelte/transition";
 
 	type TocItem = {
+		id: string;
 		title: string;
 		level: number;
+		element: HTMLElement;
 		active: boolean;
 	};
 
-	const store = writable({ items: new Map<string, TocItem>() });
+	const store = writable({
+		items: new Map<string, TocItem>(),
+		activeItem: undefined as TocItem | undefined,
+	});
 	const [send, receive] = crossfade({ duration: 150 });
 	let observer: IntersectionObserver;
+
+	function updateActiveItem() {
+		let activeItem: TocItem | undefined = undefined;
+
+		for (const item of $store.items.values()) {
+			if (item.active) {
+				activeItem = item;
+				break;
+			}
+		}
+
+		$store = {
+			items: $store.items,
+			activeItem: activeItem,
+		};
+	}
+
+	function tocClick(e: MouseEvent & { currentTarget: HTMLElement }) {
+		e.preventDefault();
+
+		const href = e.currentTarget.getAttribute("href")!;
+		const element = document.querySelector(href);
+
+		if (element) {
+			window.scrollTo({
+				top:
+					element.getBoundingClientRect().top +
+					window.pageYOffset -
+					10,
+				behavior: "smooth",
+			});
+		}
+	}
 
 	onMount(() => {
 		observer =
 			observer ??
-			new IntersectionObserver((entries) => {
-				for (const entry of entries) {
-					const heading = $store.items.get(entry.target.id);
+			new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						const heading = $store.items.get(entry.target.id);
 
-					if (heading) {
-						heading.active = entry.isIntersecting;
+						if (heading) {
+							heading.active = entry.isIntersecting;
+						}
+
+						updateActiveItem();
 					}
-
-					$store = {
-						items: $store.items,
-					};
-				}
-			});
+				},
+				{
+					rootMargin: "20px 0px 0px 0px",
+					threshold: 1,
+				},
+			);
 
 		const headings = document.querySelectorAll<HTMLElement>("h2, h3, h4");
 
@@ -55,10 +97,13 @@
 
 			$store = {
 				items: $store.items.set(heading.id, {
+					id,
 					title: heading.innerText,
 					level: Number(heading.tagName[1]),
+					element: heading,
 					active: false,
 				}),
+				activeItem: undefined,
 			};
 
 			observer.observe(heading);
@@ -78,9 +123,10 @@
 	<div class="mt-2">
 		{#if $store.items.size}
 			<ul
-				class="list-none border-l border-muted text-sm leading-4 text-muted-foreground"
+				class="list-none border-l border-dashed border-muted text-sm leading-4 text-muted-foreground"
 			>
-				{#each $store.items.entries() as [id, { title, level, active }]}
+				{#each $store.items.values() as { id, title, level, active }}
+					{@const isActive = $store.activeItem?.id === id}
 					<li class="relative mt-0">
 						<a
 							class={cn(
@@ -89,11 +135,12 @@
 								level === 4 && "pl-[3.75rem]",
 							)}
 							href={id ? `#${id}` : undefined}
-							data-active={active ? "" : undefined}
+							data-active={isActive ? "" : undefined}
+							on:click={tocClick}
 						>
 							{title}
 						</a>
-						{#if active}
+						{#if isActive}
 							<div
 								in:send={{ key: "toc" }}
 								out:receive={{ key: "toc" }}
