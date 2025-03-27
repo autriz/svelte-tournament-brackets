@@ -174,11 +174,11 @@
 			</div>
 		</div>
 	</nav>
-	<div class="mx-auto flex gap-4 self-center px-4 lg:ml-8 lg:py-16">
-		<main class="w-full max-w-[672px]">
+	<div class="flex w-full gap-4 px-4 lg:px-8 lg:py-16 lg:pl-0">
+		<main class="mx-auto w-full max-w-[672px]">
 			<slot></slot>
 		</main>
-		<aside class="hidden xl:ml-8 xl:block xl:w-[240px]">
+		<aside class="hidden xl:ml-8 xl:block xl:max-w-[240px]">
 			{#key $page}
 				<TableOfContents />
 			{/key}

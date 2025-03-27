@@ -102,7 +102,8 @@
 				hidden={!!showCode && $$slots.default}
 			>
 				<div
-					class="relative flex max-h-[700px] min-h-[350px] w-full items-center justify-center"
+					class="relative grid max-h-[700px] min-h-[350px]
+					place-items-center overflow-auto"
 				>
 					<slot />
 				</div>
@@ -123,7 +124,8 @@
 			data-preview
 		>
 			<div
-				class="relative flex max-h-[700px] min-h-[350px] w-full items-center justify-center"
+				class="relative grid max-h-[700px] min-h-[350px]
+				place-items-center overflow-auto"
 			>
 				<slot />
 			</div>

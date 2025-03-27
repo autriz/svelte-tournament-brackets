@@ -28,10 +28,11 @@
 	{#if !disableCopy}
 		<div class="absolute right-[12px] top-[12px] inline-flex size-9">
 			<button
-				class="relative inline-flex size-9 items-center
-				justify-center rounded-lg border border-neutral-400 bg-neutral-100 opacity-0
-				transition-all hover:bg-neutral-50 group-hover:opacity-100
-				dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-900"
+				class="lg pointer-events-none relative inline-flex size-9 items-center
+				justify-center rounded-lg border border-neutral-400
+				bg-neutral-100 opacity-0 transition-all hover:bg-neutral-50
+				group-hover:pointer-events-auto group-hover:opacity-100 dark:border-neutral-700
+				dark:bg-neutral-800 dark:hover:bg-neutral-900"
 				title="Copy code"
 				on:click={copyCode}
 			>
@@ -84,5 +85,12 @@
 <style>
 	div > :global(.shiki) {
 		@apply overflow-auto px-6 py-5;
+	}
+
+	@media (hover: none) {
+		button {
+			opacity: 100%;
+			pointer-events: auto;
+		}
 	}
 </style>
