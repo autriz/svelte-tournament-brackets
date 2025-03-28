@@ -123,16 +123,17 @@
 	<div class="mt-2">
 		{#if $store.items.size}
 			<ul
-				class="list-none border-l border-dashed border-muted text-sm leading-4 text-muted-foreground"
+				class="list-none border-l border-dashed border-muted-foreground text-sm leading-4 text-muted-foreground"
 			>
-				{#each $store.items.values() as { id, title, level, active }}
+				{#each $store.items.values() as { id, title, level }}
 					{@const isActive = $store.activeItem?.id === id}
 					<li class="relative mt-0">
 						<a
 							class={cn(
-								"inline-block py-[0.3125rem] pl-5 data-[active]:text-white",
-								level === 3 && "pl-10",
+								"inline-block py-[0.3125rem] pl-5 transition-colors hover:text-foreground/80 data-[active]:text-foreground",
+								level === 3 && "pl-[2.5rem]",
 								level === 4 && "pl-[3.75rem]",
+								level === 5 && "pl-[5rem]",
 							)}
 							href={id ? `#${id}` : undefined}
 							data-active={isActive ? "" : undefined}
@@ -144,7 +145,7 @@
 							<div
 								in:send={{ key: "toc" }}
 								out:receive={{ key: "toc" }}
-								class="transitiona-all absolute left-0 top-0 h-full w-px bg-white"
+								class="absolute -left-[0.0625rem] top-0 h-full w-px bg-foreground"
 							></div>
 						{/if}
 					</li>
