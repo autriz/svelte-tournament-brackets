@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { fade, fly, scale } from "svelte/transition";
+	import { scale } from "svelte/transition";
 	import { mode, toggleMode } from "mode-watcher";
 	import { Moon, Sun } from "lucide-svelte";
 	import type { HTMLButtonAttributes } from "svelte/elements";
-	import clsx from "clsx";
+	import { cn } from "$docs/utils/cn";
 
 	let className: HTMLButtonAttributes["class"] = "";
 
@@ -12,7 +12,7 @@
 
 <button
 	aria-label="Theme mode toggle"
-	class={clsx("relative inline-flex items-center justify-center px-2 py-1 \
+	class={cn("relative inline-flex items-center justify-center px-2 py-1 \
 		rounded-md size-10", className)}
 	on:click={toggleMode}
 >

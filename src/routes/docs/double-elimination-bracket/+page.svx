@@ -1,7 +1,7 @@
 <script lang="ts">
     import FooterNavigation from "$components/FooterNavigation.svelte";
 	import Preview from "$components/Preview.svelte";
-	import SingleElimSimple from "$components/demos/single-elim-simple.svelte";
+	import DoubleElimTest from "$components/demos/double-elim-test.svelte";
     import Title from "$components/Title.svelte";
 </script>
 
@@ -11,8 +11,8 @@
 
 </Title>
 
-<Preview name="single-elim-simple">
-	<SingleElimSimple />
+<Preview name="double-elim-test">
+	<DoubleElimTest />
 </Preview>
 
 <FooterNavigation 

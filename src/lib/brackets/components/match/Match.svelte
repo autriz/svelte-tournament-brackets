@@ -18,22 +18,20 @@
 	export let entrant1: Entrant | undefined = undefined;
 	export let entrant2: Entrant | undefined = undefined;
 
-	export let isTopHovered: boolean;
-	export let isBottomHovered: boolean;
+	export let isTopHovered: boolean = false;
+	export let isBottomHovered: boolean = false;
 
-	export let onEnter: (entrantId: Entrant["entrantId"]) => void;
-	export let onLeave: () => void;
-	export let onMatchClick: ((match: Match) => void) | undefined;
+	export let onEnter:
+		| ((entrantId: Entrant["entrantId"]) => void)
+		| undefined = undefined;
+	export let onLeave: (() => void) | undefined = undefined;
+	export let onMatchClick: ((match: Match) => void) | undefined = undefined;
 
 	$: hasEnded =
 		!!match.opponent1?.opponentStatus && !!match.opponent2?.opponentStatus;
 </script>
 
-<button
-	class="grid h-full w-full grid-flow-row grid-rows-2 overflow-visible
-	bg-neutral-100 text-start shadow-md dark:bg-neutral-900 dark:shadow-none"
-	on:click={() => onMatchClick?.(match)}
->
+<button data-bracket-match on:click={() => onMatchClick?.(match)}>
 	<MatchSide
 		entrant={entrant1}
 		opponent={match.opponent1}

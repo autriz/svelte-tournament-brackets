@@ -9,6 +9,24 @@
 	$: isCurrent =
 		$page.url.pathname === href ||
 		(!href.startsWith("http") && $page.url.pathname.endsWith(href));
+
+	$: isHashLink = href.startsWith("#");
+
+	function handleHashLink(e: MouseEvent) {
+		e.preventDefault();
+
+		const element = document.querySelector(href);
+
+		if (element) {
+			window.scrollTo({
+				top:
+					element.getBoundingClientRect().top +
+					window.pageYOffset -
+					10,
+				behavior: "smooth",
+			});
+		}
+	}
 </script>
 
 <a
@@ -17,6 +35,7 @@
 	data-current={isCurrent ? "" : undefined}
 	target={href.startsWith("http") ? "_blank" : undefined}
 	{href}
+	on:click={isHashLink ? handleHashLink : undefined}
 >
 	<slot></slot>
 </a>

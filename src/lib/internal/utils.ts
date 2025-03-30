@@ -8,11 +8,70 @@ import type {
 	DeepRequired,
 } from "$lib";
 import type { RoundWithMatches, RoundWithMatchData } from "./types.js";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
 
-export function cn(...classes: ClassValue[]) {
-	return twMerge(clsx(classes));
+export function findFinalRounds<
+	Match extends BaseMatch = BaseMatch,
+	Round extends BaseRound = BaseRound,
+>(rounds: Round[], matches: { upper: Match[]; lower: Match[] }) {
+	// Extract final rounds from upper or lower matches
+	const isFinalInUpper = matches.upper.some((match) => !match.nextMatchId);
+	const isFinalInLower = matches.lower.some((match) => !match.nextMatchId);
+
+	let convergingMatch: Match;
+	let finalMatches: Match[] = [];
+	let finalRounds: Round[];
+
+	if (isFinalInLower) {
+		const lastUpper = matches.upper.find((match) => {
+			const hasNextMatchInUpper = matches.upper.some(
+				(m) => m.matchId === match.nextMatchId,
+			);
+			return !hasNextMatchInUpper;
+		})!;
+
+		convergingMatch = matches.lower.find(
+			(match) => match.matchId === lastUpper.nextMatchId,
+		)!;
+
+		finalMatches = [
+			convergingMatch,
+			matches.lower.find(
+				(match) => match.matchId === convergingMatch?.nextMatchId,
+			),
+		].filter((match) => match?.matchId) as Match[];
+	} else if (isFinalInUpper) {
+		const lastLower = matches.lower.find((match) => {
+			const hasNextMatchInLower = matches.lower.some(
+				(m) => m.matchId === match.nextMatchId,
+			);
+			return !hasNextMatchInLower;
+		})!;
+
+		convergingMatch = matches.upper.find(
+			(match) => match.matchId === lastLower.nextMatchId,
+		)!;
+
+		finalMatches = [
+			convergingMatch,
+			matches.upper.find(
+				(match) => match.matchId === convergingMatch?.nextMatchId,
+			),
+		].filter((match) => match?.matchId) as Match[];
+	}
+
+	finalRounds = [
+		...rounds.filter((round) => {
+			const hasFinalMatch = finalMatches.some(
+				(match) => match.roundId === round.roundId,
+			);
+
+			console.log(round, hasFinalMatch);
+
+			return hasFinalMatch;
+		}),
+	];
+
+	return { finalMatches, finalRounds };
 }
 
 export function shiftHeaderXPos(

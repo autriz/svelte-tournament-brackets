@@ -23,13 +23,13 @@
 		RoundHeader,
 	} from "$lib/brackets/components";
 	import {
-		cn,
 		generateBracketData,
 		getEntrantIndices,
 		getPreviousMatches,
 		shiftHeaderXPos,
 		shiftMatchXPos,
 	} from "$lib/internal/utils";
+	import SvgWrapper from "../components/SvgWrapper.svelte";
 
 	export let data: SingleEliminationProps<Round, Match, Entrant>;
 	export let bracketConfig: BracketConfig | undefined = undefined;
@@ -99,9 +99,8 @@
 	export { height, width };
 </script>
 
-<svg x="0" y="0" {width} {height} class={cn("fill-transparent", className)}>
-	<rect x="0" y="0" {width} {height} />
-	{#each bracketData as {matches, round}, roundIdx}
+<SvgWrapper {width} {height} class={className}>
+	{#each bracketData as { matches, round }, roundIdx}
 		{@const x = matches[0].position.x}
 		<g>
 			{#if config.showRoundHeaders}
@@ -229,4 +228,4 @@
 			</g>
 		</g>
 	{/each}
-</svg>
+</SvgWrapper>

@@ -2,6 +2,7 @@
 	import FooterNavigation from "$components/FooterNavigation.svelte";
     import Preview from "$components/Preview.svelte";
     import SingleElimCustomHeader from "$components/demos/single-elim-custom-round-header.svelte";
+    import MatchExample from "$components/demos/match-component.svelte";
     import Title from "$components/Title.svelte";
     import Note from "$components/Note.svelte";
     import SlotPropsTable from "$components/SlotPropsTable.svelte";
@@ -36,11 +37,18 @@ Use named slots with props to replace default components:
 ## Default Components
 
 Components that are used out of the box can be found [here](https://github.com/autriz/svelte-tournament-brackets/tree/master/src/lib/brackets/components). 
-These components are not customizable, but you can copy them and customize them however you see fit.
+These components are unstyled, but you can style them using data attributes shown below:
+
+<Preview>
+    <MatchExample />
+</Preview>
+
+or you can use styles used on this page: [TailwindCSS](https://github.com/autriz/svelte-tournament-brackets/tree/master/src/docs/tailwind.styles.css) / [CSS](https://github.com/autriz/svelte-tournament-brackets/tree/master/src/docs/css.styles.css).
 
 ## Customizable Components
 
-Below are all named props that can be customized.
+If you have your own vision of what your bracket should look like, 
+you can use named slots to introduce custom components.
 
 ### Round Header
 

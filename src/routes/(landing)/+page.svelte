@@ -1,5 +1,4 @@
 <script lang="ts">
-	// import CopyButton from "$components/CopyButton.svelte";
 	import SingleEliminationBracket from "$lib/brackets/single-elimination/SingleEliminationBracket.svelte";
 	import { singleElimTwo } from "$docs/mock-data";
 </script>
@@ -38,7 +37,7 @@
 		></rect>
 	</svg>
 	<div
-		class="absolute top-16 mx-auto flex h-full overflow-y-clip overflow-x-visible"
+		class="absolute top-16 mx-auto flex h-full overflow-x-hidden overflow-y-clip"
 	>
 		<SingleEliminationBracket
 			class="overflow-visible fill-transparent"

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Link from "$components/Link.svelte";
-	import { cn } from "$lib/internal/utils";
+	import { cn } from "$docs/utils/cn";
 
 	export let href: string;
 

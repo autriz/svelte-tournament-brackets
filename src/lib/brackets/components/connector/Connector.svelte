@@ -17,7 +17,7 @@
 	export let currentMatchPosition: MatchPositionData;
 	export let config: DeepRequired<BracketConfig>;
 
-	const widthMargin = 8; // turn into a configurable value
+	const widthMargin = 8;
 	const matchHalfHeight = config.matchStyle.height / 2;
 
 	const getRoundGap = (data: MatchPositionData) => {
@@ -67,10 +67,10 @@
 {/if}
 {#if topMatchPosition}
 	<path
+		data-bracket-connector
 		d={calcPath(topMatchPosition)}
 		id={`conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-t`}
 		fill="transparent"
-		class="stroke-neutral-500 transition-colors data-[highlighted]:stroke-black dark:data-[highlighted]:stroke-white"
 		data-highlighted={isTopHighlighted ? "" : undefined}
 	/>
 {/if}
@@ -84,19 +84,19 @@
 {/if}
 {#if bottomMatchPosition}
 	<path
+		data-bracket-connector
 		d={calcPath(bottomMatchPosition)}
 		id={`conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-b`}
 		fill="transparent"
-		class="stroke-neutral-500 transition-colors data-[highlighted]:stroke-black dark:data-[highlighted]:stroke-white"
 		data-highlighted={isBottomHighlighted ? "" : undefined}
 	/>
 {/if}
 {#if topMatchPosition || bottomMatchPosition}
 	<path
+		data-bracket-connector
 		d={calcCenterPath()}
 		id={`conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-c`}
 		fill="transparent"
-		class="stroke-neutral-500 transition-colors data-[highlighted]:stroke-black dark:data-[highlighted]:stroke-white"
 		data-highlighted={isTopHighlighted || isBottomHighlighted
 			? ""
 			: undefined}

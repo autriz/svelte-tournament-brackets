@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { copyToClipboard, type CopyResult } from "$docs/utils/clipboard";
-	import { cn } from "$lib/internal/utils";
+	import { cn } from "$docs/utils/cn";
 	import { AlertCircle, Check, Clipboard } from "lucide-svelte";
 	import { scale } from "svelte/transition";
 

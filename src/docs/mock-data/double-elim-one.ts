@@ -4,15 +4,19 @@ export default {
 	rounds: [
 		{
 			roundId: 1,
-			roundName: "Раунд 1",
+			roundName: "Opening Round",
 		},
 		{
 			roundId: 2,
-			roundName: "Раунд 2",
+			roundName: "Quarterfinals",
 		},
 		{
 			roundId: 3,
-			roundName: "Раунд 3",
+			roundName: "Semifinals",
+		},
+		{
+			roundId: 4,
+			roundName: "Grand Finals",
 		},
 	],
 	matches: {
@@ -119,7 +123,6 @@ export default {
 				},
 				status: "DONE",
 			},
-			// Финал верхней сетки
 			{
 				matchId: 7,
 				roundId: 3,
@@ -132,6 +135,21 @@ export default {
 				opponent2: {
 					opponentId: 8,
 					opponentScore: 0,
+					opponentStatus: "LOST",
+				},
+				status: "DONE",
+			},
+			{
+				matchId: 13,
+				roundId: 4,
+				opponent1: {
+					opponentId: 1,
+					opponentScore: 2,
+					opponentStatus: "WON",
+				},
+				opponent2: {
+					opponentId: 3,
+					opponentScore: 1,
 					opponentStatus: "LOST",
 				},
 				status: "DONE",
@@ -204,61 +222,38 @@ export default {
 			},
 		],
 	},
-	finalRounds: [
-		{
-			roundId: 4,
-			roundName: "Гранд-финал",
-		},
-	],
-	finalMatches: [
-		{
-			matchId: 13,
-			roundId: 4,
-			opponent1: {
-				opponentId: 1,
-				opponentScore: 2,
-				opponentStatus: "WON",
-			},
-			opponent2: {
-				opponentId: 3,
-				opponentScore: 1,
-				opponentStatus: "LOST",
-			},
-			status: "DONE",
-		},
-	],
 	entrants: [
 		{
 			entrantId: 1,
-			entrantName: "Игрок 1",
+			entrantName: "Thunder Wolves",
 		},
 		{
 			entrantId: 2,
-			entrantName: "Игрок 2",
+			entrantName: "Sky Knights",
 		},
 		{
 			entrantId: 3,
-			entrantName: "Игрок 3",
+			entrantName: "Dragon Fury",
 		},
 		{
 			entrantId: 4,
-			entrantName: "Игрок 4",
+			entrantName: "Phoenix Blaze",
 		},
 		{
 			entrantId: 5,
-			entrantName: "Игрок 5",
+			entrantName: "Ice Giants",
 		},
 		{
 			entrantId: 6,
-			entrantName: "Игрок 6",
+			entrantName: "Shadow Hunters",
 		},
 		{
 			entrantId: 7,
-			entrantName: "Игрок 7",
+			entrantName: "Solar Flares",
 		},
 		{
 			entrantId: 8,
-			entrantName: "Игрок 8",
+			entrantName: "Lunar Eclipse",
 		},
 	],
 } as DoubleEliminationProps;

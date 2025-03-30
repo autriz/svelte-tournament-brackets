@@ -74,8 +74,6 @@ export interface DoubleEliminationProps<
 		upper: Match[];
 		lower: Match[];
 	};
-	finalRounds: Round[];
-	finalMatches: Match[];
 }
 
 export interface BracketConfig {

@@ -2,11 +2,13 @@
 	import { page } from "$app/stores";
 	import GithubMark from "$components/GithubMark.svelte";
 	import Link from "$components/Link.svelte";
+	import NavigationButtons from "$components/NavigationButtons.svelte";
 	import TableOfContents from "$components/TableOfContents.svelte";
 	import ThemeToggleButton from "$components/ThemeToggleButton.svelte";
-	import { ArrowUp } from "lucide-svelte";
+	import { ArrowUp, Menu } from "lucide-svelte";
 	import { onMount } from "svelte";
 	import { fade } from "svelte/transition";
+	import { Drawer } from "vaul-svelte";
 
 	let onTop = true;
 
@@ -58,103 +60,7 @@
 				</a>
 			</div>
 		</div>
-		<div class="w-full grow overflow-y-auto px-4 pt-5">
-			<div
-				class="border-b border-dashed border-neutral-300 pb-2 dark:border-neutral-700"
-			>
-				<span class="mb-2 text-xs font-medium text-muted-foreground">
-					Basics
-				</span>
-				<ul class="space-y-1">
-					<li>
-						<Link
-							href="/docs/getting-started"
-							class="flex rounded-md px-2 py-1 text-[13px] text-neutral-800 
-							transition-colors [transition-duration:100ms] hover:bg-neutral-200 
-							hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
-							dark:text-neutral-300 dark:hover:bg-neutral-700 
-							dark:hover:text-white dark:data-[current]:bg-neutral-700 dark:data-[current]:text-white"
-						>
-							Getting Started
-						</Link>
-					</li>
-					<li>
-						<Link
-							href="/docs/customizable-components"
-							class="flex rounded-md px-2 py-1 text-[13px] text-neutral-800 
-							transition-colors [transition-duration:100ms] hover:bg-neutral-200 
-							hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
-							dark:text-neutral-300 dark:hover:bg-neutral-700 
-							dark:hover:text-white dark:data-[current]:bg-neutral-700 dark:data-[current]:text-white"
-						>
-							Customizable Components
-						</Link>
-					</li>
-					<li>
-						<Link
-							href="/docs/extendable-data"
-							class="flex rounded-md px-2 py-1 text-[13px] text-neutral-800 
-							transition-colors [transition-duration:100ms] hover:bg-neutral-200 
-							hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
-							dark:text-neutral-300 dark:hover:bg-neutral-700 
-							dark:hover:text-white dark:data-[current]:bg-neutral-700 dark:data-[current]:text-white"
-						>
-							Extendable Data
-						</Link>
-					</li>
-				</ul>
-			</div>
-			<div
-				class="border-b border-dashed border-neutral-300 py-2 dark:border-neutral-700"
-			>
-				<span class="mb-2 text-xs font-medium text-muted-foreground">
-					Components
-				</span>
-				<ul class="space-y-1">
-					<Link
-						href="/docs/single-elimination-bracket"
-						class="flex rounded-md px-2 py-1 text-[13px] text-neutral-800 
-						transition-colors [transition-duration:100ms] hover:bg-neutral-200 
-						hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
-						dark:text-neutral-300 dark:hover:bg-neutral-700 
-						dark:hover:text-white dark:data-[current]:bg-neutral-700 
-						dark:data-[current]:text-white"
-					>
-						Single Elimination Bracket
-					</Link>
-					<Link
-						href="/docs/double-elimination-bracket"
-						class="flex rounded-md px-2 py-1 text-[13px] text-neutral-800 
-						transition-colors [transition-duration:100ms] hover:bg-neutral-200 
-						hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
-						dark:text-neutral-300 dark:hover:bg-neutral-700 
-						dark:hover:text-white dark:data-[current]:bg-neutral-700 
-						dark:data-[current]:text-white"
-					>
-						Double Elimination Bracket
-					</Link>
-				</ul>
-			</div>
-			<div class="py-2">
-				<span class="mb-2 text-xs font-medium text-muted-foreground">
-					Examples
-				</span>
-				<ul class="space-y-1">
-					<li>
-						<Link
-							href="/docs/examples/default"
-							class="flex rounded-md px-2 py-1 text-[13px] text-neutral-800 
-							transition-colors [transition-duration:100ms] hover:bg-neutral-200 
-							hover:text-black data-[current]:bg-neutral-200 data-[current]:text-black 
-							dark:text-neutral-300 dark:hover:bg-neutral-700 
-							dark:hover:text-white dark:data-[current]:bg-neutral-700 dark:data-[current]:text-white"
-						>
-							Default
-						</Link>
-					</li>
-				</ul>
-			</div>
-		</div>
+		<NavigationButtons />
 		<div class="px-4">
 			<div
 				class="flex flex-row justify-between border-t border-dashed border-neutral-300
@@ -175,7 +81,50 @@
 		</div>
 	</nav>
 	<div class="flex w-full gap-4 px-4 lg:px-8 lg:py-16 lg:pl-0">
-		<main class="mx-auto w-full max-w-[672px]">
+		<div
+			class="absolute left-0 top-0 flex h-fit w-full justify-between border-b border-dashed border-neutral-300 dark:border-neutral-700 lg:hidden"
+		>
+			<a class="flex gap-1" href="/">
+				<p>Tournament Brackets</p>
+			</a>
+			<Drawer.Root direction="right" openFocus={null}>
+				<Drawer.Trigger class="p-2">
+					<Menu class="size-6 text-foreground" />
+				</Drawer.Trigger>
+				<Drawer.Portal>
+					<Drawer.Content
+						class="fixed bottom-0 right-0 top-0 z-50 flex outline-none"
+					>
+						<div
+							class="my-1 mr-1 flex w-[240px] max-w-[450px] grow
+							flex-col rounded-md bg-background pb-4"
+						>
+							<NavigationButtons />
+							<div class="px-4">
+								<div
+									class="flex flex-row justify-between border-t border-dashed border-neutral-300
+									pt-3 dark:border-neutral-700"
+								>
+									<ThemeToggleButton
+										class="size-8 cursor-default border border-neutral-300 transition-colors hover:bg-foreground/10 dark:border-neutral-700 [&_svg]:size-4"
+									/>
+									<Link
+										href="https://github.com/autriz/svelte-tournament-brackets"
+										title="Go to GitHub page"
+										class="relative inline-flex size-8 items-center justify-center 
+										rounded-md border border-neutral-300 px-2 py-1 transition-colors hover:bg-foreground/10 dark:border-neutral-700"
+									>
+										<GithubMark class="size-6" />
+									</Link>
+								</div>
+							</div>
+						</div>
+					</Drawer.Content>
+					<Drawer.Overlay class="fixed inset-0 z-10 bg-black/40" />
+				</Drawer.Portal>
+			</Drawer.Root>
+		</div>
+		<main class="mx-auto mt-10 w-full max-w-[672px] lg:mt-0">
 			<slot></slot>
 		</main>
 		<aside class="hidden xl:ml-8 xl:block xl:max-w-[240px]">

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from "$lib/internal/utils";
+	import { cn } from "$docs/utils/cn";
 	import { List } from "lucide-svelte";
 	import { onMount } from "svelte";
 	import { writable } from "svelte/store";

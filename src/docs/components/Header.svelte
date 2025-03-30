@@ -5,9 +5,9 @@
 </script>
 
 <header
-	class="fixed z-10 grid w-full grid-cols-[1fr_max-content_1fr] gap-3
-	bg-gradient-to-b from-background/10 to-transparent to-50% px-48
-	py-3 text-foreground backdrop-blur"
+	class="flex-cols fixed z-10 flex w-screen grid-cols-[1fr_max-content_1fr] gap-3 bg-gradient-to-b from-background/10
+	to-transparent to-50% py-3 text-foreground backdrop-blur sm:px-12 md:grid
+	md:w-full md:px-48"
 >
 	<div></div>
 	<nav class="flex grow flex-row justify-center gap-3">

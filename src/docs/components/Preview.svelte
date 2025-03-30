@@ -27,7 +27,7 @@
 	}
 </script>
 
-<div class="mt-5 flex flex-col">
+<div class="my-5 flex flex-col">
 	{#if shouldRenderPreviewCode}
 		<div
 			class="flex flex-row justify-between border-b border-muted px-4 pb-2 text-sm text-muted-foreground"
