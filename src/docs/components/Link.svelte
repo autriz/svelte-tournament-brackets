@@ -2,6 +2,7 @@
 	import { page } from "$app/stores";
 
 	export let href: string;
+	export let rel: HTMLAnchorElement["rel"] | undefined = undefined;
 	export let title: string | undefined = undefined;
 	let className: string | undefined = undefined;
 	export { className as class };
@@ -31,6 +32,7 @@
 
 <a
 	{title}
+	{rel}
 	class={className}
 	data-current={isCurrent ? "" : undefined}
 	target={href.startsWith("http") ? "_blank" : undefined}
