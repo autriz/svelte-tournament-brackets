@@ -57,14 +57,6 @@ export interface SingleEliminationProps<
 	matches: Match[];
 }
 
-export interface RoundRobinProps<
-	Round extends BaseRound = BaseRound,
-	Match extends BaseMatch = BaseMatch,
-	Entrant extends BaseEntrant = BaseEntrant,
-> extends BaseProps<Round, Entrant> {
-	matches: Match[];
-}
-
 export interface DoubleEliminationProps<
 	Round extends BaseRound = BaseRound,
 	Match extends BaseMatch = BaseMatch,
