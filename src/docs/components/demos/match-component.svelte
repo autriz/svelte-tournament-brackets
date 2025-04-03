@@ -48,6 +48,7 @@
 	</div>
 	<div
 		class="h-full w-[225px] overflow-hidden"
+		data-example-wrapper
 		data-selected={selectedAttribute}
 	>
 		<SingleEliminationBracket {data} />
@@ -55,23 +56,23 @@
 </div>
 
 <style>
-	:global([data-bracket-match]),
-	:global([data-bracket-match-side]),
-	:global([data-bracket-match-seed]),
-	:global([data-bracket-match-entrant]),
-	:global([data-bracket-match-score]),
-	:global([data-bracket-round-header]) {
+	[data-example-wrapper] :global([data-bracket-match]),
+	[data-example-wrapper] :global([data-bracket-match-side]),
+	[data-example-wrapper] :global([data-bracket-match-seed]),
+	[data-example-wrapper] :global([data-bracket-match-entrant]),
+	[data-example-wrapper] :global([data-bracket-match-score]),
+	[data-example-wrapper] :global([data-bracket-round-header]) {
 		position: relative;
 	}
 
-	:global([data-bracket-match]::after),
-	:global([data-bracket-match-side]::after),
-	:global([data-bracket-match-seed]::after),
-	:global([data-bracket-match-entrant]::after),
-	:global([data-bracket-match-score]::after),
-	:global([data-bracket-round-header]::after) {
+	[data-example-wrapper] :global([data-bracket-match]::after),
+	[data-example-wrapper] :global([data-bracket-match-side]::after),
+	[data-example-wrapper] :global([data-bracket-match-seed]::after),
+	[data-example-wrapper] :global([data-bracket-match-entrant]::after),
+	[data-example-wrapper] :global([data-bracket-match-score]::after),
+	[data-example-wrapper] :global([data-bracket-round-header]::after) {
 		content: "";
-		@apply transition-colors;
+		@apply absolute left-0.5 top-0.5 size-[calc(100%-0.25rem)] bg-transparent opacity-40 transition-colors;
 	}
 
 	[data-selected="data-bracket-match"] :global([data-bracket-match]::after),
@@ -85,7 +86,7 @@
 		:global([data-bracket-match-score]::after),
 	[data-selected="data-bracket-round-header"]
 		:global([data-bracket-round-header]::after) {
-		@apply absolute left-0.5 top-0.5 size-[calc(100%-0.25rem)] bg-green-500 opacity-40;
+		@apply bg-green-500;
 	}
 
 	[data-selected="data-bracket-connector"] :global([data-bracket-connector]) {
