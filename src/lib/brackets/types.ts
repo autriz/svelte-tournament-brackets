@@ -1,6 +1,6 @@
-export type DeepRequired<T> = T extends object
-	? { [P in keyof T]-?: DeepRequired<T[P]> }
-	: T;
+export type DeepPartial<T> = T extends object
+	? { [P in keyof T]?: DeepPartial<T[P]> }
+	: T | undefined;
 
 export type MatchPositionData = {
 	indices: {
@@ -16,18 +16,18 @@ export type MatchPositionData = {
 export type Id = string | number;
 
 export interface BaseRound {
-	roundId: Id;
-	roundName: string;
+	id: Id;
+	name: string;
 }
 
 export interface Opponent {
-	opponentId: Id;
-	opponentScore?: number;
-	opponentStatus?: "WON" | "LOST" | "DQ";
+	id: Id;
+	score?: number;
+	status?: "WON" | "LOST" | "DQ";
 }
 
 export interface BaseMatch {
-	matchId: Id;
+	id: Id;
 	roundId: Id;
 	nextMatchId?: Id;
 	nextLoserMatchId?: Id;
@@ -37,8 +37,8 @@ export interface BaseMatch {
 }
 
 export interface BaseEntrant {
-	entrantId: Id;
-	entrantName: string;
+	id: Id;
+	name: string;
 }
 
 export interface BaseProps<
@@ -70,52 +70,52 @@ export interface DoubleEliminationProps<
 
 export interface BracketConfig {
 	/** Padding around bracket */
-	padding?: {
+	padding: {
 		/** @default 10 */
-		top?: number;
+		top: number;
 		/** @default 10 */
-		bottom?: number;
+		bottom: number;
 		/** @default 10 */
-		left?: number;
+		left: number;
 		/** @default 10 */
-		right?: number;
+		right: number;
 	};
 	/** Certain match styles */
-	matchStyle?: {
+	matchStyle: {
 		/** @default 54 */
-		height?: number;
+		height: number;
 		/** @default 150 */
-		width?: number;
+		width: number;
 		/**
 		 * Gap between matches (vertical)
 		 * @default 60
 		 */
-		gap?: number;
+		gap: number;
 		/**
 		 * Match alignment if width is less than header's
 		 */
-		align?: "start" | "center" | "end";
+		align: "start" | "center" | "end";
 	};
 	/** @default true */
-	showRoundHeaders?: boolean;
+	showRoundHeaders: boolean;
 	/** Certain round header styles */
-	roundHeaderStyle?: {
+	roundHeaderStyle: {
 		/** @default 48 */
-		height?: number;
+		height: number;
 		/** @default 150 */
-		width?: number;
+		width: number;
 		/** @default 50 */
-		bottomMargin?: number;
+		bottomMargin: number;
 		/**
 		 * Round header alignment if width is less than matches'
 		 */
-		align?: "start" | "center" | "end";
+		align: "start" | "center" | "end";
 	};
 	/**
 	 * Gap between rounds (horizontal)
 	 * @default 70
 	 */
-	roundGap?: number;
+	roundGap: number;
 }
 
 export interface DoubleElimBracketConfig extends BracketConfig {
@@ -123,5 +123,5 @@ export interface DoubleElimBracketConfig extends BracketConfig {
 	 * Gap between winner and loser brackets
 	 * @default 60
 	 */
-	bracketGap?: number;
+	bracketGap: number;
 }

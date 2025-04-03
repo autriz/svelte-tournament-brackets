@@ -5,6 +5,7 @@ import type {
 	BaseEntrant,
 	BaseMatch,
 	BaseRound,
+	DeepPartial,
 } from "$lib";
 
 const BRACKET_ROOT = Symbol("BRACKET_ROOT");
@@ -14,7 +15,7 @@ export function setCtx<
 	Round extends BaseRound = BaseRound,
 	Match extends BaseMatch = BaseMatch,
 	Entrant extends BaseEntrant = BaseEntrant,
->(props: CreateBracketProps<BracketConfig, Match>) {
+>(props: CreateBracketProps<DeepPartial<BracketConfig>, Match>) {
 	const bracket = createBracket<BracketConfig, Round, Match, Entrant>(props);
 
 	setContext(BRACKET_ROOT, { ...bracket });

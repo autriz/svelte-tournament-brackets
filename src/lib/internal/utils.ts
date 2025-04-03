@@ -5,7 +5,6 @@ import type {
 	BaseProps,
 	BaseEntrant,
 	MatchPositionData,
-	DeepRequired,
 } from "$lib";
 import type { RoundWithMatches, RoundWithMatchData } from "./types.js";
 
@@ -24,45 +23,45 @@ export function findFinalRounds<
 	if (isFinalInLower) {
 		const lastUpper = matches.upper.find((match) => {
 			const hasNextMatchInUpper = matches.upper.some(
-				(m) => m.matchId === match.nextMatchId,
+				(m) => m.id === match.nextMatchId,
 			);
 			return !hasNextMatchInUpper;
 		})!;
 
 		convergingMatch = matches.lower.find(
-			(match) => match.matchId === lastUpper.nextMatchId,
+			(match) => match.id === lastUpper.nextMatchId,
 		)!;
 
 		finalMatches = [
 			convergingMatch,
 			matches.lower.find(
-				(match) => match.matchId === convergingMatch?.nextMatchId,
+				(match) => match.id === convergingMatch?.nextMatchId,
 			),
-		].filter((match) => match?.matchId) as Match[];
+		].filter((match) => match?.id) as Match[];
 	} else if (isFinalInUpper) {
 		const lastLower = matches.lower.find((match) => {
 			const hasNextMatchInLower = matches.lower.some(
-				(m) => m.matchId === match.nextMatchId,
+				(m) => m.id === match.nextMatchId,
 			);
 			return !hasNextMatchInLower;
 		})!;
 
 		convergingMatch = matches.upper.find(
-			(match) => match.matchId === lastLower.nextMatchId,
+			(match) => match.id === lastLower.nextMatchId,
 		)!;
 
 		finalMatches = [
 			convergingMatch,
 			matches.upper.find(
-				(match) => match.matchId === convergingMatch?.nextMatchId,
+				(match) => match.id === convergingMatch?.nextMatchId,
 			),
-		].filter((match) => match?.matchId) as Match[];
+		].filter((match) => match?.id) as Match[];
 	}
 
 	finalRounds = [
 		...rounds.filter((round) => {
 			const hasFinalMatch = finalMatches.some(
-				(match) => match.roundId === round.roundId,
+				(match) => match.roundId === round.id,
 			);
 
 			console.log(round, hasFinalMatch);
@@ -74,10 +73,7 @@ export function findFinalRounds<
 	return { finalMatches, finalRounds };
 }
 
-export function shiftHeaderXPos(
-	x: number,
-	config: DeepRequired<BracketConfig>,
-) {
+export function shiftHeaderXPos(x: number, config: BracketConfig) {
 	if (config.matchStyle.width > config.roundHeaderStyle.width) {
 		const diff = config.matchStyle.width - config.roundHeaderStyle.width;
 
@@ -94,7 +90,7 @@ export function shiftHeaderXPos(
 	return x;
 }
 
-export function shiftMatchXPos(x: number, config: DeepRequired<BracketConfig>) {
+export function shiftMatchXPos(x: number, config: BracketConfig) {
 	if (config.matchStyle.width < config.roundHeaderStyle.width) {
 		const diff = config.roundHeaderStyle.width - config.matchStyle.width;
 
@@ -117,11 +113,11 @@ export function getEntrantIndices<
 	Entrant extends BaseEntrant = BaseEntrant,
 >(data: BaseProps<Round, Entrant>, match: Match) {
 	const entrant1 = data.entrants.findIndex(
-		(entrant) => entrant.entrantId === match.opponent1?.opponentId,
+		(entrant) => entrant.id === match.opponent1?.id,
 	);
 
 	const entrant2 = data.entrants.findIndex(
-		(entrant) => entrant.entrantId === match.opponent2?.opponentId,
+		(entrant) => entrant.id === match.opponent2?.id,
 	);
 
 	return {
@@ -136,7 +132,7 @@ export function generateBracketData<
 	Match extends BaseMatch = BaseMatch,
 >(
 	data: Props,
-	config: DeepRequired<BracketConfig>,
+	config: BracketConfig,
 	filter: (data: Props, round: Props["rounds"][number]) => Match[],
 	options: {
 		additionalX?: number;
@@ -353,7 +349,7 @@ export function getMatchPositionDataInner<
 	bracketData: RoundWithMatches<Round, Match>[],
 	roundIdx: number,
 	matchIdx: number,
-	config: DeepRequired<BracketConfig>,
+	config: BracketConfig,
 	options: {
 		additionalX?: number;
 		additionalY?: number;

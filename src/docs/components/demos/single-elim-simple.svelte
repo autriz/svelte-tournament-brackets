@@ -7,73 +7,73 @@
 	const data: SingleEliminationProps = {
 		rounds: [
 			{
-				roundId: 1,
-				roundName: "Semifinals",
+				id: 1,
+				name: "Semifinals",
 			},
 			{
-				roundId: 2,
-				roundName: "Final",
+				id: 2,
+				name: "Final",
 			},
 		],
 		matches: [
 			{
-				matchId: 1,
+				id: 1,
 				roundId: 1,
 				opponent1: {
-					opponentId: 1,
-					opponentScore: 2,
-					opponentStatus: "LOST",
+					id: 1,
+					score: 2,
+					status: "LOST",
 				},
 				opponent2: {
-					opponentId: 2,
-					opponentScore: 3,
-					opponentStatus: "WON",
+					id: 2,
+					score: 3,
+					status: "WON",
 				},
 				status: "DONE",
 			},
 			{
-				matchId: 2,
+				id: 2,
 				roundId: 1,
 				opponent1: {
-					opponentId: 3,
-					opponentScore: 3,
-					opponentStatus: "WON",
+					id: 3,
+					score: 3,
+					status: "WON",
 				},
 				opponent2: {
-					opponentId: 4,
-					opponentScore: 1,
-					opponentStatus: "LOST",
+					id: 4,
+					score: 1,
+					status: "LOST",
 				},
 				status: "DONE",
 			},
 			{
-				matchId: 3,
+				id: 3,
 				roundId: 2,
 				opponent1: {
-					opponentId: 2,
+					id: 2,
 				},
 				opponent2: {
-					opponentId: 3,
+					id: 3,
 				},
 				status: "PENDING",
 			},
 		],
 		entrants: [
 			{
-				entrantId: 1,
-				entrantName: "Mario",
+				id: 1,
+				name: "Mario",
 			},
 			{
-				entrantId: 2,
-				entrantName: "Luigi",
+				id: 2,
+				name: "Luigi",
 			},
 			{
-				entrantId: 3,
-				entrantName: "Zelda",
+				id: 3,
+				name: "Zelda",
 			},
 			{
-				entrantId: 4,
-				entrantName: "Link",
+				id: 4,
+				name: "Link",
 			},
 		],
 	};

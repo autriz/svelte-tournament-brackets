@@ -9,14 +9,13 @@
 	export let side: "top" | "bottom";
 	export let isHovered: boolean;
 	export let hasEnded: boolean;
-	export let onEnter: ((id: Entrant["entrantId"]) => void) | undefined =
-		undefined;
+	export let onEnter: ((id: Entrant["id"]) => void) | undefined = undefined;
 	export let onLeave: (() => void) | undefined = undefined;
 
 	const isValidNumber = (value: unknown): value is number =>
 		Number.isInteger(value);
 
-	$: hasWon = opponent?.opponentStatus === "WON";
+	$: hasWon = opponent?.status === "WON";
 </script>
 
 <div
@@ -26,8 +25,7 @@
 	data-side={side}
 	data-won={hasEnded ? hasWon : undefined}
 	aria-disabled={opponent ? undefined : true}
-	on:pointerenter={() =>
-		opponent ? onEnter?.(opponent.opponentId) : undefined}
+	on:pointerenter={() => (opponent ? onEnter?.(opponent.id) : undefined)}
 	on:pointerleave={() => onLeave?.()}
 >
 	<span data-bracket-match-seed>
@@ -37,15 +35,15 @@
 	</span>
 	<span data-bracket-match-entrant>
 		{#if opponent && entrant}
-			{entrant.entrantName}
+			{entrant.name}
 		{/if}
 	</span>
 	<span data-bracket-match-score>
 		{#if opponent && entrant}
 			{#if hasEnded}
-				{opponent.opponentStatus}
+				{opponent.status}
 			{:else}
-				{opponent.opponentScore ?? 0}
+				{opponent.score ?? 0}
 			{/if}
 		{/if}
 	</span>

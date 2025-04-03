@@ -5,5 +5,5 @@
 </script>
 
 <p data-bracket-round-header>
-	{round.roundName}
+	{round.name}
 </p>

@@ -14,6 +14,7 @@
 		BaseMatch,
 		SingleEliminationProps,
 		BracketConfig as BaseBracketConfig,
+		DeepPartial,
 	} from "$lib";
 	import {
 		ConnectorWrapper,
@@ -32,7 +33,8 @@
 	} from "$lib/internal/utils";
 
 	export let data: SingleEliminationProps<Round, Match, Entrant>;
-	export let bracketConfig: BracketConfig | undefined = undefined;
+	export let bracketConfig: DeepPartial<BracketConfig> | undefined =
+		undefined;
 	export let onMatchClick: ((match: Match) => void) | undefined = undefined;
 
 	const { config } = setCtx({
@@ -51,7 +53,7 @@
 		data,
 		config,
 		(data, round) =>
-			data.matches.filter((match) => match.roundId === round.roundId),
+			data.matches.filter((match) => match.roundId === round.id),
 		{
 			additionalY: headerHeight + config.padding.top,
 			additionalX: config.padding.left,
@@ -66,7 +68,7 @@
 
 				if (!lowestMatchInRound)
 					throw new Error(
-						`[Malformed data] Missing matches in round with ID: ${roundData.round.roundId}`,
+						`[Malformed data] Missing matches in round with ID: ${roundData.round.id}`,
 					);
 
 				height = Math.max(
@@ -171,27 +173,24 @@
 							let:onEnter
 							let:onLeave
 						>
-							{@const entrantIndices = getEntrantIndices(
-								data,
-								match.data,
+							{@const indices = {
+								...getEntrantIndices(data, match.data),
+								...match.indices,
+							}}
+							{@const entrant1 = data.entrants.find(
+								(entrant) =>
+									entrant.id === match.data.opponent1?.id,
+							)}
+							{@const entrant2 = data.entrants.find(
+								(entrant) =>
+									entrant.id === match.data.opponent2?.id,
 							)}
 							<slot
 								name="match"
 								match={match.data}
-								indices={{
-									...entrantIndices,
-									...match.indices,
-								}}
-								entrant1={data.entrants.find(
-									(entrant) =>
-										entrant.entrantId ===
-										match.data.opponent1?.opponentId,
-								)}
-								entrant2={data.entrants.find(
-									(entrant) =>
-										entrant.entrantId ===
-										match.data.opponent2?.opponentId,
-								)}
+								{indices}
+								{entrant1}
+								{entrant2}
 								{isTopHovered}
 								{isBottomHovered}
 								{isMatchHovered}
@@ -201,20 +200,9 @@
 							>
 								<Match
 									match={match.data}
-									indices={{
-										...entrantIndices,
-										...match.indices,
-									}}
-									entrant1={data.entrants.find(
-										(entrant) =>
-											entrant.entrantId ===
-											match.data.opponent1?.opponentId,
-									)}
-									entrant2={data.entrants.find(
-										(entrant) =>
-											entrant.entrantId ===
-											match.data.opponent2?.opponentId,
-									)}
+									{indices}
+									{entrant1}
+									{entrant2}
 									{isTopHovered}
 									{isBottomHovered}
 									{onMatchClick}

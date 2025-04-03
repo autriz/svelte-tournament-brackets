@@ -21,14 +21,12 @@
 	export let isTopHovered: boolean = false;
 	export let isBottomHovered: boolean = false;
 
-	export let onEnter:
-		| ((entrantId: Entrant["entrantId"]) => void)
-		| undefined = undefined;
+	export let onEnter: ((entrantId: Entrant["id"]) => void) | undefined =
+		undefined;
 	export let onLeave: (() => void) | undefined = undefined;
 	export let onMatchClick: ((match: Match) => void) | undefined = undefined;
 
-	$: hasEnded =
-		!!match.opponent1?.opponentStatus && !!match.opponent2?.opponentStatus;
+	$: hasEnded = !!match.opponent1?.status && !!match.opponent2?.status;
 </script>
 
 <button data-bracket-match on:click={() => onMatchClick?.(match)}>

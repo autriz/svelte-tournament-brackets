@@ -13,6 +13,7 @@
 		BaseMatch,
 		DoubleEliminationProps,
 		DoubleElimBracketConfig,
+		DeepPartial,
 	} from "$lib";
 	import type { RoundWithMatchData } from "$lib/internal/types";
 	import { setCtx } from "$lib/internal/ctx";
@@ -35,7 +36,8 @@
 	} from "$lib/internal/utils";
 
 	export let data: DoubleEliminationProps<Round, Match, Entrant>;
-	export let bracketConfig: BracketConfig | undefined = undefined;
+	export let bracketConfig: DeepPartial<BracketConfig> | undefined =
+		undefined;
 	export let onMatchClick: ((match: Match) => void) | undefined = undefined;
 
 	const { config } = setCtx({
@@ -96,9 +98,7 @@
 
 	const roundsWithoutFinals = data.rounds.filter(
 		(round) =>
-			!finalRounds.some(
-				(finalRound) => finalRound.roundId === round.roundId,
-			),
+			!finalRounds.some((finalRound) => finalRound.id === round.id),
 	);
 
 	const headerHeight = config.showRoundHeaders
@@ -109,9 +109,7 @@
 		{ ...data, rounds: roundsWithoutFinals },
 		config,
 		(data, round) =>
-			data.matches.upper.filter(
-				(match) => match.roundId === round.roundId,
-			),
+			data.matches.upper.filter((match) => match.roundId === round.id),
 		{
 			additionalY: headerHeight + config.padding.top,
 			additionalX: config.padding.left,
@@ -126,9 +124,7 @@
 		{ ...data, rounds: roundsWithoutFinals },
 		config,
 		(data, round) =>
-			data.matches.lower.filter(
-				(match) => match.roundId === round.roundId,
-			),
+			data.matches.lower.filter((match) => match.roundId === round.id),
 		{
 			additionalY: winnerDimensions.height + config.bracketGap,
 			additionalX: config.padding.left,
@@ -149,7 +145,7 @@
 		? finalRounds
 				.map((round) => {
 					const roundMatches = finalMatches.filter(
-						(match) => match.roundId === round.roundId,
+						(match) => match.roundId === round.id,
 					);
 
 					return {
@@ -308,13 +304,11 @@
 							}}
 							{@const entrant1 = data.entrants.find(
 								(entrant) =>
-									entrant.entrantId ===
-									match.data.opponent1?.opponentId,
+									entrant.id === match.data.opponent1?.id,
 							)}
 							{@const entrant2 = data.entrants.find(
 								(entrant) =>
-									entrant.entrantId ===
-									match.data.opponent2?.opponentId,
+									entrant.id === match.data.opponent2?.id,
 							)}
 							{#if !$$slots["winner-match"]}
 								<slot
@@ -443,13 +437,11 @@
 							}}
 							{@const entrant1 = data.entrants.find(
 								(entrant) =>
-									entrant.entrantId ===
-									match.data.opponent1?.opponentId,
+									entrant.id === match.data.opponent1?.id,
 							)}
 							{@const entrant2 = data.entrants.find(
 								(entrant) =>
-									entrant.entrantId ===
-									match.data.opponent2?.opponentId,
+									entrant.id === match.data.opponent2?.id,
 							)}
 							{#if !$$slots["loser-match"]}
 								<slot
@@ -606,13 +598,11 @@
 								}}
 								{@const entrant1 = data.entrants.find(
 									(entrant) =>
-										entrant.entrantId ===
-										match.data.opponent1?.opponentId,
+										entrant.id === match.data.opponent1?.id,
 								)}
 								{@const entrant2 = data.entrants.find(
 									(entrant) =>
-										entrant.entrantId ===
-										match.data.opponent2?.opponentId,
+										entrant.id === match.data.opponent2?.id,
 								)}
 								{#if !$$slots["finals-match"]}
 									<slot

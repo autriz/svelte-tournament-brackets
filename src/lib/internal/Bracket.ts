@@ -4,7 +4,7 @@ import type {
 	BracketConfig as BaseBracketConfig,
 	BaseEntrant,
 	BaseRound,
-	DeepRequired,
+	DeepPartial,
 } from "$lib";
 
 export const defaultConfig = {
@@ -32,7 +32,8 @@ export const defaultConfig = {
 };
 
 export type CreateBracketProps<
-	BracketConfig extends BaseBracketConfig = BaseBracketConfig,
+	BracketConfig extends
+		DeepPartial<BaseBracketConfig> = DeepPartial<BaseBracketConfig>,
 	Match extends BaseMatch = BaseMatch,
 > = {
 	config?: BracketConfig;
@@ -44,7 +45,7 @@ export function createBracket<
 	Round extends BaseRound = BaseRound,
 	Match extends BaseMatch = BaseMatch,
 	Entrant extends BaseEntrant = BaseEntrant,
->(props: CreateBracketProps<BracketConfig, Match>) {
+>(props: CreateBracketProps<DeepPartial<BracketConfig>, Match>) {
 	const config = (props.config
 		? {
 				...defaultConfig,
@@ -62,11 +63,11 @@ export function createBracket<
 					...props.config.roundHeaderStyle,
 				},
 			}
-		: defaultConfig) as unknown as DeepRequired<BracketConfig>;
+		: defaultConfig) as unknown as BracketConfig;
 
-	const hoveredMatchId = writable<Match["matchId"] | null>(null);
-	const hoveredRoundId = writable<Round["roundId"] | null>(null);
-	const hoveredEntrantId = writable<Entrant["entrantId"] | null>(null);
+	const hoveredMatchId = writable<Match["id"] | null>(null);
+	const hoveredRoundId = writable<Round["id"] | null>(null);
+	const hoveredEntrantId = writable<Entrant["id"] | null>(null);
 
 	return {
 		hoveredMatchId,
