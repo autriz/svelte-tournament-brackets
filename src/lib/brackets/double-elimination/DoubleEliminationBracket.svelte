@@ -22,6 +22,7 @@
 		Match,
 		RoundHeader,
 		ConnectorWrapper,
+		SvgWrapper,
 	} from "$lib/brackets/components";
 	import {
 		findFinalRounds,
@@ -32,7 +33,6 @@
 		shiftHeaderXPos,
 		shiftMatchXPos,
 	} from "$lib/internal/utils";
-	import SvgWrapper from "../components/SvgWrapper.svelte";
 
 	export let data: DoubleEliminationProps<Round, Match, Entrant>;
 	export let bracketConfig: BracketConfig | undefined = undefined;
