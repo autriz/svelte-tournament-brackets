@@ -16,7 +16,7 @@ type SlotSchema<
     isBottomHovered: boolean;
     isMatchHovered: boolean;
     onMatchClick: ((match: Match) => void) | undefined;
-    onEnter: (entrantId: Entrant["entrantId"]) => void;
+    onEnter: (entrantId: Entrant["id"]) => void;
     onLeave: () => void;
 }
 ```
