@@ -17,23 +17,6 @@ override default components while maintaining the core bracket logic.
 
 </Title>
 
-## Customization Basics
-
-Use named slots with props to replace default components:
-
-```svelte
-<script lang="ts">
-    import MyHeader from "./MyHeader.svelte";
-    import type MyProps from "./MyProps.ts";
-
-    let data: MyProps = { /* data with custom round interface */ };
-</script>
-
-<SingleEliminationBracket {data}>
-    <div slot="header" let:round><MyHeader {round}/></div>
-</SingleEliminationBracket>
-```
-
 ## Default Components
 
 Components that are used out of the box can be found [here](https://github.com/autriz/svelte-tournament-brackets/tree/master/src/lib/brackets/components). 
@@ -123,7 +106,23 @@ If provided, they will override non-specific slots
 
 </Note>
 
-<!-- TODO: Note about double elim bracket -->
+
+## Customization Basics
+
+Use named slots with props to replace default components:
+
+```svelte
+<script lang="ts">
+    import MyHeader from "./MyHeader.svelte";
+    import type MyProps from "./MyProps.ts";
+
+    let data: MyProps = { /* data with custom round interface */ };
+</script>
+
+<SingleEliminationBracket {data}>
+    <div slot="header" let:round><MyHeader {round}/></div>
+</SingleEliminationBracket>
+```
 
 <FooterNavigation
 	previous={{ 
