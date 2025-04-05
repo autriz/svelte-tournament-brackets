@@ -8,7 +8,7 @@
     import SlotPropsTable from "$components/SlotPropsTable.svelte";
 </script>
 
-<Title class="mb-4">
+<Title>
 
 # Customizable Components
 
