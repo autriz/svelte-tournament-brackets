@@ -1,27 +1,29 @@
+---
+title: Double Elimination Bracket
+---
+
 <script lang="ts">
-    import FooterNavigation from "$components/FooterNavigation.svelte";
 	import Preview from "$components/Preview.svelte";
-	import DoubleElimTest from "$components/demos/double-elim-test.svelte";
-    import Title from "$components/Title.svelte";
+	import DoubleElimTest from "$docs/demos/double-elim-test.svelte";
+	import DoubleElimOne from "$docs/demos/double-elim-one.svelte";
+	import { SVGViewer } from "svelte-svg-viewer";
 </script>
 
-<Title>
-
-# Double Elimination Bracket
-
-</Title>
-
 <Preview name="double-elim-test">
-	<DoubleElimTest />
+	<div class="py-6">
+		<DoubleElimTest />
+	</div>
 </Preview>
 
-<FooterNavigation 
-    previous={{ 
-        href: "/docs/single-elimination-bracket", 
-        title: "Single Elimination Bracket" 
-    }} 
-    next={{
-        href: "/docs/examples/default",
-        title: "Default"
-    }}
-/>
+## 🚧 Work In Progress 🚧
+
+<Preview>
+	<SVGViewer 
+		class="fill-transparent" 
+		width="100%" 
+		height="350px" 
+		lockToBoundaries
+	>
+		<DoubleElimOne />
+	</SVGViewer>
+</Preview>

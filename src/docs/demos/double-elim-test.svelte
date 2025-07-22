@@ -122,4 +122,4 @@
 	};
 </script>
 
-<DoubleEliminationBracket {data} />
+<DoubleEliminationBracket {data} class="fill-transparent" />

@@ -6,7 +6,10 @@
 </script>
 
 <h1
-	class={cn("mb-3 text-[32px] font-semibold text-primary", className)}
+	class={cn(
+		"mb-3 text-[32px] font-semibold tracking-tight text-primary",
+		className,
+	)}
 	{...$$restProps}
 >
 	<slot />

@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { m } from "$docs/paraglide/messages";
 	import { cn } from "$docs/utils/cn";
 	import { List } from "lucide-svelte";
 	import { onMount } from "svelte";
 	import { writable } from "svelte/store";
 	import { crossfade } from "svelte/transition";
+	import { sineInOut } from "svelte/easing";
 
 	type TocItem = {
 		id: string;
@@ -17,22 +19,53 @@
 		items: new Map<string, TocItem>(),
 		activeItem: undefined as TocItem | undefined,
 	});
-	const [send, receive] = crossfade({ duration: 150 });
+	const [send, receive] = crossfade({ duration: 150, easing: sineInOut });
 	let observer: IntersectionObserver;
 
 	function updateActiveItem() {
-		let activeItem: TocItem | undefined = undefined;
+		let activeItemId: string | undefined = undefined;
 
 		for (const item of $store.items.values()) {
 			if (item.active) {
-				activeItem = item;
+				activeItemId = item.id;
 				break;
 			}
 		}
 
+		if (!activeItemId) {
+			if (!$store.activeItem) {
+				selectClosestItem();
+			}
+
+			return;
+		}
+
+		const newActiveItem = $store.items.get(activeItemId)!;
+
+		setItem(newActiveItem);
+	}
+
+	function selectClosestItem() {
+		const screenY = window.scrollY;
+
+		const selectedItem = $store.items
+			.values()
+			.reduce((prev, curr) =>
+				Math.abs(curr.element.offsetTop - screenY) <
+				Math.abs(prev.element.offsetTop - screenY)
+					? curr
+					: prev,
+			);
+
+		$store.items.get(selectedItem.id)!.active = true;
+
+		setItem(selectedItem);
+	}
+
+	function setItem(selectedItem: TocItem) {
 		$store = {
 			items: $store.items,
-			activeItem: activeItem,
+			activeItem: selectedItem,
 		};
 	}
 
@@ -47,7 +80,7 @@
 				top:
 					element.getBoundingClientRect().top +
 					window.pageYOffset -
-					10,
+					100,
 				behavior: "smooth",
 			});
 		}
@@ -69,18 +102,18 @@
 					}
 				},
 				{
-					rootMargin: "20px 0px 0px 0px",
+					rootMargin: "-10% 0% -35% 0px",
 					threshold: 1,
 				},
 			);
 
-		const headings = document.querySelectorAll<HTMLElement>("h2, h3, h4");
+		const headings = Array.from(
+			document.querySelectorAll<HTMLElement>(
+				"h2:not([data-toc-exclude]), h3:not([data-toc-exclude]), h4:not([data-toc-exclude])",
+			),
+		);
 
 		for (const heading of headings) {
-			if (heading.attributes.getNamedItem("data-toc-exclude")) {
-				continue;
-			}
-
 			let id = heading.innerText.toLowerCase().replaceAll(/ +/g, "-");
 
 			if ($store.items.has(id)) {
@@ -95,16 +128,13 @@
 
 			heading.id = id;
 
-			$store = {
-				items: $store.items.set(heading.id, {
-					id,
-					title: heading.innerText,
-					level: Number(heading.tagName[1]),
-					element: heading,
-					active: false,
-				}),
-				activeItem: undefined,
-			};
+			$store.items.set(heading.id, {
+				id,
+				title: heading.innerText,
+				level: Number(heading.tagName[1]),
+				element: heading,
+				active: false,
+			});
 
 			observer.observe(heading);
 		}
@@ -118,12 +148,12 @@
 <div class="sticky top-0 h-fit w-[240px] self-start overflow-hidden pt-6">
 	<div class="flex flex-row items-center gap-3 text-sm text-muted-foreground">
 		<List class="size-4 shrink-0" />
-		<p>On this page</p>
+		<p>{m.onThisPage()}</p>
 	</div>
 	<div class="mt-2">
 		{#if $store.items.size}
 			<ul
-				class="list-none border-l border-dashed border-muted-foreground text-sm leading-4 text-muted-foreground"
+				class="list-none border-l border-dashed border-muted text-sm leading-4 text-muted-foreground"
 			>
 				{#each $store.items.values() as { id, title, level }}
 					{@const isActive = $store.activeItem?.id === id}
@@ -145,7 +175,7 @@
 							<div
 								in:send={{ key: "toc" }}
 								out:receive={{ key: "toc" }}
-								class="absolute -left-[0.0625rem] top-0 h-full w-px bg-foreground"
+								class="absolute -left-0.5 top-0 h-full w-[3px] rounded-full bg-foreground"
 							></div>
 						{/if}
 					</li>

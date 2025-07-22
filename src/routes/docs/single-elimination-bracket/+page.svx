@@ -1,27 +1,65 @@
+---
+title: Single Elimination Bracket
+---
+
 <script lang="ts">
     import FooterNavigation from "$components/FooterNavigation.svelte";
 	import Preview from "$components/Preview.svelte";
-	import SingleElimSimple from "$components/demos/single-elim-simple.svelte";
+	import SingleElimSimple from "$docs/demos/single-elim-simple.svelte";
+	import SingleElimNormal from "$docs/demos/single-elim-normal.svelte";
+	import SingleElimWithoutRoundHeader from "$docs/demos/single-elim-without-round-header.svelte";
+	import SingleElimRightToLeft from "$docs/demos/single-elim-right-to-left.svelte";
     import Title from "$components/Title.svelte";
+	import { SVGViewer } from "svelte-svg-viewer";
 </script>
-
-<Title>
-
-# Single Elimination Bracket
-
-</Title>
 
 <Preview name="single-elim-simple">
 	<SingleElimSimple />
 </Preview>
 
-<FooterNavigation 
-    previous={{
-        href: "/docs/extendable-data",
-        title: "Extendable Data"
-    }}
-    next={{ 
-        href: "/docs/double-elimination-bracket", 
-        title: "Double Elimination Bracket" 
-    }} 
+## Without round header
+
+If round header is not what you want to see, you can hide it by setting `showRoundHeaders` to `false`.
+
+```svelte disableCopy /config={{ showRoundHeaders: false }}/
+<SingleEliminationBracket 
+	{data} 
+	config={{ showRoundHeaders: false }}
 />
+```
+
+<Preview>
+	<SingleElimWithoutRoundHeader />
+</Preview>
+
+## Right-to-left direction
+
+You can change direction of bracket visualization from left-to-right (`ltr`) to right-to-left (`rtl`), left-to-right being the default.
+
+```svelte disableCopy /config={{ direction: "rtl" }}/
+<SingleEliminationBracket
+	{data}
+	config={{ direction: "rtl" }}
+/>
+```
+
+<Preview>
+	<SingleElimRightToLeft />
+</Preview>
+
+## Examples
+
+### Tournament with 3 rounds
+
+<Preview>
+	<SVGViewer 
+		class="fill-transparent" 
+		width={"100%"} 
+		height="350px" 
+		lockToBoundaries
+		maxScale={1.2}
+		minScale={1}
+	>
+		<SingleElimNormal />
+	</SVGViewer>
+</Preview>

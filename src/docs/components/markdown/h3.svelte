@@ -7,7 +7,7 @@
 
 <h3
 	class={cn(
-		"mb-2 mt-8 text-[16px] font-semibold text-primary lg:mb-3",
+		"mb-2 mt-8 text-[16px] font-semibold tracking-tight text-primary lg:mb-3",
 		className,
 	)}
 >

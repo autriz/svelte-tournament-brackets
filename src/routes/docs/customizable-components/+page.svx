@@ -1,97 +1,107 @@
+---
+titleKey: customizableComponents
+descriptionKey: customizableComponentsDescription
+---
+
 <script lang="ts">
-	import FooterNavigation from "$components/FooterNavigation.svelte";
     import Preview from "$components/Preview.svelte";
-    import SingleElimCustomHeader from "$components/demos/single-elim-custom-round-header.svelte";
-    import MatchExample from "$components/demos/match-component.svelte";
-    import Title from "$components/Title.svelte";
+    import SingleElimCustomHeader from "$docs/demos/single-elim-custom-round-header.svelte";
+    import MatchExample from "$docs/demos/match-component.svelte";
     import Note from "$components/Note.svelte";
     import SlotPropsTable from "$components/SlotPropsTable.svelte";
+    import { m } from "$docs/paraglide/messages.js";
+    import { Tab, Tabs } from "$components/tabs";
 </script>
 
-<Title>
+## { m.defaultComponents() }
 
-# Customizable Components
-
-Brackets provide flexible customization for key visual elements. You can 
-override default components while maintaining the core bracket logic.
-
-</Title>
-
-## Default Components
-
-Components that are used out of the box can be found [here](https://github.com/autriz/svelte-tournament-brackets/tree/master/src/lib/brackets/components). 
-These components are unstyled, but you can style them using data attributes shown below:
+{ m.defaultComponentsText1() }[{ m.defaultComponentsLink() }](https://github.com/autriz/svelte-tournament-brackets/tree/master/src/lib/brackets/components){ m.defaultComponentsText2() }
 
 <Preview>
     <MatchExample />
 </Preview>
 
-or you can use styles used on this page: [TailwindCSS](https://github.com/autriz/svelte-tournament-brackets/tree/master/src/docs/tailwind.styles.css) / [CSS](https://github.com/autriz/svelte-tournament-brackets/tree/master/src/docs/css.styles.css).
+{ m.defaultComponentsText3() } [TailwindCSS](https://github.com/autriz/svelte-tournament-brackets/tree/master/src/docs/tailwind.styles.css) / [CSS](https://github.com/autriz/svelte-tournament-brackets/tree/master/src/docs/css.styles.css).
 
-## Customizable Components
+## { m.createYourOwn() }
 
-If you have your own vision of what your bracket should look like, 
-you can use named slots to introduce custom components.
+{ m.createYourOwnText() }
 
-### Round Header
+<Tabs>
 
-#### How to use
+<Tab name={ m.roundHeader() }>
 
-```svelte
-<slot slot="header" let:round>...</slot>
+<h4 data-toc-exclude> { m.howToUse() } </h4>
+
+```svelte {2}
+<SingleEliminationBracket>
+    <div slot="header" let:round>...</div>
+</SingleEliminationBracket>
 ```
 
-#### Properties
+<h4 data-toc-exclude> { m.properties() } </h4>
 
 <SlotPropsTable schema="header" />
 
-### Match
+</Tab>
 
-#### How to use
+<Tab name={ m.match() }>
 
-```svelte
-<slot 
-    slot="match"
-    let:match
-    let:indices
-    let:entrant1
-    let:entrant2
-    let:isTopHovered
-    let:isBottomHovered
-    let:isMatchHovered
-    let:onMatchClick
-    let:onEnter
-    let:onLeave
->...</slot>
+<h4 data-toc-exclude> { m.howToUse() } </h4>
+
+```svelte {2-14}
+<SingleEliminationBracket>
+    <div 
+        slot="match"
+        let:match
+        let:indices
+        let:entrant1
+        let:entrant2
+        let:isTopHovered
+        let:isBottomHovered
+        let:isMatchHovered
+        let:onMatchClick
+        let:onEnter
+        let:onLeave
+    >...</div>
+</SingleEliminationBracket>
 ```
 
-#### Properties
+<h4 data-toc-exclude> { m.properties() } </h4>
 
 <SlotPropsTable schema="match" />
 
-### Connector
+</Tab>
 
-#### How to use
+<Tab name={ m.connector() }>
 
-```svelte
-<slot
-    slot="connector"
-    let:topMatchPosition
-    let:bottomMatchPosition
-    let:currentMatchPosition
-    let:isTopHighlighted
-    let:isBottomHighlighted
-    let:config
->...</slot>
+<h4 data-toc-exclude> { m.howToUse() } </h4>
+
+```svelte {2-10}
+<SingleEliminationBracket>
+    <g
+        slot="connector"
+        let:topMatchPosition
+        let:bottomMatchPosition
+        let:currentMatchPosition
+        let:isTopHighlighted
+        let:isBottomHighlighted
+        let:config
+    >...</g>
+</SingleEliminationBracket>
 ```
 
-#### Properties
+<h4 data-toc-exclude> { m.properties() } </h4>
 
 <SlotPropsTable schema="connector" />
 
+</Tab>
+
+</Tabs>
+
 <Note>
 
-Double Elimination Bracket has other more specific slots
+{ m.note1Text1() }
 
 - `winner-header`
 - `finals-header`
@@ -102,35 +112,10 @@ Double Elimination Bracket has other more specific slots
 - `loser-connector`
 - `finals-connector`
 
-If provided, they will override non-specific slots
+{ m.note1Text2() }
 
 </Note>
 
-
-## Customization Basics
-
-Use named slots with props to replace default components:
-
-```svelte
-<script lang="ts">
-    import MyHeader from "./MyHeader.svelte";
-    import type MyProps from "./MyProps.ts";
-
-    let data: MyProps = { /* data with custom round interface */ };
-</script>
-
-<SingleEliminationBracket {data}>
-    <div slot="header" let:round><MyHeader {round}/></div>
-</SingleEliminationBracket>
-```
-
-<FooterNavigation
-	previous={{ 
-        href: "/docs/getting-started", 
-        title: "Getting Started" 
-    }}
-	next={{ 
-        href: "/docs/extendable-data", 
-        title: "Extendable Data" 
-    }}
-/>
+<Preview>
+    <SingleElimCustomHeader />
+</Preview>

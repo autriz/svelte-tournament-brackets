@@ -4,10 +4,6 @@
 	import { ModeWatcher } from "mode-watcher";
 </script>
 
-<svelte:head>
-	<title>Svelte Tournament Brackets</title>
-</svelte:head>
-
 <ModeWatcher modeStorageKey={"color-theme"} />
 
 <slot />

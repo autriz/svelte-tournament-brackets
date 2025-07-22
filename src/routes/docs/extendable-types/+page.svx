@@ -1,0 +1,44 @@
+---
+titleKey: extendableTypes
+descriptionKey: extendableTypesDescription
+---
+
+<script lang="ts">
+	import { m } from "$docs/paraglide/messages.js";
+</script>
+
+## { m.baseTypes() }
+
+{ m.baseTypesText1() } [{ m.baseTypesLink() }](https://github.com/autriz/svelte-tournament-brackets/blob/master/src/lib/brackets/types.ts) { m.baseTypesText2() }
+
+## { m.howToExtend() }
+
+{ m.howToExtendText1() } `BaseMatch` { m.howToExtendText2() }
+
+```ts
+export interface BaseMatch {
+	matchId: Id;
+	roundId: Id;
+	nextMatchId?: Id;
+	nextLoserMatchId?: Id;
+	opponent1?: Opponent;
+	opponent2?: Opponent;
+	status: any;
+}
+```
+
+{ m.howToExtendText3() } `status` { m.howToExtendText4() } `any`{ m.howToExtendText5() }
+
+```ts {2}
+interface MyMatch extends BaseMatch {
+	status: "PLAYING" | "DONE" | "TBD" | "PREPARING";
+}
+```
+
+{ m.howToExtendText6() } `Props`{ m.howToExtendText7() }
+
+```ts /MyMatch[]/
+interface MyProps extends BaseProps {
+	matches: MyMatch[];
+};
+```

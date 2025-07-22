@@ -1,25 +1,21 @@
+---
+titleKey: gettingStarted
+descriptionKey: gettingStartedDescription
+---
+
 <script lang="ts">
-    import { h3 as H3 } from "$components/markdown/index";
-	import FooterNavigation from "$components/FooterNavigation.svelte";
-	import Title from "$components/Title.svelte";
+    import Note from "$components/Note.svelte";
+	import { m } from "$docs/paraglide/messages.js";
 </script>
 
-<Title>
-
-# Getting started
-
-</Title>
-
-## Installation
-Install package with your package manager of choice:
+## { m.installation() }
+{ m.installationText() }
 ```bash style="margin-top: 2rem;"
 pnpm i svelte-tournament-brackets
 ```
 
-## Create a component
-Bracket can be placed with no setup, just import it and give it some data to work with:
-
-<H3 class="ml-3">Single Elimination Bracket</H3>
+## { m.createAComponent() }
+{ m.createAComponentText() }
 
 ```svelte
 <script lang="ts">
@@ -34,24 +30,72 @@ Bracket can be placed with no setup, just import it and give it some data to wor
 <SingleEliminationBracket {data} />
 ```
 
-<H3 class="ml-3">Double Elimination Bracket</H3>
+## Styling
 
-```svelte
+Components provided by the library are unstyled by default. This 
+gives you complete control over the appearance of your bracket. 
+Bracket can be styled using data attributes attached to the bracket elements.
+
+## Data structures
+
+The data structures are made as barebones as possible for maximized 
+extendability. Want to include flag of the team or a country, or any 
+other data - the choice is yours, just extend the base props interface 
+(see [Extendable Types](/docs/extendable-types)).
+
+<Note>
+
+The matches inside the data should be in order in which they should be placed 
+inside the bracket. Not doing so would break connection between matches, which
+would not look good.
+
+</Note>
+
+An example of valid data structures can be found in 
+[mock-data folder](https://github.com/autriz/svelte-tournament-brackets/tree/master/src/docs/mock-data).
+
+## Custom components
+
+With extended data structure the default components might not be enough to display
+the match in all it's glory - for that you can introduce your own match component
+using exposed slots for you to use:
+
+```svelte disableCopy
 <script lang="ts">
 	import { 
-		DoubleEliminationBracket, 
-		type DoubleEliminationProps 
+		SingleEliminationBracket 
 	} from "svelte-tournament-brackets";
+	import MyMatch from "./MyMatch.svelte";
+	import type MyProps from "./types.ts";
 
-	let data: DoubleEliminationProps = {/* data */};
+	let data: MyProps = {/* data */};
 </script>
 
-<DoubleEliminationBracket {data} />
+<SingleEliminationBracket {data}>
+	<svelte:fragment
+		slot="match"
+		let:match
+		let:indices
+		let:entrant1
+		let:entrant2
+		let:isTopHovered
+		let:isBottomHovered
+		let:isMatchHovered
+		let:onEnter
+		let:onLeave
+	>
+		<MyMatch 
+			{match} 
+			{indices} 
+			{entrant1} 
+			{entrant2} 
+			{isTopHovered} 
+			{isBottomHovered} 
+			{isMatchHovered} 
+			{onEnter} 
+			{onLeave} 
+		/>
+	</svelte:fragment>
+</SingleEliminationBracket>
 ```
 
-<FooterNavigation 
-	next={{ 
-		href: "/docs/customizable-components", 
-		title: "Customizable Components" 
-	}} 
-/>

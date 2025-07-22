@@ -11,11 +11,11 @@
 }
 
 [data-bracket-match-entrant] {
-	@apply grow overflow-hidden overflow-ellipsis whitespace-nowrap pl-2 text-sm text-black dark:text-white;
+	@apply grow overflow-hidden overflow-ellipsis whitespace-nowrap py-0.5 pl-2 text-sm text-black dark:text-white;
 }
 
 [data-bracket-match-score] {
-	@apply flex h-full w-[2.375rem] items-center justify-center self-end bg-neutral-200 text-center text-xs dark:bg-neutral-800;
+	@apply flex h-full w-[2.375rem] min-w-[2.375rem] items-center justify-center self-end bg-neutral-200 text-center text-xs dark:bg-neutral-800;
 }
 
 [data-bracket-match-side][data-won="true"] [data-bracket-match-score] {
@@ -35,7 +35,7 @@
 }
 
 [data-bracket-round-header] {
-	@apply box-border flex h-full grow cursor-default items-center justify-center rounded-md border-2 border-neutral-500 bg-neutral-100 text-center font-bold uppercase text-neutral-700 transition-colors hover:bg-neutral-200 hover:text-black dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white;
+	@apply box-border flex h-full grow cursor-default items-center justify-center rounded-md border-2 border-neutral-400 bg-neutral-50 text-center font-bold uppercase text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-black dark:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white;
 }
 
 [data-bracket-connector] {

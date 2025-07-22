@@ -1,14 +1,16 @@
 <script lang="ts">
+	import { m } from "$docs/paraglide/messages";
 	import { copyToClipboard, type CopyResult } from "$docs/utils/clipboard";
 	import { AlertCircle, Check } from "lucide-svelte";
 	import { scale, crossfade } from "svelte/transition";
+	import { Tab, Tabs } from "./tabs";
+	import { Tabs as BitsTabs } from "bits-ui";
 
 	/** Name pointing to preview source code file. */
 	export let name: string | undefined = undefined;
 
 	$: shouldRenderPreviewCode = !!name;
 
-	let showCode = false;
 	let blockRef: HTMLElement;
 
 	let copyTimeout: Timer | undefined;
@@ -27,137 +29,121 @@
 	}
 </script>
 
-<div class="my-5 flex flex-col">
-	{#if shouldRenderPreviewCode}
-		<div
-			class="flex flex-row justify-between border-b border-muted px-4 pb-2 text-sm text-muted-foreground"
-		>
-			<div class="flex flex-row gap-3">
-				<button
-					class="relative font-semibold transition-colors hover:text-primary data-[active]:text-primary"
-					on:click={() => (showCode = false)}
-					data-active={!showCode ? "" : undefined}
+<Tabs tabs={shouldRenderPreviewCode ? [m.preview(), m.code()] : [m.preview()]}>
+	<BitsTabs.List
+		class="flex flex-row justify-between border-b border-dashed
+			border-neutral-200 px-4 pb-2 text-sm text-muted-foreground
+			dark:border-neutral-800"
+		slot="list"
+		let:tabs
+		let:active
+	>
+		<div class="flex flex-row gap-3">
+			{#each tabs as tab}
+				<BitsTabs.Trigger
+					class="relative font-semibold transition-colors hover:text-primary data-[state=active]:text-primary"
+					value={tab}
 				>
-					Preview
-					{#if !showCode}
+					{tab}
+					{#if tab === active}
 						<div
 							in:send={{ key: "tab" }}
 							out:receive={{ key: "tab" }}
 							class="absolute -bottom-[0.5625rem] h-px w-full bg-primary"
 						></div>
 					{/if}
-				</button>
-				<button
-					class="relative font-semibold transition-colors hover:text-primary data-[active]:text-primary"
-					on:click={() => (showCode = true)}
-					data-active={showCode ? "" : undefined}
-				>
-					Code
-					{#if showCode}
-						<div
-							in:send={{ key: "tab" }}
-							out:receive={{ key: "tab" }}
-							class="absolute -bottom-[0.5625rem] h-px w-full bg-primary"
-						></div>
-					{/if}
-				</button>
-			</div>
-			<button
-				class="relative font-semibold transition-colors hover:text-primary"
-				on:click={copyCode}
-			>
-				Copy code
-				{#if copyStatus === "copied"}
-					<div
-						class="absolute -left-12 inline-flex h-full w-full items-center justify-center"
-						transition:scale={{
-							duration: 100,
-							delay: 50,
-							start: 0.7,
-						}}
-					>
-						<Check class="size-5 text-green-600"></Check>
-					</div>
-				{:else if copyStatus === "failed"}
-					<div
-						class="absolute -left-12 inline-flex h-full w-full items-center justify-center"
-						transition:scale={{
-							duration: 100,
-							delay: 50,
-							start: 0.7,
-						}}
-					>
-						<AlertCircle class="size-5 text-red-500"></AlertCircle>
-					</div>
-				{/if}
-			</button>
+				</BitsTabs.Trigger>
+			{/each}
 		</div>
-		<div
-			class="mt-4 w-full rounded-lg border border-muted shadow-md"
-			data-preview-content
+		<button
+			class="relative font-semibold transition-colors hover:text-primary"
+			on:click={copyCode}
 		>
-			<div
-				class="relative"
-				data-preview
-				hidden={!!showCode && $$slots.default}
-			>
+			{m.copyCode()}
+			{#if copyStatus === "copied"}
+				<div
+					class="absolute -left-7 inline-flex h-full w-full items-center justify-start"
+					transition:scale={{
+						duration: 100,
+						delay: 50,
+						start: 0.7,
+					}}
+				>
+					<Check class="size-5 text-green-600"></Check>
+				</div>
+			{:else if copyStatus === "failed"}
+				<div
+					class="absolute -left-7 inline-flex h-full w-full items-center justify-start"
+					transition:scale={{
+						duration: 100,
+						delay: 50,
+						start: 0.7,
+					}}
+				>
+					<AlertCircle class="size-5 text-red-500"></AlertCircle>
+				</div>
+			{/if}
+		</button>
+	</BitsTabs.List>
+	<div data-preview-wrapper>
+		<div data-preview-content>
+			<Tab name={m.preview()} class="relative" data-preview>
 				<div
 					class="relative grid max-h-[700px] min-h-[350px]
 					place-items-center overflow-auto"
 				>
 					<slot />
 				</div>
-			</div>
-			<div
+			</Tab>
+			<Tab
+				name={m.code()}
 				class="max-h-[700px] min-h-[350px] w-full overflow-auto"
 				data-preview-code
-				hidden={!showCode && $$slots.code}
-				bind:this={blockRef}
 			>
-				<slot name="code" />
-			</div>
+				<div bind:this={blockRef}>
+					<slot name="code" />
+				</div>
+			</Tab>
 		</div>
-	{:else}
-		<div
-			class="relative w-full rounded-lg border border-muted shadow-md"
-			data-preview-content
-			data-preview
-		>
-			<div
-				class="relative grid max-h-[700px] min-h-[350px]
-				place-items-center overflow-auto"
-			>
-				<slot />
-			</div>
-		</div>
-	{/if}
-</div>
+	</div>
+</Tabs>
 
 <style>
-	[data-preview-code] > :global(.shiki) {
+	:global([data-preview-code]) > div > :global(.shiki) {
 		height: fit-content;
 		min-height: 100%;
 		min-width: 100%;
 		padding: 0.75rem;
 	}
 
+	[data-preview-wrapper] {
+		background: border-box;
+		@apply rounded-lg border border-transparent bg-gradient-to-t from-muted to-muted-foreground/30 shadow-md;
+
+		&:is(.dark) {
+			@apply shadow-none;
+		}
+	}
+
 	[data-preview-content] {
 		--background-color: 247 247 247;
 		background-color: rgb(var(--background-color));
+		@apply w-full overflow-clip rounded-lg;
 	}
 
 	[data-preview-content]:is(.dark *) {
 		--background-color: 18 18 18;
 	}
 
-	[data-preview]::before {
+	:global([data-preview]::before) {
 		content: "";
 		position: absolute;
 		top: 0;
 		right: 0;
 		bottom: 0;
 		left: 0;
-		background-image: radial-gradient(
+		background-image:
+			radial-gradient(
 				circle at center,
 				rgba(0, 0, 0, 0) 50%,
 				rgb(var(--background-color)) 80%,
@@ -178,7 +164,7 @@
 		z-index: 1;
 	}
 
-	[data-preview]::after {
+	:global([data-preview]::after) {
 		background-image: radial-gradient(
 			ellipse at center,
 			rgba(255, 255, 255, 0) 0%,
@@ -187,7 +173,7 @@
 		);
 	}
 
-	[data-preview] > :global(*) {
+	:global([data-preview] > *) {
 		z-index: 10;
 	}
 </style>

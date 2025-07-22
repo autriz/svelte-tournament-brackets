@@ -3,6 +3,7 @@
 	import { cn } from "$docs/utils/cn";
 	import { AlertCircle, Check, Clipboard } from "lucide-svelte";
 	import { scale } from "svelte/transition";
+	import { m } from "$docs/paraglide/messages.js";
 
 	let className: string | undefined = undefined;
 	export { className as class };
@@ -33,7 +34,7 @@
 				bg-neutral-100 opacity-0 transition-all hover:bg-neutral-50
 				group-hover:pointer-events-auto group-hover:opacity-100 dark:border-neutral-700
 				dark:bg-neutral-800 dark:hover:bg-neutral-900"
-				title="Copy code"
+				title={m.copyCode()}
 				on:click={copyCode}
 			>
 				{#if copyStatus === "copied"}
@@ -73,18 +74,24 @@
 			</button>
 		</div>
 	{/if}
-	<div
-		class="overflow-x-auto rounded-lg border border-muted shadow-md"
-		data-code-block
-		bind:this={blockRef}
-	>
+	<div data-code-block bind:this={blockRef}>
 		<slot />
 	</div>
 </div>
 
 <style>
-	div > :global(.shiki) {
-		@apply overflow-auto px-6 py-5;
+	div > :global(pre.shiki) {
+		tab-size: 4;
+		@apply overflow-auto py-5;
+
+		& > code {
+			@apply block w-fit min-w-full px-6;
+		}
+	}
+
+	[data-code-block] {
+		background: border-box;
+		@apply overflow-x-auto rounded-lg border border-transparent bg-gradient-to-t from-muted to-muted-foreground/30 shadow-md dark:shadow-none;
 	}
 
 	@media (hover: none) {

@@ -79,8 +79,10 @@
 	};
 </script>
 
-<SingleEliminationBracket {data}>
-	<div slot="header" let:round>{round.name}</div>
+<SingleEliminationBracket {data} class="fill-transparent">
+	<div slot="header" let:round>
+		{round.name}
+	</div>
 </SingleEliminationBracket>
 
 <style>

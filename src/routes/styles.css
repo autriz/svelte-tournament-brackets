@@ -4,6 +4,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* @font-face {
+	font-family: Inter;
+	src: url("/fonts/Inter.woff2") format("woff2");
+	font-display: swap;
+	font-weight: 400;
+	font-style: normal;
+} */
+
 * {
 	margin: 0;
 	min-width: 0;
@@ -14,25 +22,61 @@ img {
 	max-height: fit-content;
 }
 
-html .shiki,
-html .shiki span {
+html .shiki {
 	background-color: #f7f7f7 !important;
 }
 
-html.dark .shiki,
-html.dark .shiki span {
+html.dark .shiki {
 	color: var(--shiki-dark) !important;
 	background-color: var(--shiki-dark-bg) !important;
-	/* Optional, if you also want font styles */
 	font-style: var(--shiki-dark-font-style) !important;
 	font-weight: var(--shiki-dark-font-weight) !important;
 	text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+html.dark .shiki span {
+	color: var(--shiki-dark) !important;
+	font-style: var(--shiki-dark-font-style) !important;
+	font-weight: var(--shiki-dark-font-weight) !important;
+	text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+html .shiki > code {
+	display: block;
+	width: fit-content;
+	min-width: 100%;
+}
+
+html .shiki span.highlighted {
+	width: calc(100% + 48px);
+	margin: 0 -24px;
+	padding: 0 24px;
+	display: inline-block;
+	@apply bg-neutral-200;
+}
+
+html.dark .shiki span.highlighted {
+	@apply bg-neutral-800;
+}
+
+html .shiki span.word-highlighted {
+	display: inline-block;
+	height: fit-content;
+	margin-bottom: 1px;
+	padding-inline: 2px;
+	border-radius: 6px;
+	@apply bg-neutral-200;
+}
+
+html.dark .shiki span.word-highlighted {
+	@apply bg-neutral-800;
 }
 
 @layer base {
 	:root {
 		--background: 0 0% 100%;
 		--foreground: 240 10% 3.9%;
+		/* --foreground: 0 0% 97%; */
 		--card: 0 0% 100%;
 		--card-foreground: 240 10% 3.9%;
 		--popover: 0 0% 100%;
@@ -54,8 +98,9 @@ html.dark .shiki span {
 	}
 
 	.dark {
-		--background: 240 10% 3.9%;
+		--background: 240 10% 6.5%;
 		--foreground: 0 0% 98%;
+		/* --foreground: 0 0% 7%; */
 		--card: 240 10% 3.9%;
 		--card-foreground: 0 0% 98%;
 		--popover: 240 10% 3.9%;

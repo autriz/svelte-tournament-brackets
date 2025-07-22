@@ -1,23 +1,13 @@
 # Svelte Tournament Brackets
 
-Tournament bracket viewer for Svelte.
+Highly customizable tournament bracket viewers made for Svelte.
 
-# Getting started
+## Documentation
 
-### Installing
+Soon™
 
-todo
+## Inspirations
 
-### Basic usage
+- [`React Tournament Brackets`](https://github.com/Shenato/react-tournament-brackets) by [Shenato](https://github.com/Shenato)
 
-todo
-
-### Custom components
-
-todo
-
-# Inspirations
-
-- [`React Tournament Brackets`](https://github.com/g-loot/react-tournament-brackets) by [g-loot](https://github.com/g-loot)
-
-- [`Melt UI`](https://github.com/melt-ui/melt-ui)
+- [`Emil Kowalski`](emilkowal.ski)'s documentation pages for [Sonner](https://sonner.emilkowal.ski/) and [Vaul](https://vaul.emilkowal.ski/)

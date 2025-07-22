@@ -49,8 +49,9 @@
 	align-items: center;
 	border-width: 1px;
 	border-color: rgb(var(--border));
-	transition-property: color, background-color, border-color,
-		text-decoration-color, fill, stroke;
+	transition-property:
+		color, background-color, border-color, text-decoration-color, fill,
+		stroke;
 	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 	transition-duration: 150ms;
 
@@ -92,6 +93,8 @@
 [data-bracket-match-entrant] {
 	flex-grow: 1;
 	overflow: hidden;
+	padding-top: 0.125rem;
+	padding-bottom: 0.125rem;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	padding-left: 0.5rem;
@@ -104,6 +107,7 @@
 	display: flex;
 	height: 100%;
 	width: 2.375rem;
+	min-width: 2.375rem;
 	align-items: center;
 	justify-content: center;
 	align-self: flex-end;
@@ -130,9 +134,9 @@
 }
 
 [data-bracket-round-header] {
-	--background: 245 245 245;
-	--background-hovered: 229 229 229;
-	--border: 115 115 115;
+	--background: 250 250 250;
+	--background-hovered: 245 245 245;
+	--border: 163 163 163;
 	--text: 64 64 64;
 	--text-hovered: 0 0 0;
 
@@ -149,8 +153,9 @@
 	text-align: center;
 	font-weight: 700;
 	text-transform: uppercase;
-	transition-property: color, background-color, border-color,
-		text-decoration-color, fill, stroke;
+	transition-property:
+		color, background-color, border-color, text-decoration-color, fill,
+		stroke;
 	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 	transition-duration: 150ms;
 	color: rgb(var(--text));
@@ -164,6 +169,7 @@
 	&:is(.dark *) {
 		--background: 23 23 23;
 		--background-hovered: 38 38 38;
+		--border: 82 82 82;
 		--text: 212 212 212;
 		--text-hovered: 255 255 255;
 	}
@@ -172,8 +178,9 @@
 [data-bracket-connector] {
 	--highlighted-stroke: #000;
 
-	transition-property: color, background-color, border-color,
-		text-decoration-color, fill, stroke;
+	transition-property:
+		color, background-color, border-color, text-decoration-color, fill,
+		stroke;
 	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 	transition-duration: 150ms;
 	stroke: #737373;

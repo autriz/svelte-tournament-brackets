@@ -1,18 +1,16 @@
 <script lang="ts">
+	import { m } from "$docs/paraglide/messages";
 	import { ChevronLeft, ChevronRight } from "lucide-svelte";
 
-	export let previous: {
-		title: string;
-		href: string;
-	} | undefined = undefined;
-	export let next: {
-		title: string;
-		href: string;
-	} | undefined = undefined;
+	type Link = { href: string; title: string };
+
+	export let previous: Link | undefined = undefined;
+	export let next: Link | undefined = undefined;
 </script>
 
 <div
-	class="mb-4 mt-8 flex flex-col justify-between gap-4 border-t border-dashed border-neutral-300 px-8 py-6 dark:border-neutral-700 sm:flex-row sm:gap-0"
+	class="mb-4 mt-8 flex flex-col justify-between gap-4 border-t border-dashed
+	border-neutral-200 px-8 py-6 dark:border-neutral-800 sm:flex-row sm:gap-0"
 >
 	{#if previous}
 		<a
@@ -21,7 +19,7 @@
 		>
 			<div class="flex flex-col text-start">
 				<span class="text-[13px] text-muted-foreground"
-					>Previous page</span
+					>{m.previousPage()}</span
 				>
 				<span class="text-[14px] font-medium">{previous.title}</span>
 			</div>
@@ -36,7 +34,9 @@
 			href={next.href}
 		>
 			<div class="flex flex-col text-end">
-				<span class="text-[13px] text-muted-foreground">Next page</span>
+				<span class="text-[13px] text-muted-foreground"
+					>{m.nextPage()}</span
+				>
 				<span class="text-[14px] font-medium">{next.title}</span>
 			</div>
 			<ChevronRight

@@ -6,3 +6,8 @@ export { default as p } from "./p.svelte";
 export { default as code } from "./code.svelte";
 export { default as ul } from "./ul.svelte";
 export { default as li } from "./li.svelte";
+export { default as table } from "./table.svelte";
+export { default as th } from "./th.svelte";
+export { default as td } from "./td.svelte";
+export { default as tr } from "./tr.svelte";
+export { default as thead } from "./thead.svelte";

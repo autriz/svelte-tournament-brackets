@@ -1,0 +1,74 @@
+---
+title: Configuration
+description: Description of all configuration options available for the bracket components
+---
+
+## 🚧 Work In Progress 🚧
+
+## Base Configuration
+
+Brackets are using the configuration object for specifying match size, 
+distance between rounds or matches, etc.
+
+```ts disableCopy
+interface BracketConfig {
+    padding: {
+        top: number;
+        bottom: number;
+        left: number;
+        right: number;
+    };
+    matchStyle: {
+        height: number;
+        width: number;
+        gap: number;
+        align: "start" | "center" | "end";
+    };
+    showRoundHeaders: boolean;
+    roundHeaderStyle: {
+        height: number;
+        width: number;
+        bottomMargin: number;
+        align: "start" | "center" | "end";
+    };
+    roundGap: number;
+    direction: "ltr" | "rtl";
+}
+```
+
+By default this type requires all properties, but you can use `DeepPartial` 
+type to convert it to fully partial configuration. It's useful when your 
+configuration is declared inside script block and specifying entire object is unnecessary.
+
+```svelte
+<script lang="ts">
+	import { 
+        SingleEliminationBracket,
+        type SingleEliminationProps,
+        type BracketConfig,
+        type DeepPartial
+    } from "svelte-tournament-brackets";
+
+    let data: SingleEliminationProps = {/* data */};
+</script>
+
+<!-- Brackets are already using `DeepPartial` under the hood -->
+<SingleEliminationBracket
+	data={singleElimMinimal}
+	config={{ showRoundHeaders: false }}
+	class="fill-transparent"
+/>
+```
+
+Config object is reactive - updating the config will update the bracket.
+
+## Double Elimination
+
+If you use `DoubleEliminationBracket`, this bracket uses its own extension 
+of the base `BracketConfig`:
+
+```ts disableCopy
+interface DoubleElimBracketConfig extends BracketConfig {
+  bracketGap: number;
+}
+```

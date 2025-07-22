@@ -1,4 +1,4 @@
-```ts
+```ts disableCopy
 type SlotSchema<
     Entrant extends BaseEntrant = BaseEntrant,
     Match extends BaseMatch = BaseMatch,

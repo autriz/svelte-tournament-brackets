@@ -4,6 +4,7 @@
 	import { Moon, Sun } from "lucide-svelte";
 	import type { HTMLButtonAttributes } from "svelte/elements";
 	import { cn } from "$docs/utils/cn";
+	import { m } from "$docs/paraglide/messages";
 
 	let className: HTMLButtonAttributes["class"] = "";
 
@@ -12,7 +13,8 @@
 
 <button
 	aria-label="Theme mode toggle"
-	class={cn("relative inline-flex items-center justify-center px-2 py-1 \
+	title={$mode === "dark" ? m.toggleThemeLight() : m.toggleThemeDark()}
+	class={cn("relative inline-flex group items-center justify-center px-2 py-1 \
 		rounded-md size-10", className)}
 	on:click={toggleMode}
 >
@@ -21,14 +23,14 @@
 			class="absolute inline-flex h-full w-full items-center justify-center"
 			transition:scale={{ duration: 200, delay: 50, start: 0.7 }}
 		>
-			<Moon class="size-5 fill-[#24292f] dark:fill-[#fff]" />
+			<Moon fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" class="size-5" />
 		</div>
 	{:else}
 		<div 
 			class="absolute inline-flex h-full w-full items-center justify-center"
 			transition:scale={{ duration: 200, delay: 50, start: 0.7 }}
 		>
-			<Sun class="size-5 fill-[#24292f] dark:fill-[#fff]" />
+			<Sun fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" class="size-5" />
 		</div>
 	{/if}
 </button>
