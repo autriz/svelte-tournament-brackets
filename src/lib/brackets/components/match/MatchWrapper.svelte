@@ -1,9 +1,9 @@
 <script
 	lang="ts"
 	generics="
-		Round extends BaseRound = BaseRound,
-		Match extends BaseMatch = BaseMatch,
-		Entrant extends BaseEntrant = BaseEntrant
+		Round extends BaseRound,
+		Match extends BaseMatch,
+		Entrant extends BaseEntrant
 	"
 >
 	import type {
@@ -12,7 +12,7 @@
 		BracketConfig,
 		BaseRound,
 	} from "$lib";
-	import { getCtx } from "$lib/internal/ctx";
+	import { getCtx } from "$lib/internal";
 
 	let { hoveredMatchId, hoveredRoundId, hoveredEntrantId } = getCtx<
 		BracketConfig,

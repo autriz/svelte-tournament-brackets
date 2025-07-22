@@ -1,4 +1,4 @@
-<script lang="ts" generics="Round extends BaseRound = BaseRound">
+<script lang="ts" generics="Round extends BaseRound">
 	import type { BaseRound } from "$lib";
 
 	export let round: Round;

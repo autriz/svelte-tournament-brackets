@@ -1,12 +1,6 @@
-<script
-	lang="ts"
-	generics="
-		BracketConfig extends BaseBracketConfig = BaseBracketConfig
-	"
->
+<script lang="ts" generics="BracketConfig extends BaseBracketConfig">
 	import type {
 		BracketConfig as BaseBracketConfig,
-		DeepRequired,
 		MatchPositionData,
 	} from "$lib";
 
@@ -15,46 +9,77 @@
 	export let topMatchPosition: MatchPositionData | undefined;
 	export let bottomMatchPosition: MatchPositionData | undefined;
 	export let currentMatchPosition: MatchPositionData;
-	export let config: DeepRequired<BracketConfig>;
+	export let config: BracketConfig;
 
 	const widthMargin = 8;
-	const matchHalfHeight = config.matchStyle.height / 2;
+	// Note that if you want to use config value to create some derived value - use "$:":
+	$: matchHalfHeight = config.matchStyle.height / 2;
+	// Or use some getter function for it:
+	// const getMatchHalfHeight = () => matchHalfHeight = config.matchStyle.height / 2;
 
-	const getRoundGap = (data: MatchPositionData) => {
+	const getRoundGap = (data: MatchPositionData, config: BracketConfig) => {
 		return (
-			currentMatchPosition.position.x -
-			data.position.x -
+			Math.abs(currentMatchPosition.position.x - data.position.x) -
 			config.matchStyle.width
 		);
 	};
 
-	const calcPath = (data: MatchPositionData) => {
-		const startPos = `${
-			data.position.x + config.matchStyle.width + widthMargin
-		} ${data.position.y + matchHalfHeight}`;
-		const roundGap = getRoundGap(data);
-		const halfWidth = roundGap / 2 - widthMargin;
-		const verticalSize = currentMatchPosition.position.y + matchHalfHeight;
+	const getHalfWidth = (roundGap: number) => roundGap / 2 - widthMargin;
+
+	function calcPath(data: MatchPositionData, config: BracketConfig) {
+		let startPos: [number, number];
+		let verticalSize: number;
+
+		const roundGap = getRoundGap(data, config);
+		const halfWidth =
+			getHalfWidth(roundGap) * (config.direction === "rtl" ? -1 : 1);
+
+		if (config.direction === "rtl") {
+			startPos = [
+				data.position.x - widthMargin,
+				data.position.y + matchHalfHeight,
+			];
+
+			verticalSize = currentMatchPosition.position.y + matchHalfHeight;
+		} else {
+			startPos = [
+				data.position.x + config.matchStyle.width + widthMargin,
+				data.position.y + matchHalfHeight,
+			];
+
+			verticalSize = currentMatchPosition.position.y + matchHalfHeight;
+		}
 
 		// config.roundGap / 2 - widthMargin
 
-		let path = [`M${startPos}`, `h${halfWidth}`, `V${verticalSize}`];
+		return `M${startPos.join(" ")} h${halfWidth} V${verticalSize}`;
+	}
 
-		return path.join(" ");
-	};
+	function calcCenterPath(config: BracketConfig) {
+		let startPos: [number, number];
 
-	const calcCenterPath = () => {
 		const roundGap = Math.max(
-			bottomMatchPosition ? getRoundGap(bottomMatchPosition) : 0,
-			topMatchPosition ? getRoundGap(topMatchPosition) : 0,
+			bottomMatchPosition ? getRoundGap(bottomMatchPosition, config) : 0,
+			topMatchPosition ? getRoundGap(topMatchPosition, config) : 0,
 		);
-		const halfWidth = roundGap / 2 - widthMargin;
-		const startPos = `${currentMatchPosition.position.x - halfWidth - widthMargin} ${currentMatchPosition.position.y + matchHalfHeight}`;
+		const halfWidth = getHalfWidth(roundGap);
 
-		let path = [`M${startPos}`, `h${halfWidth}`];
+		if (config.direction === "rtl") {
+			startPos = [
+				currentMatchPosition.position.x +
+					config.matchStyle.width +
+					widthMargin,
+				currentMatchPosition.position.y + matchHalfHeight,
+			];
+		} else {
+			startPos = [
+				currentMatchPosition.position.x - halfWidth - widthMargin,
+				currentMatchPosition.position.y + matchHalfHeight,
+			];
+		}
 
-		return path.join(" ");
-	};
+		return `M${startPos.join(" ")} h${halfWidth}`;
+	}
 </script>
 
 {#if isTopHighlighted}
@@ -68,7 +93,7 @@
 {#if topMatchPosition}
 	<path
 		data-bracket-connector
-		d={calcPath(topMatchPosition)}
+		d={calcPath(topMatchPosition, config)}
 		id={`conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-t`}
 		fill="transparent"
 		data-highlighted={isTopHighlighted ? "" : undefined}
@@ -85,7 +110,7 @@
 {#if bottomMatchPosition}
 	<path
 		data-bracket-connector
-		d={calcPath(bottomMatchPosition)}
+		d={calcPath(bottomMatchPosition, config)}
 		id={`conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-b`}
 		fill="transparent"
 		data-highlighted={isBottomHighlighted ? "" : undefined}
@@ -94,7 +119,7 @@
 {#if topMatchPosition || bottomMatchPosition}
 	<path
 		data-bracket-connector
-		d={calcCenterPath()}
+		d={calcCenterPath(config)}
 		id={`conn-${currentMatchPosition.position.x}-${currentMatchPosition.position.y}-c`}
 		fill="transparent"
 		data-highlighted={isTopHighlighted || isBottomHighlighted

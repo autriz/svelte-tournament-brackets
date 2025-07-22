@@ -1,3 +1,1 @@
-import DoubleEliminationBracket from "./DoubleEliminationBracket.svelte";
-
-export { DoubleEliminationBracket };
+export { default as DoubleEliminationBracket } from "./DoubleEliminationBracket.svelte";

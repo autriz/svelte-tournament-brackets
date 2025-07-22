@@ -1,8 +1,8 @@
 <script
 	lang="ts"
 	generics="
-		Entrant extends BaseEntrant = BaseEntrant,
-		Match extends BaseMatch = BaseMatch,
+		Entrant extends BaseEntrant,
+		Match extends BaseMatch,
 	"
 >
 	import type { BaseMatch, BaseEntrant } from "$lib";
@@ -29,7 +29,11 @@
 	$: hasEnded = !!match.opponent1?.status && !!match.opponent2?.status;
 </script>
 
-<button data-bracket-match on:click={() => onMatchClick?.(match)}>
+<button
+	data-bracket-match
+	data-status={match.status}
+	on:click={() => onMatchClick?.(match)}
+>
 	<MatchSide
 		entrant={entrant1}
 		opponent={match.opponent1}

@@ -1,13 +1,28 @@
-<script 
+<script lang="ts" context="module">
+	export function modifyMatchPosition<
+		Match extends BaseMatch,
+		BracketConfig extends BaseBracketConfig,
+	>(match: MatchData<Match>, config: BracketConfig): MatchPositionData {
+		return {
+			indices: match.indices,
+			position: {
+				x: shiftMatchXPos(match.position.x, config),
+				y: match.position.y,
+			},
+		};
+	}
+</script>
+
+<script
 	lang="ts"
-	generics="
-		Match extends BaseMatch = BaseMatch
-	"
+	generics="Match extends BaseMatch, BracketConfig extends BaseBracketConfig"
 >
-	import { getCtx } from "$lib/internal/ctx";
-	import type { MatchPositionData, BaseMatch } from "$lib";
-	import type { MatchData } from "$lib/internal/types.js";
-	import { shiftMatchXPos } from "$lib/internal/utils";
+	import { getCtx, shiftMatchXPos, type MatchData } from "$lib/internal";
+	import type {
+		MatchPositionData,
+		BaseMatch,
+		BracketConfig as BaseBracketConfig,
+	} from "$lib";
 
 	let { hoveredEntrantId, config } = getCtx();
 
@@ -17,38 +32,28 @@
 		previousBottomMatch?: MatchData<Match>;
 	};
 
-	let { currentMatch, previousTopMatch, previousBottomMatch } = snippet;
+	$: ({ currentMatch, previousTopMatch, previousBottomMatch } = snippet);
 
-	const extractPosition = (
-		match: MatchData<Match>
-	): MatchPositionData => ({ 
-		indices: match.indices, 
-		position: {
-			x: shiftMatchXPos(match.position.x, config),
-			y: match.position.y
-		} 
-	});
-	
-	let topMatchPosition =
-		previousTopMatch ? extractPosition(previousTopMatch) : undefined;
-	let bottomMatchPosition =
-		previousBottomMatch ? extractPosition(previousBottomMatch) : undefined;
-	let currentMatchPosition = extractPosition(currentMatch);
+	$: topMatchPosition = previousTopMatch
+		? modifyMatchPosition(previousTopMatch, $config)
+		: undefined;
+	$: bottomMatchPosition = previousBottomMatch
+		? modifyMatchPosition(previousBottomMatch, $config)
+		: undefined;
+	$: currentMatchPosition = modifyMatchPosition(currentMatch, $config);
+
+	$: isHovered = (matchData: Match | undefined) =>
+		matchData?.opponent1?.id === $hoveredEntrantId ||
+		matchData?.opponent2?.id === $hoveredEntrantId;
 
 	$: isTopHighlighted =
-		(currentMatch.data.opponent1?.opponentId === $hoveredEntrantId ||
-			currentMatch.data.opponent2?.opponentId === $hoveredEntrantId) &&
-		(previousTopMatch?.data.opponent1?.opponentId === $hoveredEntrantId ||
-			previousTopMatch?.data.opponent2?.opponentId === $hoveredEntrantId);
+		isHovered(currentMatch.data) && isHovered(previousTopMatch?.data);
 
 	$: isBottomHighlighted =
-		(currentMatch.data.opponent1?.opponentId === $hoveredEntrantId ||
-			currentMatch.data.opponent2?.opponentId === $hoveredEntrantId) &&
-		(previousBottomMatch?.data.opponent1?.opponentId === $hoveredEntrantId ||
-			previousBottomMatch?.data.opponent2?.opponentId === $hoveredEntrantId);
+		isHovered(currentMatch.data) && isHovered(previousBottomMatch?.data);
 </script>
 
-<slot 
+<slot
 	{isTopHighlighted}
 	{isBottomHighlighted}
 	{topMatchPosition}

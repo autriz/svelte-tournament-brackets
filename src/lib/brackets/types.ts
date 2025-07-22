@@ -2,6 +2,8 @@ export type DeepPartial<T> = T extends object
 	? { [P in keyof T]?: DeepPartial<T[P]> }
 	: T | undefined;
 
+type Direction = "ltr" | "rtl"; //"ttb" | "btt" maybe?
+
 export type MatchPositionData = {
 	indices: {
 		round: number;
@@ -68,6 +70,7 @@ export interface DoubleEliminationProps<
 	};
 }
 
+/** Bracket configuration options */
 export interface BracketConfig {
 	/** Padding around bracket */
 	padding: {
@@ -93,10 +96,11 @@ export interface BracketConfig {
 		gap: number;
 		/**
 		 * Match alignment if width is less than header's
+		 * @default "center"
 		 */
 		align: "start" | "center" | "end";
 	};
-	/** @default true */
+	/** @default false */
 	showRoundHeaders: boolean;
 	/** Certain round header styles */
 	roundHeaderStyle: {
@@ -108,6 +112,7 @@ export interface BracketConfig {
 		bottomMargin: number;
 		/**
 		 * Round header alignment if width is less than matches'
+		 * @default "center"
 		 */
 		align: "start" | "center" | "end";
 	};
@@ -116,8 +121,14 @@ export interface BracketConfig {
 	 * @default 70
 	 */
 	roundGap: number;
+	/**
+	 * Direction in which bracket will be visualized
+	 * @default "ltr"
+	 */
+	direction: Direction;
 }
 
+/** Bracket configuration options with additional options for DoubleEliminationBracket */
 export interface DoubleElimBracketConfig extends BracketConfig {
 	/**
 	 * Gap between winner and loser brackets

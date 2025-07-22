@@ -1,3 +1,1 @@
-import SingleEliminationBracket from "./SingleEliminationBracket.svelte";
-
-export { SingleEliminationBracket };
+export { default as SingleEliminationBracket } from "./SingleEliminationBracket.svelte";
